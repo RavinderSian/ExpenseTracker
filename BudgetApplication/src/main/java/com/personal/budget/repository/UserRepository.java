@@ -1,5 +1,10 @@
 package com.personal.budget.repository;
 
-public interface UserRepository {
+import com.personal.budget.model.User;
 
+public interface UserRepository <T, ID>  {
+
+	User save(User user);
+	void deleteById(Long id);
 }
+ 

@@ -2,9 +2,9 @@ package com.personal.budget.repository;
 
 import com.personal.budget.model.Expense;
 
-public interface ExpenseRepository {
+public interface ExpenseRepository <T,ID> {
 
-	Expense saveById(Long id);
-	void deleteById(Long id);
+	Expense save(T expense);
+	void deleteById(ID id);
 
 }
