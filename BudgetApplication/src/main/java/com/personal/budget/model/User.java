@@ -1,5 +1,8 @@
-package com.personal.budgeting.model;
+package com.personal.budget.model;
 
+import lombok.Data;
+
+@Data
 public class User {
 	
 	private Long id;
@@ -7,6 +10,4 @@ public class User {
 	private String password;
 	private String email;
 
-	
-	
 }

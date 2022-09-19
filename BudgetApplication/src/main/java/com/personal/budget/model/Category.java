@@ -1,7 +1,7 @@
-package com.personal.budgeting.model;
+package com.personal.budget.model;
 
 public enum Category {
-	
+
 	FRIENDS,
 	FUEL,
 	DATES,
