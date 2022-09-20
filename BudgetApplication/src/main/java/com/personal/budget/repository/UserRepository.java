@@ -2,10 +2,10 @@ package com.personal.budget.repository;
 
 import com.personal.budget.model.User;
 
-public interface UserRepository <T, ID>  {
+public interface UserRepository {
 
 	User save(User user);
 	void deleteById(Long id);
-	ID findIdByUsername(String username);
+	Long findIdByUsername(String username);
 }
  

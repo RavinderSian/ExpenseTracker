@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.personal.budget.model.Expense;
 
 @Repository
-public class ExpenseRepositoryImpl implements ExpenseRepository<Expense, Long> {
+public class ExpenseRepositoryImpl implements ExpenseRepository {
 
 	private final JdbcTemplate jdbcTemplate;
 	

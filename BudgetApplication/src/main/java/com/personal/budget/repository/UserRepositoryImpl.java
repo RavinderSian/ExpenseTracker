@@ -4,7 +4,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.personal.budget.model.User;
 
-public class UserRepositoryImpl implements UserRepository <User, Long> {
+public class UserRepositoryImpl implements UserRepository {
 
 	private final JdbcTemplate jdbcTemplate;
 	
