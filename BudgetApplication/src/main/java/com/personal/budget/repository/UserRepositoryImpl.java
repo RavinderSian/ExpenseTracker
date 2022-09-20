@@ -22,4 +22,10 @@ public class UserRepositoryImpl implements UserRepository <User, Long> {
 		jdbcTemplate.update("DELETE FROM expenses WHERE id=?", id);
 	}
 
+	@Override
+	public Long findIdByUsername(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

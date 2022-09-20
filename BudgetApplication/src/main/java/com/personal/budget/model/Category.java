@@ -8,4 +8,5 @@ public enum Category {
 	OTHER,
 	DENTIST,
 	DIRECT_DEBITS
+	
 }
