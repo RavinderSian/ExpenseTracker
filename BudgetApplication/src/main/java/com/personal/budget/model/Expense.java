@@ -1,7 +1,7 @@
 package com.personal.budget.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 import lombok.Data;
 
@@ -13,5 +13,6 @@ public class Expense {
 	private Category category;
 	private BigDecimal amount;
 	private String description;
-	private LocalDateTime purchaseDate;
+	private Timestamp purchaseDate;
+	
 }

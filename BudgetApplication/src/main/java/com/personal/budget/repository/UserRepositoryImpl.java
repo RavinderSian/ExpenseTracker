@@ -24,7 +24,8 @@ public class UserRepositoryImpl implements UserRepository {
 
 	@Override
 	public Long findIdByUsername(String username) {
-		// TODO Auto-generated method stub
+		return jdbcTemplate.queryForObject("SELECT * FROM employees WHERE username=?", 
+				new UserRowMapper(), id);
 		return null;
 	}
 
