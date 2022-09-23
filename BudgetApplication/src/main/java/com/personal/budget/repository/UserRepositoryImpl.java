@@ -2,6 +2,7 @@ package com.personal.budget.repository;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.personal.budget.mappers.UserRowMapper;
 import com.personal.budget.model.User;
 
 public class UserRepositoryImpl implements UserRepository {
@@ -23,10 +24,9 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public Long findIdByUsername(String username) {
+	public User findUserByUsername(String username) {
 		return jdbcTemplate.queryForObject("SELECT * FROM employees WHERE username=?", 
-				new UserRowMapper(), id);
-		return null;
+				new UserRowMapper(), username);
 	}
 
 }

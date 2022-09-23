@@ -6,6 +6,6 @@ public interface UserRepository {
 
 	User save(User user);
 	void deleteById(Long id);
-	Long findIdByUsername(String username);
+	User findUserByUsername(String username);
 }
  
