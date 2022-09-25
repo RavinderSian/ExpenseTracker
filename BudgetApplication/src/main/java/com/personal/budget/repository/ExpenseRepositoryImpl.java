@@ -34,11 +34,14 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 						Statement.RETURN_GENERATED_KEYS);
 				ps.setString(1, expense.getCategory().toString());
 				ps.setBigDecimal(2, expense.getAmount());
+				ps.setLong(3, expense.getUserId());
+				ps.setString(4, expense.getDescription());
+				ps.setTimestamp(5, expense.getPurchaseDate());
 				return ps;
 			}
 		}, holder);
 		
-		Number newId = (Integer) holder.getKeys().get("id");
+		Number newId = (Long) holder.getKeys().get("id");
 		
 		expense.setId(newId.longValue());
 		return expense;

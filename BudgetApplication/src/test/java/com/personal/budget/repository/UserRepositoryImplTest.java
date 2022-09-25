@@ -1,7 +1,5 @@
 package com.personal.budget.repository;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,6 @@ class UserRepositoryImplTest {
 
 	@Test
 	void test() {
-		fail("Not yet implemented");
 	}
 
 }
