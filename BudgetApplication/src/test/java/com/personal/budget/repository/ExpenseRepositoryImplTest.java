@@ -1,8 +1,12 @@
 package com.personal.budget.repository;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,6 +56,46 @@ class ExpenseRepositoryImplTest {
 		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
 		
 		repository.save(expense);
+		
+		Expense saved = repository.save(expense);
+		
+		assertThat(saved.getId(), equalTo(expense.getId()));
+		assertThat(saved.getUserId(), equalTo(expense.getUserId()));
+		assertThat(saved.getAmount(), equalTo(expense.getAmount()));
+		assertThat(saved.getCategory(), equalTo(expense.getCategory()));
+		assertThat(saved.getDescription(), equalTo(expense.getDescription()));
+		assertThat(saved.getPurchaseDate().toLocalDateTime().getHour(), equalTo(expense.getPurchaseDate().toLocalDateTime().getHour()));
+		
+	}
+	
+	@Test
+	void test_FindById_FindsCorrectExpense_WhenExpenseExistsWithGivenId() {
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory(Category.DATES);
+		expense.setDescription("fds");
+		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		
+		Expense saved = repository.save(expense);
+		
+		Optional<Expense> result = repository.findById(saved.getId());
+		
+		assertThat(result.get().getId(), equalTo(saved.getId()));
+		assertThat(result.get().getUserId(), equalTo(saved.getUserId()));
+		assertThat(result.get().getAmount(), equalTo(saved.getAmount()));
+		assertThat(result.get().getCategory(), equalTo(saved.getCategory()));
+		assertThat(result.get().getDescription(), equalTo(saved.getDescription()));
+		assertThat(result.get().getPurchaseDate().toLocalDateTime().getHour(), equalTo(saved.getPurchaseDate().toLocalDateTime().getHour()));
+
+	}
+	
+	@Test
+	void test_FindById_ReturnsEmptyOptional_WhenExpenseDoesNotWithGivenId() {
+		
+		Optional<Expense> result = repository.findById(1L);
+		assertThat(result.isEmpty(), equalTo(true));
 	}
 
 }

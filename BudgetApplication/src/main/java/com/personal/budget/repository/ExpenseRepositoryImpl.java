@@ -4,15 +4,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.personal.budget.mappers.ExpenseRowMapper;
 import com.personal.budget.model.Expense;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class ExpenseRepositoryImpl implements ExpenseRepository {
 
@@ -51,6 +57,18 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 	@Override
 	public void deleteById(Long id) {
 		jdbcTemplate.update("DELETE FROM expenses WHERE id=?", id);
+	}
+	
+	@Override
+	public Optional<Expense> findById(Long id) {
+		try {
+		return Optional.of(jdbcTemplate.queryForObject("SELECT * FROM expenses WHERE id=?", 
+				new ExpenseRowMapper(), id));
+		}
+		catch (EmptyResultDataAccessException e) {
+			log.info("medicine name not found in database");
+			return Optional.empty();
+		}
 	}
 
 }
