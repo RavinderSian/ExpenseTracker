@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.Optional;
 
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -38,11 +39,15 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement("INSERT INTO expenses (category, amount, user_id, description, purchase_date) VALUES (?, ?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1, expense.getCategory().toString());
+				
+				if (expense.getCategory() == null) ps.setNull(1, Types.VARCHAR);
+				else ps.setString(1, expense.getCategory().toString());
+				
 				ps.setBigDecimal(2, expense.getAmount());
 				ps.setLong(3, expense.getUserId());
 				ps.setString(4, expense.getDescription());
 				ps.setTimestamp(5, expense.getPurchaseDate());
+				
 				return ps;
 			}
 		}, holder);
@@ -66,7 +71,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 				new ExpenseRowMapper(), id));
 		}
 		catch (EmptyResultDataAccessException e) {
-			log.info("medicine name not found in database");
+			log.info("Id not found in database");
 			return Optional.empty();
 		}
 	}

@@ -45,10 +45,9 @@ class ExpenseRepositoryImplTest {
     }
 
 	@Test
-	void test_Save_SavesExpenseCorrectly_WhenGivenValidExpense() {
+	void test_Save_SavesEntityCorrectly_WhenGivenValidEntity() {
 		
 		Expense expense = new Expense();
-		expense.setId(1L);
 		expense.setUserId(1L);
 		expense.setAmount(BigDecimal.valueOf(10));
 		expense.setCategory(Category.DATES);
@@ -65,7 +64,18 @@ class ExpenseRepositoryImplTest {
 		assertThat(saved.getCategory(), equalTo(expense.getCategory()));
 		assertThat(saved.getDescription(), equalTo(expense.getDescription()));
 		assertThat(saved.getPurchaseDate().toLocalDateTime().getHour(), equalTo(expense.getPurchaseDate().toLocalDateTime().getHour()));
+	}
+	
+	@Test
+	void test_Save_ThrowsJdbcSQLIntegrityConstraintViolationException_WhenGivenInvalidEntity() {
 		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setCategory(Category.DATES);
+		expense.setDescription("fds");
+		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		
+		repository.save(expense);
 	}
 	
 	@Test
@@ -94,8 +104,7 @@ class ExpenseRepositoryImplTest {
 	@Test
 	void test_FindById_ReturnsEmptyOptional_WhenExpenseDoesNotWithGivenId() {
 		
-		Optional<Expense> result = repository.findById(1L);
-		assertThat(result.isEmpty(), equalTo(true));
+		assertThat(repository.findById(1L).isEmpty(), equalTo(true));
 	}
 
 }
