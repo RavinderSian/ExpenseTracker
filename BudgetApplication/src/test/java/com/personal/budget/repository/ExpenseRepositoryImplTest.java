@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +76,12 @@ class ExpenseRepositoryImplTest {
 		expense.setDescription("fds");
 		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
 		
-		repository.save(expense);
+		Exception thrown = Assertions.assertThrows(
+				Exception.class,
+	           () -> {repository.save(expense);
+	           });
+	
+		assertThat(thrown.getMessage().contains("NULL not allowed for column"), equalTo(true));
 	}
 	
 	@Test
@@ -106,5 +112,22 @@ class ExpenseRepositoryImplTest {
 		
 		assertThat(repository.findById(1L).isEmpty(), equalTo(true));
 	}
+	
+	@Test
+	void test_DeleteById_FindsCorrectEntity_WhenEntityExistsWithGivenId() {
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory(Category.DATES);
+		expense.setDescription("fds");
+		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		
+		Expense saved = repository.save(expense);
+		repository.deleteById(saved.getId());
+		
+		assertThat(repository.findById(saved.getId()).isEmpty(), equalTo(true));
 
+	}
+	
 }

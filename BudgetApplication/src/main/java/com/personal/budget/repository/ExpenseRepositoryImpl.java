@@ -17,9 +17,6 @@ import org.springframework.stereotype.Repository;
 import com.personal.budget.mappers.ExpenseRowMapper;
 import com.personal.budget.model.Expense;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Repository
 public class ExpenseRepositoryImpl implements ExpenseRepository {
 
@@ -71,7 +68,6 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 				new ExpenseRowMapper(), id));
 		}
 		catch (EmptyResultDataAccessException e) {
-			log.info("Id not found in database");
 			return Optional.empty();
 		}
 	}

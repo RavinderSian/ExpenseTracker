@@ -6,6 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ class UserRepositoryImplTest {
     }
 
 	@Test
-	void test_Save_SavesUserCorrectly_WhenGivenValidUser() {
+	void test_Save_SavesEntityCorrectly_WhenGivenValidEntity() {
 		
 		User user = new User();
 		user.setId(1L);
@@ -54,6 +55,22 @@ class UserRepositoryImplTest {
 		assertThat(result.get().getPassword(), equalTo(saved.getPassword()));
 		assertThat(result.get().getEmail(), equalTo(saved.getEmail()));
 
+	}
+	
+	@Test
+	void test_Save_ThrowsJdbcSQLIntegrityConstraintViolationException_WhenGivenInvalidEntity() {
+		
+		User user = new User();
+		user.setId(1L);
+		user.setUsername("test");
+		user.setEmail("test@gmail.com");
+		
+		Exception thrown = Assertions.assertThrows(
+				Exception.class,
+	           () -> {repository.save(user);
+	           });
+	
+		assertThat(thrown.getMessage().contains("NULL not allowed for column"), equalTo(true));
 	}
 	
 	@Test

@@ -77,12 +77,10 @@ public class UserRepositoryImpl implements UserRepository {
 	@Override
 	public Optional<User> findById(Long id) {
 		try {
-			log.info("In the method");
 		return Optional.of(jdbcTemplate.queryForObject("SELECT * FROM users WHERE id=?", 
 				new UserRowMapper(), id));
 		}
 		catch (EmptyResultDataAccessException e) {
-			log.info("Id not found in database");
 			return Optional.empty();
 		}
 	}
