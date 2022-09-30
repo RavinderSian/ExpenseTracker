@@ -1,5 +1,13 @@
 package com.personal.budget.service;
 
-public class ExpenseService {
+import java.util.Optional;
+
+import com.personal.budget.model.Expense;
+
+public interface ExpenseService {
+
+	Expense save(Expense expense);
+	void deleteById(Long id);
+	Optional<Expense> findById(Long id);
 
 }
