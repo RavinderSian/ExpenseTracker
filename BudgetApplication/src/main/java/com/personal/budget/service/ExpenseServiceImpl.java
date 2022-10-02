@@ -1,5 +1,6 @@
 package com.personal.budget.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -29,6 +30,11 @@ public class ExpenseServiceImpl implements ExpenseService {
 	@Override
 	public Optional<Expense> findById(Long id) {
 		return repository.findById(id);
+	}
+
+	@Override
+	public List<Expense> findAll() {
+		return repository.findAll();
 	}
 	
 }

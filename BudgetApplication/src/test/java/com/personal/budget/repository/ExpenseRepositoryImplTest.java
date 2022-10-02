@@ -109,7 +109,6 @@ class ExpenseRepositoryImplTest {
 	
 	@Test
 	void test_FindById_ReturnsEmptyOptional_WhenExpenseDoesNotWithGivenId() {
-		
 		assertThat(repository.findById(1L).isEmpty(), equalTo(true));
 	}
 	
@@ -130,4 +129,35 @@ class ExpenseRepositoryImplTest {
 
 	}
 	
+	@Test
+	void test_FindAll_ReturnsEmptyList_WhenTableIsEmpty() {
+		assertThat(repository.findAll().isEmpty(), equalTo(true));
+	}
+	
+	@Test
+	void test_FindAll_ReturnsListOfLength2ExpectedEntries_WhenTableHas2Entries() {
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory(Category.DATES);
+		expense.setDescription("fds");
+		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		
+		repository.save(expense);
+		
+		
+		Expense expense2 = new Expense();
+		expense2.setUserId(1L);
+		expense2.setAmount(BigDecimal.valueOf(10));
+		expense2.setCategory(Category.DATES);
+		expense2.setDescription("test2");
+		expense2.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		
+		repository.save(expense2);
+		
+		assertThat(repository.findAll().size(), equalTo(2));
+		
+		
+	}
 }
