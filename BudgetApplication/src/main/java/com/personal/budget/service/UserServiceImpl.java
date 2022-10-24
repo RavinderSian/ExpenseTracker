@@ -1,13 +1,18 @@
 package com.personal.budget.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.personal.budget.model.User;
+import com.personal.budget.model.UserPrincipal;
 import com.personal.budget.repository.UserRepository;
 
 @Service
@@ -41,8 +46,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		User user = repository.findByUsername(username).get();
+		
+		if (user == null) {
+			throw new UsernameNotFoundException("Failed login");
+		}
+		
+        List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>(Arrays.asList(new SimpleGrantedAuthority(user.getAuthority())));
+		return new UserPrincipal(user, grantedAuthorities);
 	}
 
 }

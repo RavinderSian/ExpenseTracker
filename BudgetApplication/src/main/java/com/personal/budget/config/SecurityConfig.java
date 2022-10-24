@@ -3,6 +3,7 @@ package com.personal.budget.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 
+import com.personal.budget.model.BudgetAuthenticationFailureHandler;
 import com.personal.budget.repository.UserRepository;
 import com.personal.budget.service.UserServiceImpl;
 
@@ -28,8 +30,8 @@ public class SecurityConfig {
         
     	http
 		.formLogin() //no custom page so default is /login
-		.loginProcessingUrl("/performlogin") //url to submit the username and pw to
-		.defaultSuccessUrl("/") //landing page after login
+		//.loginProcessingUrl("/performlogin") //url to submit the username and pw to
+		.defaultSuccessUrl("/budget") //landing page after login
 		.failureUrl("/failedlogin") //for when login fails
 		.and()
 		.logout()
@@ -52,10 +54,20 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 	
-//	@Bean
-//    BudgetAuthenticationFailureHandler authenticationFailureHandler(){
-//        return new BudgetAuthenticationFailureHandler();
-//    }
+	@Bean
+    BudgetAuthenticationFailureHandler authenticationFailureHandler(){
+        return new BudgetAuthenticationFailureHandler();
+    }
+	
+	  @Bean
+	  public DaoAuthenticationProvider authenticationProvider() {
+	      DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+	       
+	      authProvider.setUserDetailsService(userDetailsService());
+	      authProvider.setPasswordEncoder(bCryptPasswordEncoder());
+	   
+	      return authProvider;
+	  }
 	
     @Bean
     public SpringSecurityDialect springSecurityDialect(){

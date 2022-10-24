@@ -9,14 +9,40 @@
 	
 		<nav class = "nav-box">
 			<h1>Budget Application</h1>
+			<form name='loginForm' action="/performlogin" method='POST'>
 			<div class = "login-inputs">
 				<input class = "login-input" type = "text" placeholder = "Username"></input>
 				<input class = "login-input" type = "text" placeholder = "Password"></input>
+				<input name="submit-login" type="submit" value="submit" />
 			</div>
+			</form>
 		</nav>
 		
+		<th:block th:if="${#authentication.getPrincipal() == 'anonymousUser'}">
 		<div class = "body-app">
-			
+			<table>
+	  		<tr>
+	  			<th>Category</th>
+	  			<th>Amount</th>
+	  			<th>Description</th>
+	  			<th></th>
+	  		</tr>
+	  		<tr th:each="expense : ${expenses}">
+	  			<td th:text="${expense.category}"></td>
+	  			<td th:text="${expense.amount}"></td>
+	  			<td th:text="${expense.description}"></td>
+	  			<td><a th:href= "#gdgd">Bookgdfgfdgfdfd</a></td>
+	  		</tr>
+	  		</table>
+		</div>
+		<th:block>
+		<div>
+			<form class = "expense-form" th:action="@{/addexpense}" th:object="${newExpense}" method="post">
+				<input class = "expense-input" type = "text" th:field="*{amount}" placeholder = "Amount"></input>
+				<input class = "expense-input" type = "text" th:field="*{category}" placeholder = "Category"></input>
+				<input class = "expense-input" type = "text" th:field="*{description}" placeholder = "Description"></input>
+				<input class = "expense-input" type = "date" placeholder = "10-10-2022"></input>
+			</form>
 		</div>
 	</body>
 </html>
