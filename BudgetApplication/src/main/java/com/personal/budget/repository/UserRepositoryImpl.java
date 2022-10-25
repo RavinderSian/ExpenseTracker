@@ -36,7 +36,7 @@ public class UserRepositoryImpl implements UserRepository {
 		jdbcTemplate.update(new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement("INSERT INTO users (username, password, email) VALUES (?, ?, ?)",
+				PreparedStatement ps = connection.prepareStatement("INSERT INTO users (username, password, email, authority) VALUES (?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
 				
 				if (user.getUsername() == null) ps.setNull(1, Types.VARCHAR);
@@ -47,6 +47,9 @@ public class UserRepositoryImpl implements UserRepository {
 				
 				if (user.getEmail() == null) ps.setNull(3, Types.VARCHAR);
 				else ps.setString(3, user.getEmail());
+				
+				if (user.getAuthority() == null) ps.setNull(4, Types.VARCHAR);
+				else ps.setString(4, user.getAuthority());
 				
 				return ps;
 			}

@@ -30,7 +30,8 @@ class UserRepositoryImplTest {
     void createTable() {
     	jdbcTemplate.execute("CREATE TABLE USERS ( ID bigint NOT NULL PRIMARY KEY AUTO_INCREMENT, "
     			+ "EMAIL varchar(50) NOT NULL, USERNAME varchar(50) NOT NULL, "
-    			+ "PASSWORD varchar(50) NOT NULL);");
+    			+ "PASSWORD varchar(50) NOT NULL, "
+    			+ "AUTHORITY varchar(50) NOT NULL);");
     }
 	
     @AfterEach
@@ -46,6 +47,7 @@ class UserRepositoryImplTest {
 		user.setUsername("test");
 		user.setPassword("test");
 		user.setEmail("test@gmail.com");
+		user.setAuthority("USER");
 		
 		User saved = repository.save(user);
 		Optional<User> result = repository.findById(saved.getId());
@@ -64,6 +66,7 @@ class UserRepositoryImplTest {
 		user.setId(1L);
 		user.setUsername("test");
 		user.setEmail("test@gmail.com");
+		user.setAuthority("USER");
 		
 		Exception thrown = Assertions.assertThrows(
 				Exception.class,
@@ -80,6 +83,7 @@ class UserRepositoryImplTest {
 		user.setUsername("test");
 		user.setPassword("test");
 		user.setEmail("test@gmail.com");
+		user.setAuthority("USER");
 		
 		User saved = repository.save(user);
 		Optional<User> result = repository.findById(saved.getId());
@@ -104,6 +108,7 @@ class UserRepositoryImplTest {
 		user.setUsername("test");
 		user.setPassword("testing");
 		user.setEmail("test@gmail.com");
+		user.setAuthority("USER");
 		
 		User saved = repository.save(user);
 		Optional<User> result = repository.findByUsername("test");
@@ -128,6 +133,7 @@ class UserRepositoryImplTest {
 		user.setUsername("test");
 		user.setPassword("test");
 		user.setEmail("test@gmail.com");
+		user.setAuthority("USER");
 		
 		User saved = repository.save(user);
 		repository.deleteById(saved.getId());
