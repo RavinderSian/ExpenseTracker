@@ -28,8 +28,8 @@
 				        <option value="DATES">MISC</option>
 				      </select>
 				<input class = "expense-input" th:field="*{description}" placeholder = "Description"/>
-				<input type="hidden" th:field="*{userId}" th:value="${userId}"/>
-				<input type="hidden" th:field="*{purchaseDate}" th:value="${date}" />
+				<input type="hidden" th:field="*{userId}"/>
+				<input type="hidden" th:field="*{purchaseDate}"/>
 				<input name="submit-login" type="submit" value="submit" />
 			</form>
 		</div>

@@ -29,15 +29,6 @@ public class BudgetController {
 		this.userService = userService;
 	}
 	
-	@ModelAttribute("newExpense")
-    public Expense getWebsiteInfoDTO() {
- 
-        // setting website information
-		Expense expense = new Expense();
- 
-        return expense;
-    }
-	
 	@GetMapping("/budget")
 	public String budget(Model model, HttpServletRequest request) {
 		
@@ -59,22 +50,18 @@ public class BudgetController {
 		
 		String loggedInUsername = request.getUserPrincipal().getName();
 		
-		Expense expense = (Expense) model.getAttribute("newExpense");
+		Expense expense = new Expense();
 		
 		expense.setPurchaseDate(new Timestamp(date.getTime()));
 		expense.setUserId(userService.findByUsername(loggedInUsername).get().getId());
 		
 		model.addAttribute("newExpense", expense);
-		model.addAttribute("userId", userService.findByUsername(loggedInUsername).get().getId());
-		model.addAttribute("date", date.toString());
 		
 		return "addexpense";
 	}
 	
 	@PostMapping("/addexpense")
 	public String addExpense(Model model, @ModelAttribute Expense newExpense, HttpServletRequest request) {
-		
-		
 		
 		service.save(newExpense);
 		
