@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.personal.budget.model.Category;
 import com.personal.budget.model.Expense;
 
 public class ExpenseRowMapper implements RowMapper<Expense> {
@@ -16,7 +15,7 @@ public class ExpenseRowMapper implements RowMapper<Expense> {
 		expense.setId(rs.getLong("id"));
 		expense.setUserId(rs.getLong("user_id"));
 		expense.setAmount(rs.getBigDecimal("amount"));
-		expense.setCategory(Category.valueOf(rs.getString("category")));
+		expense.setCategory(rs.getString("category"));
 		expense.setDescription(rs.getString("description"));
 		expense.setPurchaseDate(rs.getTimestamp(("purchase_date")));
 		

@@ -17,7 +17,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.personal.budget.model.Category;
 import com.personal.budget.model.Expense;
 
 @SpringBootTest
@@ -51,7 +50,7 @@ class ExpenseRepositoryImplTest {
 		Expense expense = new Expense();
 		expense.setUserId(1L);
 		expense.setAmount(BigDecimal.valueOf(10));
-		expense.setCategory(Category.DATES);
+		expense.setCategory("Dates");
 		expense.setDescription("fds");
 		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
 		
@@ -72,7 +71,7 @@ class ExpenseRepositoryImplTest {
 		
 		Expense expense = new Expense();
 		expense.setUserId(1L);
-		expense.setCategory(Category.DATES);
+		expense.setCategory("Dates");
 		expense.setDescription("fds");
 		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
 		
@@ -90,7 +89,7 @@ class ExpenseRepositoryImplTest {
 		Expense expense = new Expense();
 		expense.setUserId(1L);
 		expense.setAmount(BigDecimal.valueOf(10));
-		expense.setCategory(Category.DATES);
+		expense.setCategory("Dates");
 		expense.setDescription("fds");
 		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
 		
@@ -118,7 +117,7 @@ class ExpenseRepositoryImplTest {
 		Expense expense = new Expense();
 		expense.setUserId(1L);
 		expense.setAmount(BigDecimal.valueOf(10));
-		expense.setCategory(Category.DATES);
+		expense.setCategory("Dates");
 		expense.setDescription("fds");
 		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
 		
@@ -140,7 +139,7 @@ class ExpenseRepositoryImplTest {
 		Expense expense = new Expense();
 		expense.setUserId(1L);
 		expense.setAmount(BigDecimal.valueOf(10));
-		expense.setCategory(Category.DATES);
+		expense.setCategory("Dates");
 		expense.setDescription("fds");
 		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
 		
@@ -150,7 +149,7 @@ class ExpenseRepositoryImplTest {
 		Expense expense2 = new Expense();
 		expense2.setUserId(1L);
 		expense2.setAmount(BigDecimal.valueOf(10));
-		expense2.setCategory(Category.DATES);
+		expense2.setCategory("Dates");
 		expense2.setDescription("test2");
 		expense2.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
 		

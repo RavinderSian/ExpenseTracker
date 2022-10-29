@@ -18,23 +18,12 @@
 			</form>
 		</nav>
 		
-		<th:block th:if="${#authentication.getPrincipal() != 'anonymousUser'}">
-		<div class = "body-app">
-			<table>
-	  		<tr>
-	  			<th>Category</th>
-	  			<th>Amount</th>
-	  			<th>Description</th>
-	  			<th></th>
-	  		</tr>
-	  		<tr th:each="expense : ${expenses}">
-	  			<td th:text="${expense.category}"></td>
-	  			<td th:text="${expense.amount}"></td>
-	  			<td th:text="${expense.description}"></td>
-	  			<td><a href= "#">Bookgdfgfdgfdfd</a></td>
-	  		</tr>
-	  		</table>
-		</div>
 		<th:block>
+		<div>
+			<form class = "expense-form" th:action="@{/addexpensedate}" method="post">
+				<input class = "expense-input" type = "date" th:object="${date}" placeholder = "10-10-2022">
+				<input name="submit-login" type="submit" value="submit" />
+			</form>
+		</div>
 	</body>
 </html>

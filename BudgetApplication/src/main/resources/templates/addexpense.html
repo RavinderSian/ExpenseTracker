@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+			<meta charset="ISO-8859-1">
+			<link rel="stylesheet" href="/css/home.css">
+			<title>Home</title>
+	</head>
+	<body>
+	
+		<nav class = "nav-box">
+			<h1>Budget Application</h1>
+			<form name='loginForm' action="/performlogin" method='POST'>
+			<div class = "login-inputs">
+				<input class = "login-input" type = "text" placeholder = "Username"></input>
+				<input class = "login-input" type = "text" placeholder = "Password"></input>
+				<input name="submit-login" type="submit" value="submit" />
+			</div>
+			</form>
+		</nav>
+		
+		<div>
+			<form class = "expense-form" th:action="@{/addexpense}" th:object="${newExpense}" method="post">
+				<input class = "expense-input" type = "text" th:field="*{amount}" placeholder = "Amount">
+					  <select name="languages" th:field="*{category}">
+				        <option value="DATES">Dates</option>
+				        <option value="MISC">Misc</option>
+				 		<option value="FUEL">Fuel</option>
+				        <option value="DATES">MISC</option>
+				      </select>
+				<input class = "expense-input" th:field="*{description}" placeholder = "Description"/>
+				<input type="hidden" th:field="*{userId}" th:value="${userId}"/>
+				<input type="hidden" th:field="*{purchaseDate}" th:value="${date}" />
+				<input name="submit-login" type="submit" value="submit" />
+			</form>
+		</div>
+	</body>
+</html>

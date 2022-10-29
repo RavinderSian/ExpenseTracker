@@ -10,7 +10,7 @@ public class Expense {
 
 	private Long id;
 	private Long userId;
-	private Category category;
+	private String category;
 	private BigDecimal amount;
 	private String description;
 	private Timestamp purchaseDate;
