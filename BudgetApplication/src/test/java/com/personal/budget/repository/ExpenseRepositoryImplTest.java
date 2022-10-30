@@ -6,6 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
@@ -107,8 +108,51 @@ class ExpenseRepositoryImplTest {
 	}
 	
 	@Test
-	void test_FindById_ReturnsEmptyOptional_WhenExpenseDoesNotWithGivenId() {
+	void test_FindByUserId_ReturnsEmptyOptional_WhenExpenseDoesNotWithGivenId() {
 		assertThat(repository.findById(1L).isEmpty(), equalTo(true));
+	}
+	
+	@Test
+	void test_FindByUserId_FindsCorrectExpense_WhenExpenseExistsWithGivenId() {
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory("Dates");
+		expense.setDescription("fds");
+		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		
+		Expense expense2 = new Expense();
+		expense2.setUserId(1L);
+		expense2.setAmount(BigDecimal.valueOf(10));
+		expense2.setCategory("Dates");
+		expense2.setDescription("fdfefsds");
+		expense2.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		
+		Expense saved = repository.save(expense);
+		Expense saved2 = repository.save(expense2);
+		
+		List<Expense> result = repository.findByUserId(saved.getUserId());
+		
+		assertThat(result.size(), equalTo(2));
+		
+		assertThat(result.get(0).getId(), equalTo(saved.getId()));
+		assertThat(result.get(0).getUserId(), equalTo(saved.getUserId()));
+		assertThat(result.get(0).getAmount(), equalTo(saved.getAmount()));
+		assertThat(result.get(0).getCategory(), equalTo(saved.getCategory()));
+		assertThat(result.get(0).getDescription(), equalTo(saved.getDescription()));
+
+		assertThat(result.get(1).getId(), equalTo(saved2.getId()));
+		assertThat(result.get(1).getUserId(), equalTo(saved2.getUserId()));
+		assertThat(result.get(1).getAmount(), equalTo(saved2.getAmount()));
+		assertThat(result.get(1).getCategory(), equalTo(saved2.getCategory()));
+		assertThat(result.get(1).getDescription(), equalTo(saved2.getDescription()));
+		
+	}
+	
+	@Test
+	void test_FindById_ReturnsEmptyOptional_WhenExpenseDoesNotWithGivenId() {
+		assertThat(repository.findByUserId(1L).size(), equalTo(0));
 	}
 	
 	@Test

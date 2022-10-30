@@ -72,6 +72,12 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 			return Optional.empty();
 		}
 	}
+	
+	@Override
+	public List<Expense> findByUserId(Long userId) {
+			return jdbcTemplate.query("SELECT * FROM expenses WHERE user_id=?", 
+					new ExpenseRowMapper(), userId);
+	}
 
 	@Override
 	public List<Expense> findAll() {

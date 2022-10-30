@@ -11,5 +11,6 @@ public interface ExpenseRepository {
 	void deleteById(Long id);
 	Optional<Expense> findById(Long id);
 	List<Expense> findAll();
+	List<Expense> findByUserId(Long userId);
 	
 }

@@ -1,6 +1,7 @@
 package com.personal.budget.controller;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.personal.budget.model.Expense;
+import com.personal.budget.model.User;
 import com.personal.budget.service.ExpenseService;
 import com.personal.budget.service.UserService;
 
@@ -22,8 +24,6 @@ public class BudgetController {
 	private final ExpenseService service;
 	private final UserService userService;
 	
-	//private ConverterFactory converter = ConverterFactory<String, Cateory>;
-
 	public BudgetController(ExpenseService service, UserService userService) {
 		this.service = service;
 		this.userService = userService;
@@ -32,8 +32,14 @@ public class BudgetController {
 	@GetMapping("/budget")
 	public String budget(Model model, HttpServletRequest request) {
 		
-		model.addAttribute("expenses", service.findAll());
-		//model.addAttribute("loggedInUser", request.getUserPrincipal().getName());
+		if (request.getUserPrincipal() == null) {
+			model.addAttribute("expenses", new ArrayList<>());
+		}else {
+			
+			Long userId = userService.findByUsername(request.getUserPrincipal().getName()).get().getId();
+			
+			model.addAttribute("expenses", service.findByUserId(userId));
+		}
 		
 		return "budget";
 	}
