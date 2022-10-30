@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.personal.budget.model.Expense;
-import com.personal.budget.model.User;
 import com.personal.budget.service.ExpenseService;
 import com.personal.budget.service.UserService;
 
@@ -35,9 +34,7 @@ public class BudgetController {
 		if (request.getUserPrincipal() == null) {
 			model.addAttribute("expenses", new ArrayList<>());
 		}else {
-			
 			Long userId = userService.findByUsername(request.getUserPrincipal().getName()).get().getId();
-			
 			model.addAttribute("expenses", service.findByUserId(userId));
 		}
 		

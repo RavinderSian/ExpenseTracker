@@ -29,8 +29,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         
     	http
+        .csrf().disable()
 		.formLogin() //no custom page so default is /login
-		//.loginProcessingUrl("/performlogin") //url to submit the username and pw to
+		.loginProcessingUrl("/performlogin") //url to submit the username and pw to
 		.defaultSuccessUrl("/budget") //landing page after login
 		.failureUrl("/failedlogin") //for when login fails
 		.and()
