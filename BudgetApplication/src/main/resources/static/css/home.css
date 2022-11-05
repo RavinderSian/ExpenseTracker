@@ -78,3 +78,19 @@ body {
 .expense-input {
 	border-radius: 10px;
 }
+
+.budget-row {
+	border: 5px solid blue;
+	background-color: blue;
+}
+
+.budget-list {
+	margin-left: 40px;
+	width: 40%;
+	display: grid;
+	border: 2px solid blue;
+	border-radius: 10px;
+	background-color: red;
+	grid-template-columns: 25% 25% 25% 25%;
+	margin-bottom: 10px;
+}
