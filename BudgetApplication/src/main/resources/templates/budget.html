@@ -19,13 +19,21 @@
 		</nav>
 		
 		<div th:if="${#authentication.getPrincipal() != 'anonymousUser'}" class = "body-app">
-			<div class = "budget-list" th:each="expense : ${expenses}">
-				<p th:text="${#dates.format(expense.purchaseDate, 'dd-MMM-yyyy')}"></p>
-		  		<p th:text="${expense.category}"></p>
-		  		<p th:text="${expense.amount}"></p>
-		  		<p th:text="${expense.description}"></p>
+			
+			<div>
+				<div class = "budget-list" th:each="expense : ${expenses}">
+					<p th:text="${#dates.format(expense.purchaseDate, 'dd-MMM-yyyy')}"></p>
+			  		<p th:text="${expense.category}"></p>
+			  		<p th:text="${expense.amount}"></p>
+			  		<p th:text="${expense.description}"></p>
+			  	</div>
 		  	</div>
-		  	
+		  	<div class = "add-expense-form">
+			  	<form th:action="@{/addexpensedate}" method="post">
+					<input class = "expense-input" type = "date" th:object="${date}" placeholder = "10-10-2022">
+					<input name="submit-login" type="submit" value="submit" />
+				</form>
+		  	</div>
 		</div>
 	</body>
 </html>

@@ -50,7 +50,8 @@ body {
 
 .body-app {
 	display: grid;
-	align-items: space-between;
+	grid-gap: 20px;
+	grid-template-columns: 2fr 1fr;
 }
 
 .nav-box {
@@ -68,29 +69,21 @@ body {
 	border-radius: 10px;
 }
 
-.expense-form {
-	width: 25%;
-	display:grid;
-	justify-items: space-between;
-	grid-row-gap: 0.5em;
+.add-expense-form {
+	
+		border: 2px solid blue;
 }
 
 .expense-input {
 	border-radius: 10px;
 }
 
-.budget-row {
-	border: 5px solid blue;
-	background-color: blue;
-}
-
 .budget-list {
 	margin-left: 40px;
-	width: 40%;
 	display: grid;
 	border: 2px solid blue;
 	border-radius: 10px;
-	background-color: red;
+	background-color: #8ce99a;
 	grid-template-columns: 25% 25% 25% 25%;
 	margin-bottom: 10px;
 }
