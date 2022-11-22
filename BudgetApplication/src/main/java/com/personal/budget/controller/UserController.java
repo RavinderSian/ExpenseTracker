@@ -1,5 +1,8 @@
 package com.personal.budget.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -30,7 +33,13 @@ public class UserController {
 			HttpServletResponse httpServletResponse){
 		
 		if (bindingResult.hasErrors()) {
+			
+			Map<String, String> errorMap = new HashMap<>();
+			
 			httpServletResponse.setStatus(400);
+			
+			bindingResult.getAllErrors().forEach(error -> errorMap.put(error.getCode(), error.getDefaultMessage()));
+			
 			return new ResponseEntity<>("missing user", HttpStatus.BAD_REQUEST);
 		}
 		

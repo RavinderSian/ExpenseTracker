@@ -49,5 +49,11 @@ const consumeRegister = async function() {
 registerSubmitBtn.addEventListener('click', function(e) {
 	e.preventDefault();
 	consumeRegister();
+});
 
+registerBox.addEventListener("keydown", function(e) {
+	if (e.key === 'Enter'){
+		e.preventDefault();
+		consumeRegister();
+	}
 });
