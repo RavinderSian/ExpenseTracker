@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.personal.budget.model.Expense;
+import com.personal.budget.model.User;
 import com.personal.budget.service.ExpenseService;
 import com.personal.budget.service.UserService;
 
@@ -38,15 +40,12 @@ public class BudgetController {
 			model.addAttribute("expenses", service.findByUserId(userId));
 		}
 		
+		model.addAttribute("user", new User());
+		
 		return "budget";
 	}
 	
-	@GetMapping("/addexpensedate")
-	public String addExpenseDate(Model model, HttpServletRequest request) {
-		
-		return "addexpensedate";
-	}
-	
+	@PreAuthorize("hasAuthority('USER')")
 	@PostMapping("/addexpensedate")
 	public String addExpenseDate(@ModelAttribute Date date, Model model, HttpServletRequest request,
 			 RedirectAttributes redirectAttributes) {
@@ -67,7 +66,6 @@ public class BudgetController {
 	public String addExpense(Model model, @ModelAttribute Expense newExpense, HttpServletRequest request) {
 		
 		service.save(newExpense);
-		
 		return "redirect:/budget";
 	}
 

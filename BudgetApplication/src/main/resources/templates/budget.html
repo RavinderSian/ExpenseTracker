@@ -6,9 +6,9 @@
 		<title>Home</title>
 	</head>
 	<body>
-	
 		<nav class = "nav-box">
 			<h1>Budget Application</h1>
+			<button th:if="${#authentication.getPrincipal() == 'anonymousUser'}" class = "btn-register">Register</button>
 			<form name='loginForm' action="/performlogin" method='POST'>
 			<div th:if="${#authentication.getPrincipal() == 'anonymousUser'}" class = "login-inputs">
 				<input class = "login-input" type = "text" name='username' placeholder = "Username"></input>
@@ -24,16 +24,37 @@
 				<div class = "budget-list" th:each="expense : ${expenses}">
 					<p th:text="${#dates.format(expense.purchaseDate, 'dd-MMM-yyyy')}"></p>
 			  		<p th:text="${expense.category}"></p>
-			  		<p th:text="${expense.amount}"></p>
+			  		<p th:text="'&pound' + ${#numbers.formatDecimal(expense.amount,2,2,'POINT')}"></p>
 			  		<p th:text="${expense.description}"></p>
 			  	</div>
 		  	</div>
 		  	<div class = "add-expense-form">
 			  	<form th:action="@{/addexpensedate}" method="post">
+			  		<h3>Add expense</h3>
 					<input class = "expense-input" type = "date" th:object="${date}" placeholder = "10-10-2022">
 					<input name="submit-login" type="submit" value="submit" />
 				</form>
 		  	</div>
 		</div>
+		 <div class = "register-box hidden">
+			<th:form class = "register-form" name='registerForm' th:object = ${user} th:action="@{/user/newuser}"  id = "register-form" method='POST'>
+	            <div>
+		            <label>Username</label> 
+		            <input id = "register-username" type='text' th:field="${user.username}">
+	            </div>
+	            <div>
+		            <label>Password</label> 
+		            <input id = "register-password" type='password' th:field="${user.password}" />
+	            </div>
+	            <div>
+	            	<label>Email</label> 
+		            <input id = "register-email" type='email' th:field="${user.email}" />
+	            </div>
+	            <input id="btn-register-submit" type="submit" value="submit" />
+	            <label class = "login-error-text hidden">Please enter a valid login</label> 
+			</th:form>
+		</div>
 	</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src = "js/home.js"></script>
 </html>

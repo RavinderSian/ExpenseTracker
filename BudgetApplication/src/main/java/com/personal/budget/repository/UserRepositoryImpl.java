@@ -39,6 +39,8 @@ public class UserRepositoryImpl implements UserRepository {
 				PreparedStatement ps = connection.prepareStatement("INSERT INTO users (username, password, email, authority) VALUES (?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
 				
+				
+				
 				if (user.getUsername() == null) ps.setNull(1, Types.VARCHAR);
 				else ps.setString(1, user.getUsername());
 				
@@ -56,6 +58,8 @@ public class UserRepositoryImpl implements UserRepository {
 		}, holder);
 		
 		Number newId = (Long) holder.getKeys().get("id");
+		
+		log.info("user saved");
 		
 		user.setId(newId.longValue());
 		return user;
