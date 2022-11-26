@@ -5,9 +5,20 @@ const registerBox = document.querySelector('.register-box');
 const registerSubmitBtn = document.querySelector('#btn-register-submit');
 
 registerBtn.addEventListener('click', function() {
-	console.log('hidden');
 	registerBox.classList.toggle('hidden');
+	//registerBtn.classList.toggle('hidden');
 });
+
+document.addEventListener("click", (e) => {
+  //If the login button also triggers the hidden class to be added the box never appears
+  //So a second condition is needed to ensure that does not happen
+  const isClickInside = registerBox.contains(e.target) || registerBtn.contains(e.target);
+
+  if (!isClickInside) {
+	registerBox.classList.add('hidden');
+  }
+});
+
 
 const sendFormToRegister = function() {
 	return fetch($('.register-form').attr('action'),

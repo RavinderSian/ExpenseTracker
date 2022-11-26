@@ -38,7 +38,7 @@ public class UserController {
 			
 			httpServletResponse.setStatus(400);
 			
-			bindingResult.getAllErrors().forEach(error -> errorMap.put(error.getCode(), error.getDefaultMessage()));
+			bindingResult.getAllErrors().forEach(error -> errorMap.put(error.getObjectName(), error.getDefaultMessage()));
 			
 			return new ResponseEntity<>("missing user", HttpStatus.BAD_REQUEST);
 		}
@@ -48,7 +48,7 @@ public class UserController {
 		user.setAuthority("USER");
 		userRepository.save(user);
 
-		return new ResponseEntity<>("Perfectly fine", HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 }
