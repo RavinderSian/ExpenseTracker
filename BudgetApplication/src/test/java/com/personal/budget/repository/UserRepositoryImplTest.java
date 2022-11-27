@@ -29,7 +29,7 @@ class UserRepositoryImplTest {
     @BeforeEach
     void createTable() {
     	jdbcTemplate.execute("CREATE TABLE USERS ( ID bigint NOT NULL PRIMARY KEY AUTO_INCREMENT, "
-    			+ "EMAIL varchar(50) NOT NULL, USERNAME varchar(50) NOT NULL, "
+    			+ "EMAIL varchar(50) NOT NULL UNIQUE, USERNAME varchar(50) NOT NULL UNIQUE, "
     			+ "PASSWORD varchar(50) NOT NULL, "
     			+ "AUTHORITY varchar(50) NOT NULL);");
     }
@@ -74,6 +74,54 @@ class UserRepositoryImplTest {
 	           });
 	
 		assertThat(thrown.getMessage().contains("NULL not allowed for column"), equalTo(true));
+	}
+	
+	@Test
+	void test_Save_ThrowsJdbcSQLIntegrityConstraintViolationException_WhenGivenNonUniqueUsername() {
+		
+		User user = new User();
+		user.setUsername("test");
+		user.setPassword("test");
+		user.setEmail("test@gmail.com");
+		user.setAuthority("USER");
+		
+		User user2 = new User();
+		user2.setUsername("test");
+		user2.setPassword("test");
+		user2.setEmail("testing@gmail.com");
+		user2.setAuthority("USER");
+		
+		repository.save(user);
+		Exception thrown = Assertions.assertThrows(
+				Exception.class,
+	           () -> {repository.save(user2);
+	           });
+		
+		assertThat(thrown.getMessage().contains("Unique index or primary key violation"), equalTo(true));
+	}
+	
+	@Test
+	void test_Save_ThrowsJdbcSQLIntegrityConstraintViolationException_WhenGivenNonUniqueEmail() {
+		
+		User user = new User();
+		user.setUsername("test");
+		user.setPassword("test");
+		user.setEmail("test@gmail.com");
+		user.setAuthority("USER");
+		
+		User user2 = new User();
+		user2.setUsername("testing");
+		user2.setPassword("test");
+		user2.setEmail("test@gmail.com");
+		user2.setAuthority("USER");
+		
+		repository.save(user);
+		Exception thrown = Assertions.assertThrows(
+				Exception.class,
+	           () -> {repository.save(user2);
+	           });
+		
+		assertThat(thrown.getMessage().contains("Unique index or primary key violation"), equalTo(true));
 	}
 	
 	@Test
