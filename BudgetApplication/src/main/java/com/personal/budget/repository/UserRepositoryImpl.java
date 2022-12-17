@@ -7,8 +7,6 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.Optional;
 
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -26,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserRepositoryImpl implements UserRepository {
 
 	private final JdbcTemplate jdbcTemplate;
-	
+
 	public UserRepositoryImpl(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
@@ -34,35 +32,42 @@ public class UserRepositoryImpl implements UserRepository {
 	@Override
 	public User save(User user) {
 		KeyHolder holder = new GeneratedKeyHolder();
-		
+
 		jdbcTemplate.update(new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement("INSERT INTO users (username, password, email, authority) VALUES (?, ?, ?, ?)",
+				PreparedStatement ps = connection.prepareStatement(
+						"INSERT INTO users (username, password, email, authority) VALUES (?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
-				
-				
-				
-				if (user.getUsername() == null) ps.setNull(1, Types.VARCHAR);
-				else ps.setString(1, user.getUsername());
-				
-				if (user.getPassword() == null) ps.setNull(2, Types.VARCHAR);
-				else ps.setString(2, user.getPassword());
-				
-				if (user.getEmail() == null) ps.setNull(3, Types.VARCHAR);
-				else ps.setString(3, user.getEmail());
-				
-				if (user.getAuthority() == null) ps.setNull(4, Types.VARCHAR);
-				else ps.setString(4, user.getAuthority());
-				
+
+				if (user.getUsername() == null)
+					ps.setNull(1, Types.VARCHAR);
+				else
+					ps.setString(1, user.getUsername());
+
+				if (user.getPassword() == null)
+					ps.setNull(2, Types.VARCHAR);
+				else
+					ps.setString(2, user.getPassword());
+
+				if (user.getEmail() == null)
+					ps.setNull(3, Types.VARCHAR);
+				else
+					ps.setString(3, user.getEmail());
+
+				if (user.getAuthority() == null)
+					ps.setNull(4, Types.VARCHAR);
+				else
+					ps.setString(4, user.getAuthority());
+
 				return ps;
 			}
 		}, holder);
-		
+
 		Number newId = (Long) holder.getKeys().get("id");
-		
+
 		log.info("user saved");
-		
+
 		user.setId(newId.longValue());
 		return user;
 	}
@@ -75,21 +80,19 @@ public class UserRepositoryImpl implements UserRepository {
 	@Override
 	public Optional<User> findByUsername(String username) {
 		try {
-			return Optional.of(jdbcTemplate.queryForObject("SELECT * FROM users WHERE username=?", 
-					new UserRowMapper(), username));
-		}catch (EmptyResultDataAccessException e) {
+			return Optional.of(
+					jdbcTemplate.queryForObject("SELECT * FROM users WHERE username=?", new UserRowMapper(), username));
+		} catch (EmptyResultDataAccessException e) {
 			log.info("Username not found in database");
 			return Optional.empty();
 		}
 	}
-	
+
 	@Override
 	public Optional<User> findById(Long id) {
 		try {
-		return Optional.of(jdbcTemplate.queryForObject("SELECT * FROM users WHERE id=?", 
-				new UserRowMapper(), id));
-		}
-		catch (EmptyResultDataAccessException e) {
+			return Optional.of(jdbcTemplate.queryForObject("SELECT * FROM users WHERE id=?", new UserRowMapper(), id));
+		} catch (EmptyResultDataAccessException e) {
 			return Optional.empty();
 		}
 	}
