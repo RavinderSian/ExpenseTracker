@@ -38,9 +38,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 				PreparedStatement ps = connection.prepareStatement("INSERT INTO expenses (category, amount, user_id, description, purchase_date) VALUES (?, ?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
 				
-				if (expense.getCategory() == null) ps.setNull(1, Types.VARCHAR);
-				else ps.setString(1, expense.getCategory().toString());
-				
+				ps.setString(1, expense.getCategory());
 				ps.setBigDecimal(2, expense.getAmount());
 				ps.setLong(3, expense.getUserId());
 				ps.setString(4, expense.getDescription());

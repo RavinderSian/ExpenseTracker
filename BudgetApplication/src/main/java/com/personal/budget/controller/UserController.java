@@ -54,6 +54,7 @@ public class UserController {
 		user.setAuthority("USER");
 		
 		try {
+			user.setUsername(null);
 			userService.save(user);
 		} catch(DuplicateKeyException exception) {
 			

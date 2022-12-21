@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
 import java.util.Optional;
 
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -40,24 +39,9 @@ public class UserRepositoryImpl implements UserRepository {
 						"INSERT INTO users (username, password, email, authority) VALUES (?, ?, ?, ?)",
 						Statement.RETURN_GENERATED_KEYS);
 
-				if (user.getUsername() == null)
-					ps.setNull(1, Types.VARCHAR);
-				else
 					ps.setString(1, user.getUsername());
-
-				if (user.getPassword() == null)
-					ps.setNull(2, Types.VARCHAR);
-				else
 					ps.setString(2, user.getPassword());
-
-				if (user.getEmail() == null)
-					ps.setNull(3, Types.VARCHAR);
-				else
 					ps.setString(3, user.getEmail());
-
-				if (user.getAuthority() == null)
-					ps.setNull(4, Types.VARCHAR);
-				else
 					ps.setString(4, user.getAuthority());
 
 				return ps;
