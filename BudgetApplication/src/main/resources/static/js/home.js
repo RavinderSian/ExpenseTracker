@@ -40,12 +40,18 @@ const renderError = function(err) {
 	const fieldsToCheck = ['username', 'email', 'password'];
 
 	if (message.includes("has already been taken")) {
+		console.log(message);
 
 		fieldsToCheck.filter(field => message.includes(field)).forEach(field => {
 			document
 				.querySelector(`#duplicate-${field}`).classList.remove('hidden');
 		})
 
+	}	else {
+		fieldsToCheck.filter(field => message.includes(field)).forEach(field => {
+			document
+				.querySelector(`#invalid-${field}`).classList.remove('hidden');
+		})
 	}
 
 	if (message.includes('maintenance')) {
@@ -53,15 +59,13 @@ const renderError = function(err) {
 			.querySelector(`.login-error`).classList.remove('hidden');
 	}
 
-	else {
-
-		fieldsToCheck.filter(field => message.includes(field)).forEach(field => {
-			document
-				.querySelector(`#invalid-${field}`).classList.remove('hidden');
-		})
-	}
-
 };
+
+//Added error classes to all the error labels so can clear them with ease before each request submission
+const clearErrors = function() {
+	const errorElements = document.querySelectorAll('.error');
+	errorElements.forEach(errorElement => errorElement.classList.add('hidden'));
+}
 
 const consumeRegister = async function() {
 	try {
@@ -84,12 +88,6 @@ const consumeRegister = async function() {
 		renderError(err);
 	}
 };
-
-//Added error classes to all the error labels so can clear them with ease before each request submission
-const clearErrors = function() {
-	const errorElements = document.querySelectorAll('.error');
-	errorElements.forEach(errorElement => errorElement.classList.add('hidden'));
-}
 
 registerSubmitBtn.addEventListener("click", function(e) {
 	e.preventDefault();
