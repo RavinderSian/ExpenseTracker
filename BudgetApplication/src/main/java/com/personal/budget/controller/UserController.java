@@ -38,17 +38,15 @@ public class UserController {
 	public ResponseEntity<?> registerUser(@RequestBody @Valid User user, BindingResult bindingResult, 
 			HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest){
 		
-		log.info(httpServletRequest.getContentType());
-		
-		if (bindingResult.hasErrors()) {
+		if (bindingResult.hasFieldErrors()) {
 			
 			Map<String, String> errorMap = new HashMap<>();
 			
 			httpServletResponse.setStatus(400);
 			
-			bindingResult.getAllErrors().forEach(error -> errorMap.put(error.getObjectName(), error.getDefaultMessage()));
+			bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
 			
-			return new ResponseEntity<>("missing user", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(errorMap.toString(), HttpStatus.BAD_REQUEST);
 		}
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
