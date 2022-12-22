@@ -19,13 +19,19 @@
 		</nav>
 		
 		<div th:if="${#authentication.getPrincipal() != 'anonymousUser'}" class = "body-app">
-			
 			<div>
+				<div class = "budget-list-header">
+					<p>Date</p>
+			  		<p>Category</p>
+			  		<p>Cost</p>
+			  		<p>Description</p>
+			  	</div>
 				<div class = "budget-list" th:each="expense : ${expenses}">
 					<p th:text="${#dates.format(expense.purchaseDate, 'dd-MMM-yyyy')}"></p>
 			  		<p th:text="${expense.category}"></p>
 			  		<p th:text="'&pound' + ${#numbers.formatDecimal(expense.amount,2,2,'POINT')}"></p>
 			  		<p th:text="${expense.description}"></p>
+			  		<a th:href = "${expense.id + '/delete'}"><button class = "delete-expense-btn">Delete</button></a>
 			  	</div>
 		  	</div>
 		  	<div class = "add-expense-form">

@@ -1,19 +1,33 @@
 "use strict";
 
+const navBar = document.querySelector('.nav-box')
 const registerBtn = document.querySelector(".btn-register");
 const registerBox = document.querySelector(".register-box");
 const registerSubmitBtn = document.querySelector("#btn-register-submit");
+const deleteBtn = document.querySelector('.delete-expense-btn');
 
-registerBtn.addEventListener("click", function() {
-	registerBox.classList.toggle("hidden");
+navBar.addEventListener("click", function(e) {
+	if (e.target.classList.contains('btn-register')){
+		registerBox.classList.toggle("hidden");
+	}
 });
 
+//We are listening on document because some elements do not exist at certain points
+//This means we need event delegation to listen for them
 document.addEventListener("click", (e) => {
+	
+	if (e.target.classList.contains('delete-expense-btn')){
+		console.log("deleting");
+		e.preventDefault();
+		alert('Are you sure you want to delete this?');
+	}
+	
 	//If the login button also triggers the hidden class to be added the box never appears
 	//So a second condition is needed to ensure that does not happen
 	const isClickInside =
-		registerBox.contains(e.target) || registerBtn.contains(e.target);
-
+		e.target.classList.contains('register-box') || e.target.classList.contains('btn-register')
+	
+	//If we are outside the box when it appears, hide it again 
 	if (!isClickInside) {
 		registerBox.classList.add("hidden");
 	}
