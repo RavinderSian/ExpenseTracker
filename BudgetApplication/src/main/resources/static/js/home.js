@@ -7,7 +7,7 @@ const registerSubmitBtn = document.querySelector("#btn-register-submit");
 const deleteBtn = document.querySelector('.delete-expense-btn');
 
 navBar.addEventListener("click", function(e) {
-	if (e.target.classList.contains('btn-register')){
+	if (e.target.classList.contains('btn-register')) {
 		registerBox.classList.toggle("hidden");
 	}
 });
@@ -15,18 +15,25 @@ navBar.addEventListener("click", function(e) {
 //We are listening on document because some elements do not exist at certain points
 //This means we need event delegation to listen for them
 document.addEventListener("click", (e) => {
-	
-	if (e.target.classList.contains('delete-expense-btn')){
+
+	if (e.target.classList.contains('delete-expense-btn')) {
 		console.log("deleting");
 		e.preventDefault();
-		alert('Are you sure you want to delete this?');
+		const confirm = window.confirm('Are you sure you want to delete this? This operation CANNOT be undone');
+		console.log(confirm);
+		console.log(e.target.closest('a').href);
+		
+		if (confirm){
+			sendDeleteRequest(e.target.closest('a').href);
+			window.location.reload();
+		}
 	}
-	
+
 	//If the login button also triggers the hidden class to be added the box never appears
 	//So a second condition is needed to ensure that does not happen
 	const isClickInside =
 		e.target.classList.contains('register-box') || e.target.classList.contains('btn-register')
-	
+
 	//If we are outside the box when it appears, hide it again 
 	if (!isClickInside) {
 		registerBox.classList.add("hidden");
@@ -47,21 +54,28 @@ const sendFormToRegister = function() {
 	});
 };
 
+const sendDeleteRequest = async function(url) {
+	try {
+		const deleteRequest = fetch(url);
+		//const data = await deleteRequest.text();
+	} catch(err) {
+		console.error(err);
+	}
+};
+
 const renderError = function(err) {
 
 	const message = err.message;
-
 	const fieldsToCheck = ['username', 'email', 'password'];
 
 	if (message.includes("has already been taken")) {
-		console.log(message);
 
 		fieldsToCheck.filter(field => message.includes(field)).forEach(field => {
 			document
 				.querySelector(`#duplicate-${field}`).classList.remove('hidden');
 		})
 
-	}	else {
+	} else {
 		fieldsToCheck.filter(field => message.includes(field)).forEach(field => {
 			document
 				.querySelector(`#invalid-${field}`).classList.remove('hidden');
@@ -72,7 +86,6 @@ const renderError = function(err) {
 		document
 			.querySelector(`.login-error`).classList.remove('hidden');
 	}
-
 };
 
 //Added error classes to all the error labels so can clear them with ease before each request submission

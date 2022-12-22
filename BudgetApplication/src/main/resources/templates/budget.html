@@ -31,7 +31,7 @@
 			  		<p th:text="${expense.category}"></p>
 			  		<p th:text="'&pound' + ${#numbers.formatDecimal(expense.amount,2,2,'POINT')}"></p>
 			  		<p th:text="${expense.description}"></p>
-			  		<a th:href = "${expense.id + '/delete'}"><button class = "delete-expense-btn">Delete</button></a>
+			  		<a th:href = "${'/delete/' + expense.id}"><button class = "delete-expense-btn">Delete</button></a>
 			  	</div>
 		  	</div>
 		  	<div class = "add-expense-form">

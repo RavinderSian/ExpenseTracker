@@ -68,5 +68,5 @@ public class BudgetController {
 		service.save(newExpense);
 		return "redirect:/budget";
 	}
-
+	
 }
