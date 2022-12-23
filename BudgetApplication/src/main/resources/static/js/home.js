@@ -56,8 +56,7 @@ const sendFormToRegister = function() {
 
 const sendDeleteRequest = async function(url) {
 	try {
-		const deleteRequest = fetch(url);
-		//const data = await deleteRequest.text();
+		fetch(url);
 	} catch(err) {
 		console.error(err);
 	}

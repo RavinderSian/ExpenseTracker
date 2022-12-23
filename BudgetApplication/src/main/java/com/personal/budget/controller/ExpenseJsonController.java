@@ -14,11 +14,11 @@ import com.personal.budget.service.ExpenseService;
 
 @PreAuthorize("hasAuthority('USER')")
 @RestController
-public class BudgetJsonController {
+public class ExpenseJsonController {
 	
 	private final ExpenseService service;
 	
-	public BudgetJsonController(ExpenseService service) {
+	public ExpenseJsonController(ExpenseService service) {
 		this.service = service;
 	}
 	

@@ -20,12 +20,12 @@ import com.personal.budget.service.ExpenseService;
 import com.personal.budget.service.UserService;
 
 @Controller
-public class BudgetController {
+public class ExpenseController {
 	
 	private final ExpenseService service;
 	private final UserService userService;
 	
-	public BudgetController(ExpenseService service, UserService userService) {
+	public ExpenseController(ExpenseService service, UserService userService) {
 		this.service = service;
 		this.userService = userService;
 	}
