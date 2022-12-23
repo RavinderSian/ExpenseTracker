@@ -1,6 +1,7 @@
 package com.personal.budget.controller;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -40,6 +41,7 @@ public class ExpenseController {
 			model.addAttribute("expenses", service.findByUserId(userId));
 		}
 		
+		model.addAttribute("currentYear", LocalDate.now().getYear());
 		model.addAttribute("user", new User());
 		
 		return "budget";

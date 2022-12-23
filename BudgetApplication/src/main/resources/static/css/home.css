@@ -18,7 +18,9 @@ body {
   color: #000000;
 }
 
-p {margin-bottom: 1rem;}
+p { 
+	margin-bottom: 1rem;
+}
 
 h2, h3, h4, h5 {
   margin: 3rem 0 1.38rem;
@@ -45,7 +47,7 @@ small, .text_small {font-size: 0.8rem;}
 
 body {
 	background-color: #96f2d7;
-	    overflow: auto;
+	overflow: auto;
 }
 
 .hidden {
@@ -109,8 +111,29 @@ body {
 	border: 2px solid blue;
 	border-radius: 10px;
 	background-color: #8ce99a;
-	grid-template-columns: 25% 25% 25% 25%;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 	margin-bottom: 10px;
+}
+
+.budget-date-filter {
+	margin-left: 40px;
+	display: grid;
+	justify-content: space-evenly;
+	border: 2px solid blue;
+	border-radius: 10px;
+	background-color: #8ce99a;
+	margin-bottom: 10px;
+}
+
+.year {
+	display: grid;
+	align-items: center;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.date-traversal-arrow {
+	width: 50%;
+	height: 50%;
 }
 
 .register-box {

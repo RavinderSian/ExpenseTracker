@@ -20,7 +20,12 @@
 		
 		<div th:if="${#authentication.getPrincipal() != 'anonymousUser'}" class = "body-app">
 			<div>
-				<div class = "budget-list-header">
+				<div class = "budget-date-filter">
+					<div class = "year">
+						<img class = "date-traversal-arrow" src = "/images/icons/back-arrow.svg" alt="Back arrow for year"/><span class = "year-text" th:text="${currentYear}">2019</span><img class = "date-traversal-arrow" src = "/images/icons/next-arrow.svg" alt="Back arrow for year"/>
+			  		</div>
+			  	</div>
+			  	<div class = "budget-list-header">
 					<p>Date</p>
 			  		<p>Category</p>
 			  		<p>Cost</p>

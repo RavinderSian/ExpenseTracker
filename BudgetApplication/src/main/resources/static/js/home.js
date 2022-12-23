@@ -5,6 +5,7 @@ const registerBtn = document.querySelector(".btn-register");
 const registerBox = document.querySelector(".register-box");
 const registerSubmitBtn = document.querySelector("#btn-register-submit");
 const deleteBtn = document.querySelector('.delete-expense-btn');
+const currentYear = document.querySelector('.year-text');
 
 navBar.addEventListener("click", function(e) {
 	if (e.target.classList.contains('btn-register')) {
