@@ -17,7 +17,7 @@ public class ExpenseRowMapper implements RowMapper<Expense> {
 		expense.setAmount(rs.getBigDecimal("amount"));
 		expense.setCategory(rs.getString("category"));
 		expense.setDescription(rs.getString("description"));
-		expense.setPurchaseDate(rs.getTimestamp(("purchase_date")));
+		expense.setPurchaseDate(rs.getTimestamp(("purchase_date")).toLocalDateTime().toLocalDate());
 		
 		return expense;
 	}

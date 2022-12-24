@@ -1,12 +1,11 @@
 package com.personal.budget.controller;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +44,7 @@ public class ExpenseController {
 		model.addAttribute("currentYear", LocalDate.now().getYear());
 		model.addAttribute("previousYear", LocalDate.now().getYear() - 1);
 		model.addAttribute("nextYear", LocalDate.now().getYear() + 1);
+		model.addAttribute("expense", new Expense());
 
 		model.addAttribute("user", new User());
 		
@@ -67,14 +67,14 @@ public class ExpenseController {
 	
 	@PreAuthorize("hasAuthority('USER')")
 	@PostMapping("/addexpensedate")
-	public String addExpenseDate(@ModelAttribute Date date, Model model, HttpServletRequest request,
+	public String addExpenseDate(@ModelAttribute Expense expense, Model model, HttpServletRequest request,
 			 RedirectAttributes redirectAttributes) {
 		
 		String loggedInUsername = request.getUserPrincipal().getName();
 		
-		Expense expense = new Expense();
+		//Expense expense = new Expense();
 		
-		expense.setPurchaseDate(new Timestamp(date.getTime()));
+		//expense.setPurchaseDate(new Timestamp(date.getTime()));
 		expense.setUserId(userService.findByUsername(loggedInUsername).get().getId());
 		
 		model.addAttribute("newExpense", expense);

@@ -1,7 +1,9 @@
 package com.personal.budget.model;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDate;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
@@ -13,6 +15,7 @@ public class Expense {
 	private String category;
 	private BigDecimal amount;
 	private String description;
-	private Timestamp purchaseDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate purchaseDate;
 	
 }

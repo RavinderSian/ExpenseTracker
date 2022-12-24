@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +45,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 				ps.setBigDecimal(2, expense.getAmount());
 				ps.setLong(3, expense.getUserId());
 				ps.setString(4, expense.getDescription());
-				ps.setTimestamp(5, expense.getPurchaseDate());
+				ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.of(expense.getPurchaseDate(), LocalTime.MIDNIGHT)));
 				
 				return ps;
 			}
