@@ -249,6 +249,42 @@ class ExpenseRepositoryImplTest {
 	}
 	
 	@Test
+	void test_FindExpensesByYear_ReturnsListOfLength0_WhenTableHasEntryNextYear1JanMidnight() {
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory("Dates");
+		expense.setDescription("fds");
+		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.of(LocalDate.now().getYear()+1, 1, 1, 0, 0)));
+		
+		repository.save(expense);
+		
+		List<Expense> expenses = repository.findExpensesByYear(LocalDate.now().getYear());
+		
+		assertThat(expenses.size(), equalTo(0));
+		
+	}
+	
+	@Test
+	void test_FindExpensesByYear_ReturnsListOfLength1_WhenTableHasEntryThisYear31DecMidnight() {
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory("Dates");
+		expense.setDescription("fds");
+		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.of(LocalDate.now().getYear(), 12, 31, 23, 59)));
+		
+		repository.save(expense);
+		
+		List<Expense> expenses = repository.findExpensesByYear(LocalDate.now().getYear());
+		
+		assertThat(expenses.size(), equalTo(1));
+		
+	}
+	
+	@Test
 	void test_FindExpensesByYear_ReturnsListOfLength0_WhenTableHasEntriesForNextYear() {
 		
 		Expense expense = new Expense();
