@@ -42,4 +42,9 @@ public class ExpenseServiceImpl implements ExpenseService {
 		return repository.findAll();
 	}
 	
+	@Override
+	public List<Expense> findExpensesByYear(Integer year) {
+		return repository.findExpensesByYear(year);
+	}
+	
 }
