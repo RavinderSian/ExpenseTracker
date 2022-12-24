@@ -22,7 +22,17 @@
 			<div>
 				<div class = "budget-date-filter">
 					<div class = "year">
-						<img class = "date-traversal-arrow" src = "/images/icons/back-arrow.svg" alt="Back arrow for year"/><span class = "year-text" th:text="${currentYear}">2019</span><img class = "date-traversal-arrow" src = "/images/icons/next-arrow.svg" alt="Back arrow for year"/>
+						<div class = item >
+							<a th:href="${'/budget/' + previousYear}">
+								<img class = "date-traversal-arrow" src = "/images/icons/back-arrow.svg" alt="Back arrow for year"/>
+							</a>
+						</div>
+						<span class = "year-text" th:text="${currentYear}">2019</span>
+						<div class = item>
+							<a th:href="${'/budget/' + nextYear}">
+								<img class = "date-traversal-arrow" src = "/images/icons/next-arrow.svg" alt="Forward arrow for year"/>
+							</a>
+						</div>
 			  		</div>
 			  	</div>
 			  	<div class = "budget-list-header">
