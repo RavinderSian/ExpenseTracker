@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -42,9 +43,26 @@ public class ExpenseController {
 		}
 		
 		model.addAttribute("currentYear", LocalDate.now().getYear());
+		model.addAttribute("previousYear", LocalDate.now().getYear() - 1);
+		model.addAttribute("nextYear", LocalDate.now().getYear() + 1);
+
 		model.addAttribute("user", new User());
 		
 		return "budget";
+	}
+	
+	@PreAuthorize("hasAuthority('USER')")
+	@GetMapping("/budget/{year}")
+	public String budgetForYear(@PathVariable Integer year, Model model, HttpServletRequest request) {
+		
+		Long userId = userService.findByUsername(request.getUserPrincipal().getName()).get().getId();
+		model.addAttribute("expenses", service.findExpensesByYear(year));
+		
+		model.addAttribute("currentYear", year);
+		model.addAttribute("previousYear", year - 1);
+		model.addAttribute("nextYear", year + 1);
+		
+		return "budget-year";
 	}
 	
 	@PreAuthorize("hasAuthority('USER')")

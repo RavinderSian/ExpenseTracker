@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="ISO-8859-1">
+		<link rel="stylesheet" href="/css/home.css">
+		<title>Home</title>
+	</head>
+	<body>
+		<nav class = "nav-box">
+			<h1>Budget Application</h1>
+		</nav>
+		
+		<div th:if="${#authentication.getPrincipal() != 'anonymousUser'}" class = "body-app">
+			<div>
+				<div class = "budget-date-filter">
+					<div class = "year">
+						<a class = "date-traversal-arrow" th:href="${'/budget/' + previousYear}"><img src = "/images/icons/back-arrow.svg" alt="Back arrow for year"/></a><span class = "year-text" th:text="${currentYear}">2019</span><a class = "date-traversal-arrow" th:href="${'/budget/' + nextYear}"><img src = "/images/icons/next-arrow.svg" alt="Forward arrow for year"/></a>
+			  		</div>
+			  	</div>
+			  	<div class = "budget-list-header">
+					<p>Date</p>
+			  		<p>Category</p>
+			  		<p>Cost</p>
+			  		<p>Description</p>
+			  	</div>
+				<div class = "budget-list" th:each="expense : ${expenses}">
+					<p th:text="${#dates.format(expense.purchaseDate, 'dd-MMM-yyyy')}"></p>
+			  		<p th:text="${expense.category}"></p>
+			  		<p th:text="'&pound' + ${#numbers.formatDecimal(expense.amount,2,2,'POINT')}"></p>
+			  		<p th:text="${expense.description}"></p>
+			  		<a th:href = "${'/delete/' + expense.id}"><button class = "delete-expense-btn">Delete</button></a>
+			  	</div>
+		  	</div>
+		  	<div class = "add-expense-form">
+			  	<form th:action="@{/addexpensedate}" method="post">
+			  		<h3>Add expense</h3>
+					<input class = "expense-input" type = "date" th:object="${date}" placeholder = "10-10-2022">
+					<input name="submit-login" type="submit" value="submit" />
+				</form>
+		  	</div>
+		</div>
+	</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src = "js/home.js"></script>
+</html>
