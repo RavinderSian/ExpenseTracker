@@ -12,5 +12,6 @@ public interface ExpenseRepository {
 	Optional<Expense> findById(Long id);
 	List<Expense> findAll();
 	List<Expense> findByUserId(Long userId);
+	List<Expense> findExpensesByYear(Integer year);
 	
 }

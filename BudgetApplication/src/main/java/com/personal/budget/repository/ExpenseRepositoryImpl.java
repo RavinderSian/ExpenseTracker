@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,6 +80,12 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 	@Override
 	public List<Expense> findAll() {
 		return jdbcTemplate.query("SELECT * FROM expenses", new ExpenseRowMapper());
+	}
+	
+	@Override
+	public List<Expense> findExpensesByYear(Integer year) {
+		return jdbcTemplate.query("SELECT * FROM expenses WHERE purchase_date > ? AND purchase_date < ?", 
+				new ExpenseRowMapper(), LocalDate.of(year-1, 12, 31), LocalDate.of(year+1, 1, 1));
 	}
 
 }

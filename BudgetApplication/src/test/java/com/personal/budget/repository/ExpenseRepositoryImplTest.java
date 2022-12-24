@@ -5,6 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -189,7 +190,6 @@ class ExpenseRepositoryImplTest {
 		
 		repository.save(expense);
 		
-		
 		Expense expense2 = new Expense();
 		expense2.setUserId(1L);
 		expense2.setAmount(BigDecimal.valueOf(10));
@@ -201,6 +201,78 @@ class ExpenseRepositoryImplTest {
 		
 		assertThat(repository.findAll().size(), equalTo(2));
 		
+	}
+	
+	@Test
+	void test_FindExpensesByYear_ReturnsListOfLength2ExpectedEntries_WhenTableHas2EntriesForGivenYear() {
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory("Dates");
+		expense.setDescription("fds");
+		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		
+		repository.save(expense);
+		
+		Expense expense2 = new Expense();
+		expense2.setUserId(1L);
+		expense2.setAmount(BigDecimal.valueOf(10));
+		expense2.setCategory("Dates");
+		expense2.setDescription("test2");
+		expense2.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		
+		repository.save(expense2);
+		
+		List<Expense> expenses = repository.findExpensesByYear(LocalDate.now().getYear());
+		
+		assertThat(expenses.size(), equalTo(2));
 		
 	}
+	
+	@Test
+	void test_FindExpensesByYear_ReturnsListOfLength1_WhenTableHasEntryThisYear1JanMidnight() {
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory("Dates");
+		expense.setDescription("fds");
+		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.of(LocalDate.now().getYear(), 1, 1, 0, 0)));
+		
+		repository.save(expense);
+		
+		List<Expense> expenses = repository.findExpensesByYear(LocalDate.now().getYear());
+		
+		assertThat(expenses.size(), equalTo(1));
+		
+	}
+	
+	@Test
+	void test_FindExpensesByYear_ReturnsListOfLength0_WhenTableHasEntriesForNextYear() {
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory("Dates");
+		expense.setDescription("fds");
+		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.of(LocalDate.now().getYear()+1, 1, 1, 0, 0)));
+		
+		repository.save(expense);
+		
+		Expense expense2 = new Expense();
+		expense2.setUserId(1L);
+		expense2.setAmount(BigDecimal.valueOf(10));
+		expense2.setCategory("Dates");
+		expense2.setDescription("test2");
+		expense2.setPurchaseDate(Timestamp.valueOf(LocalDateTime.of(LocalDate.now().getYear()+1, 1, 1, 0, 0)));
+		
+		repository.save(expense2);
+		
+		List<Expense> expenses = repository.findExpensesByYear(LocalDate.now().getYear());
+		
+		assertThat(expenses.size(), equalTo(0));
+		
+	}
+	
 }
