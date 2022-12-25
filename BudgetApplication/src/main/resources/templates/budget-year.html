@@ -34,7 +34,7 @@
 			  		<p>Description</p>
 			  	</div>
 				<div class = "budget-list" th:each="expense : ${expenses}">
-					<p th:text="${#dates.format(expense.purchaseDate, 'dd-MMM-yyyy')}"></p>
+					<p th:text="${expense.purchaseDate}"></p>
 			  		<p th:text="${expense.category}"></p>
 			  		<p th:text="'&pound' + ${#numbers.formatDecimal(expense.amount,2,2,'POINT')}"></p>
 			  		<p th:text="${expense.description}"></p>
