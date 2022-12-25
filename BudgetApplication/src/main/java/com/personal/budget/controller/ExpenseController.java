@@ -43,6 +43,9 @@ public class ExpenseController {
 		model.addAttribute("currentYear", LocalDate.now().getYear());
 		model.addAttribute("previousYear", LocalDate.now().getYear() - 1);
 		model.addAttribute("nextYear", LocalDate.now().getYear() + 1);
+		
+		model.addAttribute("currentMonth", LocalDate.now().getMonth().toString());
+		
 		model.addAttribute("expense", new Expense());
 
 		model.addAttribute("user", new User());
