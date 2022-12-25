@@ -4,9 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,7 +52,7 @@ class ExpenseRepositoryImplTest {
 		expense.setAmount(BigDecimal.valueOf(10));
 		expense.setCategory("Dates");
 		expense.setDescription("fds");
-		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		expense.setPurchaseDate(LocalDate.now());
 		
 		repository.save(expense);
 		
@@ -65,7 +63,7 @@ class ExpenseRepositoryImplTest {
 		assertThat(saved.getAmount(), equalTo(expense.getAmount()));
 		assertThat(saved.getCategory(), equalTo(expense.getCategory()));
 		assertThat(saved.getDescription(), equalTo(expense.getDescription()));
-		assertThat(saved.getPurchaseDate().toLocalDateTime().getHour(), equalTo(expense.getPurchaseDate().toLocalDateTime().getHour()));
+		assertThat(saved.getPurchaseDate(), equalTo(expense.getPurchaseDate()));
 	}
 	
 	@Test
@@ -75,7 +73,7 @@ class ExpenseRepositoryImplTest {
 		expense.setUserId(1L);
 		expense.setCategory("Dates");
 		expense.setDescription("fds");
-		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		expense.setPurchaseDate(LocalDate.now());
 		
 		Exception thrown = Assertions.assertThrows(
 				Exception.class,
@@ -93,7 +91,7 @@ class ExpenseRepositoryImplTest {
 		expense.setAmount(BigDecimal.valueOf(10));
 		expense.setCategory("Dates");
 		expense.setDescription("fds");
-		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		expense.setPurchaseDate(LocalDate.now());
 		
 		Expense saved = repository.save(expense);
 		
@@ -104,7 +102,7 @@ class ExpenseRepositoryImplTest {
 		assertThat(result.get().getAmount(), equalTo(saved.getAmount()));
 		assertThat(result.get().getCategory(), equalTo(saved.getCategory()));
 		assertThat(result.get().getDescription(), equalTo(saved.getDescription()));
-		assertThat(result.get().getPurchaseDate().toLocalDateTime().getHour(), equalTo(saved.getPurchaseDate().toLocalDateTime().getHour()));
+		assertThat(result.get().getPurchaseDate(), equalTo(saved.getPurchaseDate()));
 
 	}
 	
@@ -121,14 +119,14 @@ class ExpenseRepositoryImplTest {
 		expense.setAmount(BigDecimal.valueOf(10));
 		expense.setCategory("Dates");
 		expense.setDescription("fds");
-		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		expense.setPurchaseDate(LocalDate.now());
 		
 		Expense expense2 = new Expense();
 		expense2.setUserId(1L);
 		expense2.setAmount(BigDecimal.valueOf(10));
 		expense2.setCategory("Dates");
 		expense2.setDescription("fdfefsds");
-		expense2.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		expense2.setPurchaseDate(LocalDate.now());
 		
 		Expense saved = repository.save(expense);
 		Expense saved2 = repository.save(expense2);
@@ -164,7 +162,7 @@ class ExpenseRepositoryImplTest {
 		expense.setAmount(BigDecimal.valueOf(10));
 		expense.setCategory("Dates");
 		expense.setDescription("fds");
-		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		expense.setPurchaseDate(LocalDate.now());
 		
 		Expense saved = repository.save(expense);
 		repository.deleteById(saved.getId());
@@ -186,7 +184,7 @@ class ExpenseRepositoryImplTest {
 		expense.setAmount(BigDecimal.valueOf(10));
 		expense.setCategory("Dates");
 		expense.setDescription("fds");
-		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		expense.setPurchaseDate(LocalDate.now());
 		
 		repository.save(expense);
 		
@@ -195,7 +193,7 @@ class ExpenseRepositoryImplTest {
 		expense2.setAmount(BigDecimal.valueOf(10));
 		expense2.setCategory("Dates");
 		expense2.setDescription("test2");
-		expense2.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		expense2.setPurchaseDate(LocalDate.now());
 		
 		repository.save(expense2);
 		
@@ -211,7 +209,7 @@ class ExpenseRepositoryImplTest {
 		expense.setAmount(BigDecimal.valueOf(10));
 		expense.setCategory("Dates");
 		expense.setDescription("fds");
-		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		expense.setPurchaseDate(LocalDate.now());
 		
 		repository.save(expense);
 		
@@ -220,7 +218,7 @@ class ExpenseRepositoryImplTest {
 		expense2.setAmount(BigDecimal.valueOf(10));
 		expense2.setCategory("Dates");
 		expense2.setDescription("test2");
-		expense2.setPurchaseDate(Timestamp.valueOf(LocalDateTime.now()));
+		expense2.setPurchaseDate(LocalDate.now());
 		
 		repository.save(expense2);
 		
@@ -231,14 +229,14 @@ class ExpenseRepositoryImplTest {
 	}
 	
 	@Test
-	void test_FindExpensesByYear_ReturnsListOfLength1_WhenTableHasEntryThisYear1JanMidnight() {
+	void test_FindExpensesByYear_ReturnsListOfLength1_WhenTableHasEntryThisYear1Jan() {
 		
 		Expense expense = new Expense();
 		expense.setUserId(1L);
 		expense.setAmount(BigDecimal.valueOf(10));
 		expense.setCategory("Dates");
 		expense.setDescription("fds");
-		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.of(LocalDate.now().getYear(), 1, 1, 0, 0)));
+		expense.setPurchaseDate(LocalDate.of(LocalDate.now().getYear(), 1, 1));
 		
 		repository.save(expense);
 		
@@ -249,14 +247,14 @@ class ExpenseRepositoryImplTest {
 	}
 	
 	@Test
-	void test_FindExpensesByYear_ReturnsListOfLength0_WhenTableHasEntryNextYear1JanMidnight() {
+	void test_FindExpensesByYear_ReturnsListOfLength0_WhenTableHasEntryNextYear1Jan() {
 		
 		Expense expense = new Expense();
 		expense.setUserId(1L);
 		expense.setAmount(BigDecimal.valueOf(10));
 		expense.setCategory("Dates");
 		expense.setDescription("fds");
-		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.of(LocalDate.now().getYear()+1, 1, 1, 0, 0)));
+		expense.setPurchaseDate(LocalDate.of(LocalDate.now().getYear()+1, 1, 1));
 		
 		repository.save(expense);
 		
@@ -267,14 +265,14 @@ class ExpenseRepositoryImplTest {
 	}
 	
 	@Test
-	void test_FindExpensesByYear_ReturnsListOfLength1_WhenTableHasEntryThisYear31DecMidnight() {
+	void test_FindExpensesByYear_ReturnsListOfLength1_WhenTableHasEntryThisYear31Dec() {
 		
 		Expense expense = new Expense();
 		expense.setUserId(1L);
 		expense.setAmount(BigDecimal.valueOf(10));
 		expense.setCategory("Dates");
 		expense.setDescription("fds");
-		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.of(LocalDate.now().getYear(), 12, 31, 23, 59)));
+		expense.setPurchaseDate(LocalDate.of(LocalDate.now().getYear(), 12, 31));
 		
 		repository.save(expense);
 		
@@ -292,7 +290,7 @@ class ExpenseRepositoryImplTest {
 		expense.setAmount(BigDecimal.valueOf(10));
 		expense.setCategory("Dates");
 		expense.setDescription("fds");
-		expense.setPurchaseDate(Timestamp.valueOf(LocalDateTime.of(LocalDate.now().getYear()+1, 1, 1, 0, 0)));
+		expense.setPurchaseDate(LocalDate.of(LocalDate.now().getYear()+1, 1, 1));
 		
 		repository.save(expense);
 		
@@ -301,7 +299,7 @@ class ExpenseRepositoryImplTest {
 		expense2.setAmount(BigDecimal.valueOf(10));
 		expense2.setCategory("Dates");
 		expense2.setDescription("test2");
-		expense2.setPurchaseDate(Timestamp.valueOf(LocalDateTime.of(LocalDate.now().getYear()+1, 1, 1, 0, 0)));
+		expense2.setPurchaseDate(LocalDate.of(LocalDate.now().getYear()+1, 1, 1));
 		
 		repository.save(expense2);
 		
