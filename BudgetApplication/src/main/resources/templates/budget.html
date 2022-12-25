@@ -22,20 +22,20 @@
 			<div>
 				<div class = "budget-date-filter">
 					<div class = "year">
-						<a class = "item-arrow-right" th:href="${'/budget/' + previousYear}">
+						<a class = "item-arrow-back" th:href="${'/budget/' + previousYear}">
 							<img class = "date-traversal-arrow" src = "/images/icons/back-arrow.svg" alt="Back arrow for year"/>
 						</a>
 						<h3 class = "item" th:text="${currentYear}">2019</h3>
-						<a class = "item-arrow-left" th:href="${'/budget/' + nextYear}">
+						<a class = "item-arrow-next" th:href="${'/budget/' + nextYear}">
 							<img class = "date-traversal-arrow" src = "/images/icons/next-arrow.svg" alt="Forward arrow for year"/>
 						</a>
 					</div>
 					<div class = "month">
-						<a class = "item-arrow-right" th:href="${'/budget/' + previousYear}">
+						<a class = "item-arrow-back" th:href="${'/budget/' + previousYear}">
 							<img class = "date-traversal-arrow" src = "/images/icons/back-arrow.svg" alt="Back arrow for year"/>
 						</a>
 						<h4 class = "item year-text" th:text="${currentMonth}">Jan</h4>
-						<a class = "item-arrow-left" th:href="${'/budget/' + nextYear}">
+						<a class = "item-arrow-next" th:href="${'/budget/' + nextYear}">
 							<img class = "date-traversal-arrow" src = "/images/icons/next-arrow.svg" alt="Forward arrow for year"/>
 						</a>
 					</div>

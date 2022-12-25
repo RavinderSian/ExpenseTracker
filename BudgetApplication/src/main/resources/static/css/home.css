@@ -141,16 +141,16 @@ body {
   	justify-content: center;
 }
 
-.item-arrow-left {
-	display:flex;
-	align-items: center;
-  	justify-content: start;
-}
-
-.item-arrow-right {
+.item-arrow-back {
 	display:flex;
 	align-items: center;
   	justify-content: end;
+}
+
+.item-arrow-next {
+	display:flex;
+	align-items: center;
+  	justify-content: start;
 }
 
 .date-traversal-arrow {
