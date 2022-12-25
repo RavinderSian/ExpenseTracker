@@ -118,7 +118,7 @@ body {
 .budget-date-filter {
 	margin-left: 40px;
 	display: grid;
-	justify-content: center;
+	justify-content: space-evenly;
 	border: 2px solid blue;
 	border-radius: 10px;
 	background-color: #8ce99a;
@@ -126,9 +126,14 @@ body {
 }
 
 .year {
-	margin-top: 10px;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.item {
+	display:flex;
+	align-items: center;
+  	justify-content: center;
 }
 
 .date-traversal-arrow {
