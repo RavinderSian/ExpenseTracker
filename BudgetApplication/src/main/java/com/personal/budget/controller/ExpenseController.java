@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,7 +37,7 @@ public class ExpenseController {
 			model.addAttribute("expenses", new ArrayList<>());
 		}else {
 			Long userId = userService.findByUsername(request.getUserPrincipal().getName()).get().getId();
-			model.addAttribute("expenses", service.findByUserId(userId));
+			model.addAttribute("expenses", service.findExpensesByYear(LocalDate.now().getYear()));
 		}
 		
 		model.addAttribute("currentYear", LocalDate.now().getYear());
@@ -58,6 +57,7 @@ public class ExpenseController {
 		Long userId = userService.findByUsername(request.getUserPrincipal().getName()).get().getId();
 		model.addAttribute("expenses", service.findExpensesByYear(year));
 		
+		model.addAttribute("expense", new Expense());
 		model.addAttribute("currentYear", year);
 		model.addAttribute("previousYear", year - 1);
 		model.addAttribute("nextYear", year + 1);
@@ -72,12 +72,12 @@ public class ExpenseController {
 		
 		String loggedInUsername = request.getUserPrincipal().getName();
 		
-		//Expense expense = new Expense();
+		Expense expense2 = new Expense();
 		
-		//expense.setPurchaseDate(new Timestamp(date.getTime()));
-		expense.setUserId(userService.findByUsername(loggedInUsername).get().getId());
+		expense2.setPurchaseDate(expense.getPurchaseDate());
+		expense2.setUserId(userService.findByUsername(loggedInUsername).get().getId());
 		
-		model.addAttribute("newExpense", expense);
+		model.addAttribute("newExpense", expense2);
 		
 		return "addexpense";
 	}
