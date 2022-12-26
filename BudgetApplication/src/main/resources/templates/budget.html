@@ -21,23 +21,27 @@
 		<div th:if="${#authentication.getPrincipal() != 'anonymousUser'}" class = "body-app">
 			<div>
 				<div class = "budget-date-filter">
-					<div class = "year">
-						<a class = "item-arrow-back" th:href="${'/budget/' + previousYear}">
-							<img class = "date-traversal-arrow" src = "/images/icons/back-arrow.svg" alt="Back arrow for year"/>
-						</a>
-						<h3 class = "item" th:text="${currentYear}">2019</h3>
-						<a class = "item-arrow-next" th:href="${'/budget/' + nextYear}">
-							<img class = "date-traversal-arrow" src = "/images/icons/next-arrow.svg" alt="Forward arrow for year"/>
-						</a>
+					<div class = "year-grid">
+						<div class = "flex-box-year">
+							<a class = "anchor-arrow-back" th:href="${'/budget/' + previousYear}">
+								<img class = "date-traversal-arrow" src = "/images/icons/back-arrow.svg" alt="Back arrow for year"/>
+							</a>
+							<h3 class = "year-text" th:text="${currentYear}">2019</h3>
+							<a class = "anchor-arrow-next" th:href="${'/budget/' + nextYear}">
+								<img class = "date-traversal-arrow" src = "/images/icons/next-arrow.svg" alt="Forward arrow for year"/>
+							</a>
+						</div>
 					</div>
-					<div class = "month">
-						<a class = "item-arrow-back" th:href="${'/budget/' + previousYear}">
-							<img class = "date-traversal-arrow" src = "/images/icons/back-arrow.svg" alt="Back arrow for year"/>
-						</a>
-						<h4 class = "item year-text" th:text="${currentMonth}">Jan</h4>
-						<a class = "item-arrow-next" th:href="${'/budget/' + nextYear}">
-							<img class = "date-traversal-arrow" src = "/images/icons/next-arrow.svg" alt="Forward arrow for year"/>
-						</a>
+					<div class = "month-grid">
+						<div class = "flex-box-month">
+							<a class = "anchor-arrow-back" th:href="${'/budget/' + previousYear}">
+								<img src = "/images/icons/back-arrow.svg" alt="Back arrow for year"/>
+							</a>
+							<h4 class = "month-text" th:text="${currentMonth}">January</h4>
+							<a class = "anchor-arrow-next" th:href="${'/budget/' + nextYear}">
+								<img src = "/images/icons/next-arrow.svg" alt="Forward arrow for year"/>
+							</a>
+						</div>
 					</div>
 			  	</div>
 			  	<div class = "budget-list-header">

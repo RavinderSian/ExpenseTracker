@@ -79,6 +79,41 @@ body {
 	
 }
 
+.register-box {
+	border: 5px solid red;
+	width: 50%;
+	height: 250px;
+	background-color: orange;
+	position: absolute;
+	top: 100px;
+    top: 50%;  
+    left: 50%; 
+    transform: translate(-50%, -50%);
+}
+
+.register-form {
+	display: grid;
+	align-items:center;
+  	justify-content: space-evenly;
+  	grid-auto-rows: 50px;
+}
+
+.btn-register {
+	border-radius: 10px;
+	background-color: #69db7c;
+}
+
+.btn-register:hover {
+	background-color: #8ce99a;
+}
+
+.btn-register:active {
+    transform: scale(0.98);
+    /* Scaling button to 0.98 to its original size */
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
+}
+
 .add-expense-form {
 	text-align: center;
 	border: 2px solid blue;
@@ -122,73 +157,57 @@ body {
 	border-radius: 10px;
 	background-color: #8ce99a;
 	margin-bottom: 10px;
+	cursor: default;
 }
 
-.year {
+.year-grid {
 	display: grid;
-	grid-template-columns: 1fr 0.5fr 1fr;
+	justify-content: center;
 }
 
-.month {
+.month-grid {
 	display: grid;
-	grid-template-columns: 1fr 0.25fr 1fr;
+	justify-content: center;
 }
 
-.item {
-	margin: 0;
+.year-text {
+	margin: 10px;
 	display: flex;
 	align-items: center;
   	justify-content: center;
 }
 
-.item-arrow-back {
-	display:flex;
+.month-text {
+	margin: 10px;
+	display: flex;
 	align-items: center;
+  	justify-content: center;
+}
+
+.anchor-arrow-back {
+	display: block;
+	width: 50px;
+}
+
+.anchor-arrow-next {
+    display: block;
+	width: 50px;
+}
+
+.flex-item-back {
+	display: flex;
   	justify-content: end;
 }
 
-.item-arrow-next {
-	display:flex;
-	align-items: center;
+.flex-item-next {
+	display: flex;
   	justify-content: start;
 }
 
-.date-traversal-arrow {
-	width: 30%;
-	height: 30%;
+.flex-box-month {
+	display: flex;
 }
 
-.register-box {
-	border: 5px solid red;
-	width: 50%;
-	height: 250px;
-	background-color: orange;
-	position: absolute;
-	top: 100px;
-    top: 50%;  
-    left: 50%; 
-    transform: translate(-50%, -50%);
-}
-
-.register-form {
-	display: grid;
-	align-items:center;
-  	justify-content: space-evenly;
-  	grid-auto-rows: 50px;
-}
-
-.btn-register {
-	border-radius: 10px;
-	background-color: #69db7c;
-}
-
-.btn-register:hover {
-	background-color: #8ce99a;
-}
-
-.btn-register:active {
-    transform: scale(0.98);
-    /* Scaling button to 0.98 to its original size */
-    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
-    /* Lowering the shadow */
+.flex-box-year {
+	display: flex;
 }
