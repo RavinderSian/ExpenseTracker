@@ -157,7 +157,6 @@ body {
 	border-radius: 10px;
 	background-color: #8ce99a;
 	margin-bottom: 10px;
-	cursor: default;
 }
 
 .year-grid {
@@ -170,6 +169,18 @@ body {
 	justify-content: center;
 }
 
+.flex-box-month {
+	display: flex;
+}
+
+.flex-box-year {
+	display: flex;
+}
+
+.anchor-arrow-back {
+	width: 50px;
+}
+
 .year-text {
 	margin: 10px;
 }
@@ -178,20 +189,10 @@ body {
 	margin: 10px;
 }
 
-.anchor-arrow-back {
-	display: block;
-	width: 50px;
-}
-
 .anchor-arrow-next {
-    display: block;
 	width: 50px;
 }
 
-.flex-box-month {
-	display: flex;
-}
-
-.flex-box-year {
-	display: flex;
+.anchor-arrow-back {
+	width: 50px;
 }
