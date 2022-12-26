@@ -4,6 +4,9 @@
 		<meta charset="ISO-8859-1">
 		<link rel="stylesheet" href="/css/home.css">
 		<link rel="stylesheet" href="/css/expenses-display.css">
+		<script th:inline="javascript">
+		    var expenses = [[${expenses}]];
+		</script>
 		<title>Home</title>
 	</head>
 	<body>
@@ -35,12 +38,12 @@
 					</div>
 					<div class = "month-grid">
 						<div class = "flex-box-month">
-							<a class = "anchor-arrow-back" th:href="${'/budget/' + previousYear}">
-								<img src = "/images/icons/back-arrow.svg" alt="Back arrow for year"/>
+							<a class = "anchor-arrow-back" href="#">
+								<img id = "month-arrow-back" src = "/images/icons/back-arrow.svg" alt="Back arrow for year"/>
 							</a>
 							<h4 class = "month-text" th:text="${currentMonth}">January</h4>
 							<a class = "anchor-arrow-next" th:href="${'/budget/' + nextYear}">
-								<img src = "/images/icons/next-arrow.svg" alt="Forward arrow for year"/>
+								<img id = "month-arrow-next" src = "/images/icons/next-arrow.svg" alt="Forward arrow for year"/>
 							</a>
 						</div>
 					</div>

@@ -6,6 +6,10 @@ const registerBox = document.querySelector(".register-box");
 const registerSubmitBtn = document.querySelector("#btn-register-submit");
 const deleteBtn = document.querySelector('.delete-expense-btn');
 const currentYear = document.querySelector('.year-text');
+const currentMonth = document.querySelector('.month-text');
+const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 
+	'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
+
 
 navBar.addEventListener("click", function(e) {
 	if (e.target.classList.contains('btn-register')) {
@@ -16,6 +20,28 @@ navBar.addEventListener("click", function(e) {
 //We are listening on document because some elements do not exist at certain points
 //This means we need event delegation to listen for them
 document.addEventListener("click", (e) => {
+	console.log(expenses);
+	if (e.target.id.includes('month-arrow')) {
+		e.preventDefault();
+		console.log("month click");
+		
+		if (e.target.id.includes('month-arrow-next')){
+			const indexOfMonth = months.indexOf(currentMonth.textContent);
+			
+			currentMonth.textContent =  indexOfMonth === 11 ? 'JANUARY' 
+			: months[indexOfMonth+1];
+			
+		}
+		
+		if (e.target.id.includes('month-arrow-back')){
+			const indexOfMonth = months.indexOf(currentMonth.textContent);
+			
+			currentMonth.textContent =  indexOfMonth === 0 ? 'DECEMBER' 
+			: months[indexOfMonth-1];
+			
+		}
+		
+	}
 
 	if (e.target.classList.contains('delete-expense-btn')) {
 		e.preventDefault();
