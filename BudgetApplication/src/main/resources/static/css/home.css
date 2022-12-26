@@ -188,16 +188,6 @@ body {
 	width: 50px;
 }
 
-.flex-item-back {
-	display: flex;
-  	justify-content: end;
-}
-
-.flex-item-next {
-	display: flex;
-  	justify-content: start;
-}
-
 .flex-box-month {
 	display: flex;
 }
