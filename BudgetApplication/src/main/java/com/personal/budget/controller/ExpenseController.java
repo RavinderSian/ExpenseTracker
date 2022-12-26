@@ -64,6 +64,7 @@ public class ExpenseController {
 		model.addAttribute("currentYear", year);
 		model.addAttribute("previousYear", year - 1);
 		model.addAttribute("nextYear", year + 1);
+		model.addAttribute("currentMonth", LocalDate.now().getMonth().toString());
 		
 		return "budget-year";
 	}
