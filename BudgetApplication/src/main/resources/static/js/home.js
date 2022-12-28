@@ -22,10 +22,8 @@ navBar.addEventListener("click", function(e) {
 //We are listening on document because some elements do not exist at certain points
 //This means we need event delegation to listen for them
 document.addEventListener("click", (e) => {
-	console.log(expenses);
 	if (e.target.id.includes('month-arrow')) {
 		e.preventDefault();
-		console.log("month click");
 		
 		if (e.target.id.includes('month-arrow-next')){
 			const indexOfMonth = months.indexOf(currentMonth.textContent);
@@ -85,7 +83,8 @@ document.addEventListener("click", (e) => {
 	//So a second condition is needed to ensure that does not happen
 	const isClickInside =
 		e.target.classList.contains('register-box') || e.target.classList.contains('btn-register')
-
+		|| e.target.classList.contains('register-form');
+	
 	//If we are outside the box when it appears, hide it again 
 	if (!isClickInside) {
 		registerBox.classList.add("hidden");
