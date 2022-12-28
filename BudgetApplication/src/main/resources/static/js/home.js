@@ -19,55 +19,53 @@ navBar.addEventListener("click", function(e) {
 	}
 });
 
+const monthArrows = function(id) {
+	const indexOfMonth = months.indexOf(currentMonth.textContent);
+	
+	if (id.includes('month-arrow-next')){
+		currentMonth.textContent = indexOfMonth === 11 ? 'JANUARY' 
+		: months[indexOfMonth+1];
+	} else{
+		currentMonth.textContent = indexOfMonth === 0 ? 'DECEMBER' 
+		: months[indexOfMonth-1];
+	}
+}
+
+const displayCorrectExpensesForMonth = function(e) {
+	if (!e.target.id.includes('month-arrow')) return;
+
+	e.preventDefault();
+	
+	monthArrows(e.target.id);
+	
+	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
+		months.indexOf(currentMonth.textContent)+1);
+	
+	//Below removes each expense element currently displayed on the page
+	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
+	
+	filteredExpenses
+	.forEach(expense => {
+				expenseHeaders.insertAdjacentHTML('afterend' ,
+					`<div class = "budget-list">
+					<p>${expense.purchaseDate}</p>
+			  		<p>${expense.category}</p>
+			  		<p>&pound${expense.amount}</p>
+			  		<p>${expense.description}</p>
+			  		<a th:href = '/delete/' + ${expense.id}><button class = "delete-expense-btn">Delete</button></a>
+		  	</div>`);
+		})
+
+	//This is needed so the expensesOnPage is the new set of expenses and not the old
+	expensesOnPage = document.querySelectorAll('.budget-list')
+}
+
+
 //We are listening on document because some elements do not exist at certain points
 //This means we need event delegation to listen for them
 document.addEventListener("click", (e) => {
-	if (e.target.id.includes('month-arrow')) {
-		e.preventDefault();
-		
-		if (e.target.id.includes('month-arrow-next')){
-			const indexOfMonth = months.indexOf(currentMonth.textContent);
-			
-			currentMonth.textContent =  indexOfMonth === 11 ? 'JANUARY' 
-			: months[indexOfMonth+1];
-		}
-		
-		if (e.target.id.includes('month-arrow-back')){
-			const indexOfMonth = months.indexOf(currentMonth.textContent);
-			
-			currentMonth.textContent =  indexOfMonth === 0 ? 'DECEMBER' 
-			: months[indexOfMonth-1];
-			
-		}
-		
-		const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
-			months.indexOf(currentMonth.textContent)+1);
-		
-		console.log(document.querySelectorAll('.budget-list'));
-		
-		//Below removes each expense element
-		expensesOnPage.forEach(expense => {
-			if (expense.parentNode !== null){
-				console.log("not skipping");
-				expense.parentNode.removeChild(expense);
-			}
-		})
-		
-		filteredExpenses
-		.forEach(expense => {
-					console.log('INSERT');
-					expenseHeaders.insertAdjacentHTML('afterend' ,
-						`<div class = "budget-list">
-						<p>${expense.purchaseDate}</p>
-				  		<p>${expense.category}</p>
-				  		<p>&pound${expense.amount}</p>
-				  		<p>${expense.description}</p>
-				  		<a th:href = '/delete/' + ${expense.id}><button class = "delete-expense-btn">Delete</button></a>
-			  	</div>`);
-			})
-	}
 	
-	expensesOnPage = document.querySelectorAll('.budget-list')
+	displayCorrectExpensesForMonth(e);
 
 	if (e.target.classList.contains('delete-expense-btn')) {
 		e.preventDefault();
