@@ -19,6 +19,33 @@ navBar.addEventListener("click", function(e) {
 	}
 });
 
+//This self executing function displays the current (default) months expenses
+//On the page on load 
+(function() {
+
+	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
+		months.indexOf(currentMonth.textContent)+1);
+	
+	//Below removes each expense element currently displayed on the page
+	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
+	
+	filteredExpenses
+	.forEach(expense => {
+				expenseHeaders.insertAdjacentHTML('afterend' ,
+					`<div class = "budget-list">
+					<p>${expense.purchaseDate}</p>
+			  		<p>${expense.category}</p>
+			  		<p>&pound${expense.amount}</p>
+			  		<p>${expense.description}</p>
+			  		<a class = "delete-expense-link" th:href = '/delete/' + ${expense.id}><button class = "delete-expense-btn">Delete</button></a>
+		  	</div>`);
+		})
+
+	//This is needed so the expensesOnPage is the new set of expenses and not the old
+	expensesOnPage = document.querySelectorAll('.budget-list');
+	
+}());
+
 const monthArrows = function(id) {
 	const indexOfMonth = months.indexOf(currentMonth.textContent);
 	
@@ -57,7 +84,7 @@ const displayCorrectExpensesForMonth = function(e) {
 		})
 
 	//This is needed so the expensesOnPage is the new set of expenses and not the old
-	expensesOnPage = document.querySelectorAll('.budget-list')
+	expensesOnPage = document.querySelectorAll('.budget-list');
 }
 
 
