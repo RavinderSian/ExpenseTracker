@@ -52,7 +52,7 @@ const displayCorrectExpensesForMonth = function(e) {
 			  		<p>${expense.category}</p>
 			  		<p>&pound${expense.amount}</p>
 			  		<p>${expense.description}</p>
-			  		<a th:href = '/delete/' + ${expense.id}><button class = "delete-expense-btn">Delete</button></a>
+			  		<a class = "delete-expense-link" th:href = '/delete/' + ${expense.id}><button class = "delete-expense-btn">Delete</button></a>
 		  	</div>`);
 		})
 
