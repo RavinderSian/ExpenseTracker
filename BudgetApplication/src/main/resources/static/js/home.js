@@ -10,6 +10,8 @@ const currentMonth = document.querySelector('.month-text');
 const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 
 	'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
 
+let expensesOnPage = document.querySelectorAll('.budget-list');
+const expenseHeaders = document.querySelector('.budget-list-header');
 
 navBar.addEventListener("click", function(e) {
 	if (e.target.classList.contains('btn-register')) {
@@ -30,7 +32,6 @@ document.addEventListener("click", (e) => {
 			
 			currentMonth.textContent =  indexOfMonth === 11 ? 'JANUARY' 
 			: months[indexOfMonth+1];
-			
 		}
 		
 		if (e.target.id.includes('month-arrow-back')){
@@ -41,7 +42,34 @@ document.addEventListener("click", (e) => {
 			
 		}
 		
+		const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
+			months.indexOf(currentMonth.textContent)+1);
+		
+		console.log(document.querySelectorAll('.budget-list'));
+		
+		//Below removes each expense element
+		expensesOnPage.forEach(expense => {
+			if (expense.parentNode !== null){
+				console.log("not skipping");
+				expense.parentNode.removeChild(expense);
+			}
+		})
+		
+		filteredExpenses
+		.forEach(expense => {
+					console.log('INSERT');
+					expenseHeaders.insertAdjacentHTML('afterend' ,
+						`<div class = "budget-list">
+						<p>${expense.purchaseDate}</p>
+				  		<p>${expense.category}</p>
+				  		<p>&pound${expense.amount}</p>
+				  		<p>${expense.description}</p>
+				  		<a th:href = '/delete/' + ${expense.id}><button class = "delete-expense-btn">Delete</button></a>
+			  	</div>`);
+			})
 	}
+	
+	expensesOnPage = document.querySelectorAll('.budget-list')
 
 	if (e.target.classList.contains('delete-expense-btn')) {
 		e.preventDefault();
