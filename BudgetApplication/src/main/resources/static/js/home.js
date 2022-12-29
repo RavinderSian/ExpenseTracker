@@ -2,11 +2,8 @@
 import { MONTHS } from './config.js';
 
 const navBar = document.querySelector('.nav-box')
-const registerBtn = document.querySelector(".btn-register");
 const registerBox = document.querySelector(".register-box");
 const registerSubmitBtn = document.querySelector("#btn-register-submit");
-const deleteBtn = document.querySelector('.delete-expense-btn');
-const currentYear = document.querySelector('.year-text');
 const currentMonth = document.querySelector('.month-text');
 
 let expensesOnPage = document.querySelectorAll('.budget-list');
@@ -20,7 +17,7 @@ navBar.addEventListener("click", function(e) {
 
 //This self executing function displays the current (default) months expenses
 //On the page on load 
-(function() {
+const displayNewExpenses = function() {
 
 	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
 		MONTHS.indexOf(currentMonth.textContent)+1);
@@ -43,7 +40,8 @@ navBar.addEventListener("click", function(e) {
 	//This is needed so the expensesOnPage is the new set of expenses and not the old
 	expensesOnPage = document.querySelectorAll('.budget-list');
 	
-}());
+};
+displayNewExpenses();
 
 const monthArrows = function(id) {
 	const indexOfMonth = MONTHS.indexOf(currentMonth.textContent);
@@ -58,32 +56,12 @@ const monthArrows = function(id) {
 }
 
 const displayCorrectExpensesForMonth = function(e) {
+	
 	if (!e.target.id.includes('month-arrow')) return;
 
 	e.preventDefault();
-	
 	monthArrows(e.target.id);
-	
-	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
-		MONTHS.indexOf(currentMonth.textContent)+1);
-	
-	//Below removes each expense element currently displayed on the page
-	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
-	
-	filteredExpenses
-	.forEach(expense => {
-				expenseHeaders.insertAdjacentHTML('afterend' ,
-					`<div class = "budget-list">
-					<p>${expense.purchaseDate}</p>
-			  		<p>${expense.category}</p>
-			  		<p>&pound${expense.amount}</p>
-			  		<p>${expense.description}</p>
-			  		<a class = "delete-expense-link" th:href = '/delete/' + ${expense.id}><button class = "delete-expense-btn">Delete</button></a>
-		  	</div>`);
-		})
-
-	//This is needed so the expensesOnPage is the new set of expenses and not the old
-	expensesOnPage = document.querySelectorAll('.budget-list');
+	displayNewExpenses();
 }
 
 
