@@ -51,8 +51,31 @@
 	border: 2px solid blue;
 	border-radius: 10px;
 	background-color: #8ce99a;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+	margin-bottom: 10px;
+}
+
+.grid-test {
+	display: grid;
+}
+
+.budget-list-edit-form {
+	margin-left: 40px;
+	height: 80px;
+	padding-left: 5px;
+	display: grid;
+	align-items: center;
+	border: 2px solid blue;
+	border-radius: 10px;
+	background-color: #8ce99a;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 	margin-bottom: 10px;
+}
+
+.edit-expense-input {
+	width: 75%;
+	height: 50%;
+	border-radius: 10px;
 }
 
 .delete-expense-link {
@@ -62,6 +85,10 @@
 .delete-expense-btn {
 	cursor: pointer;
 	pointer-events: auto;
+}
+
+.edit-expense-btn {
+	display: block;
 }
 
 .budget-date-filter {

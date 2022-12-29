@@ -33,6 +33,7 @@ const displayNewExpenses = function() {
 			  		<p>${expense.category}</p>
 			  		<p>&pound${expense.amount}</p>
 			  		<p>${expense.description}</p>
+			  		<a class = "edit-expense-link"><button class = "edit-expense-btn">Edit</button></a>
 			  		<a class = "delete-expense-link" th:href = '/delete/' + ${expense.id}><button class = "delete-expense-btn">Delete</button></a>
 		  	</div>`);
 		})
@@ -90,6 +91,28 @@ document.addEventListener("click", (e) => {
 	if (!isClickInside) {
 		registerBox.classList.add("hidden");
 	}
+	
+	if (e.target.classList.contains('edit-expense-btn')){
+		e.preventDefault();
+		
+		const expense = e.target.closest('.budget-list');
+		console.log(expense);
+		
+		expense.insertAdjacentHTML('afterend', `<form class = "budget-list-edit-form" th:action="@{/editexpense}" th:object="${expense}" method="post">
+					<input class = "edit-expense-input" type = "hidden" th:value="${expense.id}" th:field="*{id}">
+					<input class = "edit-expense-input" type = "date" th:value="*{purchaseDate}" th:field="*{purchaseDate}" placeholder = "10-10-2022">
+					<select class = "edit-expense-input" name="categories" th:field="*{category}">
+				        <option value="DATES">Dates</option>
+				        <option value="MISC">Misc</option>
+				 		<option value="FUEL">Fuel</option>
+				        <option value="DATES">MISC</option>
+			     	</select>
+					<input class = "edit-expense-input" type = "text" th:value="${expense.amount}" th:field="*{amount}" placeholder = "10-10-2022">
+					<input class = "edit-expense-input" type = "text" th:value="${expense.description}" th:field="*{description}" placeholder = "10-10-2022">
+					<input class = "edit-expense-input" name="submit-login" type="submit" value="submit" />
+				</form>`);
+	}
+	
 });
 
 const sendFormToRegister = function() {
