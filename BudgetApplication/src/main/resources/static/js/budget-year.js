@@ -86,11 +86,8 @@ document.addEventListener("click", (e) => {
 	displayCorrectExpensesForMonth(e);
 
 	if (e.target.classList.contains('delete-expense-btn')) {
-		console.log("deleting");
 		e.preventDefault();
 		const confirm = window.confirm('Are you sure you want to delete this? This operation CANNOT be undone');
-		console.log(confirm);
-		console.log(e.target.closest('a').href);
 		
 		if (confirm){
 			sendDeleteRequest(e.target.closest('a').href);
