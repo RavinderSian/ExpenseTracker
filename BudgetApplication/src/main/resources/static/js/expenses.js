@@ -1,18 +1,15 @@
-"use strict";
-
+let expensesOnPage = document.querySelectorAll('.budget-list');
+const expenseHeaders = document.querySelector('.budget-list-header');
+const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 
+	'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
 const navBar = document.querySelector('.nav-box')
+const registerBtn = document.querySelector(".btn-register");
+const registerBox = document.querySelector(".register-box");
+const registerSubmitBtn = document.querySelector("#btn-register-submit");
 const deleteBtn = document.querySelector('.delete-expense-btn');
 const currentYear = document.querySelector('.year-text');
 const currentMonth = document.querySelector('.month-text');
-const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 
-	'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
 
-let expensesOnPage = document.querySelectorAll('.budget-list');
-const expenseHeaders = document.querySelector('.budget-list-header');
-
-
-//This self executing function displays the current (default) months expenses
-//On the page on load 
 (function() {
 
 	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
@@ -50,7 +47,7 @@ const monthArrows = function(id) {
 	}
 }
 
-const displayCorrectExpensesForMonth = function(e) {
+export const displayCorrectExpensesForMonth = function(e) {
 	if (!e.target.id.includes('month-arrow')) return;
 
 	e.preventDefault();
@@ -78,31 +75,3 @@ const displayCorrectExpensesForMonth = function(e) {
 	//This is needed so the expensesOnPage is the new set of expenses and not the old
 	expensesOnPage = document.querySelectorAll('.budget-list');
 }
-
-//We are listening on document because some elements do not exist at certain points
-//This means we need event delegation to listen for them
-document.addEventListener("click", (e) => {
-	
-	displayCorrectExpensesForMonth(e);
-
-	if (e.target.classList.contains('delete-expense-btn')) {
-		console.log("deleting");
-		e.preventDefault();
-		const confirm = window.confirm('Are you sure you want to delete this? This operation CANNOT be undone');
-		console.log(confirm);
-		console.log(e.target.closest('a').href);
-		
-		if (confirm){
-			sendDeleteRequest(e.target.closest('a').href);
-			window.location.reload();
-		}
-	}
-});
-
-const sendDeleteRequest = async function(url) {
-	try {
-		fetch(url);
-	} catch(err) {
-		console.error(err);
-	}
-};
