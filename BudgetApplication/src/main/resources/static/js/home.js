@@ -107,8 +107,7 @@ document.addEventListener("click", (e) => {
 	//If the login button also triggers the hidden class to be added the box never appears
 	//So a second condition is needed to ensure that does not happen
 	const isClickInside =
-		e.target.classList.contains('register-box') || e.target.classList.contains('btn-register')
-		|| e.target.classList.contains('register-form');
+		registerBox.contains(e.target) || e.target.classList.contains('btn-register');
 	
 	//If we are outside the box when it appears, hide it again 
 	if (!isClickInside) {
