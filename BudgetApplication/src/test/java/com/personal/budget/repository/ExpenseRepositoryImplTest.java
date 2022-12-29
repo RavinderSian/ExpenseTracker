@@ -177,7 +177,7 @@ class ExpenseRepositoryImplTest {
 	}
 	
 	@Test
-	void test_FindAll_ReturnsListOfLength2ExpectedEntries_WhenTableHas2Entries() {
+	void test_FindAll_ReturnsListOfLength2_WhenTableHas2Entries() {
 		
 		Expense expense = new Expense();
 		expense.setUserId(1L);
@@ -202,7 +202,7 @@ class ExpenseRepositoryImplTest {
 	}
 	
 	@Test
-	void test_FindExpensesByYear_ReturnsListOfLength2ExpectedEntries_WhenTableHas2EntriesForGivenYear() {
+	void test_FindExpensesByYearForUser_ReturnsListOfLength2_WhenTableHas2EntriesForGivenYear() {
 		
 		Expense expense = new Expense();
 		expense.setUserId(1L);
@@ -222,14 +222,14 @@ class ExpenseRepositoryImplTest {
 		
 		repository.save(expense2);
 		
-		List<Expense> expenses = repository.findExpensesByYear(LocalDate.now().getYear());
+		List<Expense> expenses = repository.findExpensesByYearForUser(LocalDate.now().getYear(), 1L);
 		
 		assertThat(expenses.size(), equalTo(2));
 		
 	}
 	
 	@Test
-	void test_FindExpensesByYear_ReturnsListOfLength1_WhenTableHasEntryThisYear1Jan() {
+	void test_FindExpensesByYearForUser_ReturnsListOfLength1_WhenTableHasEntryThisYear1Jan() {
 		
 		Expense expense = new Expense();
 		expense.setUserId(1L);
@@ -240,14 +240,14 @@ class ExpenseRepositoryImplTest {
 		
 		repository.save(expense);
 		
-		List<Expense> expenses = repository.findExpensesByYear(LocalDate.now().getYear());
+		List<Expense> expenses = repository.findExpensesByYearForUser(LocalDate.now().getYear(), 1L);
 		
 		assertThat(expenses.size(), equalTo(1));
 		
 	}
 	
 	@Test
-	void test_FindExpensesByYear_ReturnsListOfLength0_WhenTableHasEntryNextYear1Jan() {
+	void test_FindExpensesByYearForUser_ReturnsListOfLength0_WhenTableHasEntryNextYear1Jan() {
 		
 		Expense expense = new Expense();
 		expense.setUserId(1L);
@@ -258,14 +258,14 @@ class ExpenseRepositoryImplTest {
 		
 		repository.save(expense);
 		
-		List<Expense> expenses = repository.findExpensesByYear(LocalDate.now().getYear());
+		List<Expense> expenses = repository.findExpensesByYearForUser(LocalDate.now().getYear(), 1L);
 		
 		assertThat(expenses.size(), equalTo(0));
 		
 	}
 	
 	@Test
-	void test_FindExpensesByYear_ReturnsListOfLength1_WhenTableHasEntryThisYear31Dec() {
+	void test_FindExpensesByYearForUser_ReturnsListOfLength1_WhenTableHasEntryThisYear31Dec() {
 		
 		Expense expense = new Expense();
 		expense.setUserId(1L);
@@ -276,14 +276,14 @@ class ExpenseRepositoryImplTest {
 		
 		repository.save(expense);
 		
-		List<Expense> expenses = repository.findExpensesByYear(LocalDate.now().getYear());
+		List<Expense> expenses = repository.findExpensesByYearForUser(LocalDate.now().getYear(), 1L);
 		
 		assertThat(expenses.size(), equalTo(1));
 		
 	}
 	
 	@Test
-	void test_FindExpensesByYear_ReturnsListOfLength0_WhenTableHasEntriesForNextYear() {
+	void test_FindExpensesByYearForUser_ReturnsListOfLength0_WhenTableHasEntriesForNextYear() {
 		
 		Expense expense = new Expense();
 		expense.setUserId(1L);
@@ -303,10 +303,38 @@ class ExpenseRepositoryImplTest {
 		
 		repository.save(expense2);
 		
-		List<Expense> expenses = repository.findExpensesByYear(LocalDate.now().getYear());
+		List<Expense> expenses = repository.findExpensesByYearForUser(LocalDate.now().getYear(), 1L);
 		
 		assertThat(expenses.size(), equalTo(0));
 		
+	}
+	
+	@Test
+	void test_FindExpensesByYearForUser_ReturnsListOfLength1_WhenTableHas1EntryForGivenUser() {
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory("Dates");
+		expense.setDescription("fds");
+		expense.setPurchaseDate(LocalDate.now());
+		
+		repository.save(expense);
+		
+		Expense expense2 = new Expense();
+		expense2.setUserId(2L);
+		expense2.setAmount(BigDecimal.valueOf(10));
+		expense2.setCategory("Dates");
+		expense2.setDescription("test2");
+		expense2.setPurchaseDate(LocalDate.now());
+		
+		repository.save(expense2);
+		
+		List<Expense> expenses = repository.findExpensesByYearForUser(LocalDate.now().getYear(), 1L);
+		
+		assertThat(expenses.size(), equalTo(1));
+		assertThat(expenses.get(0).getUserId(), equalTo(1L));
+
 	}
 	
 }

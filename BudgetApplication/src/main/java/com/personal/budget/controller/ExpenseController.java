@@ -37,7 +37,7 @@ public class ExpenseController {
 			model.addAttribute("expenses", new ArrayList<>());
 		}else {
 			Long userId = userService.findByUsername(request.getUserPrincipal().getName()).get().getId();
-			model.addAttribute("expenses", service.findExpensesByYear(LocalDate.now().getYear()));
+			model.addAttribute("expenses", service.findExpensesByYearForUser(LocalDate.now().getYear(), userId));
 		}
 		
 		model.addAttribute("currentYear", LocalDate.now().getYear());
@@ -58,7 +58,7 @@ public class ExpenseController {
 	public String budgetForYear(@PathVariable Integer year, Model model, HttpServletRequest request) {
 		
 		Long userId = userService.findByUsername(request.getUserPrincipal().getName()).get().getId();
-		model.addAttribute("expenses", service.findExpensesByYear(year));
+		model.addAttribute("expenses", service.findExpensesByYearForUser(year, userId));
 		
 		model.addAttribute("expense", new Expense());
 		model.addAttribute("currentYear", year);
