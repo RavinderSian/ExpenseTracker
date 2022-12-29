@@ -1,4 +1,5 @@
 "use strict";
+import { MONTHS } from './config.js';
 
 const navBar = document.querySelector('.nav-box')
 const registerBtn = document.querySelector(".btn-register");
@@ -7,8 +8,6 @@ const registerSubmitBtn = document.querySelector("#btn-register-submit");
 const deleteBtn = document.querySelector('.delete-expense-btn');
 const currentYear = document.querySelector('.year-text');
 const currentMonth = document.querySelector('.month-text');
-const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 
-	'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
 
 let expensesOnPage = document.querySelectorAll('.budget-list');
 const expenseHeaders = document.querySelector('.budget-list-header');
@@ -24,7 +23,7 @@ navBar.addEventListener("click", function(e) {
 (function() {
 
 	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
-		months.indexOf(currentMonth.textContent)+1);
+		MONTHS.indexOf(currentMonth.textContent)+1);
 	
 	//Below removes each expense element currently displayed on the page
 	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
@@ -47,14 +46,14 @@ navBar.addEventListener("click", function(e) {
 }());
 
 const monthArrows = function(id) {
-	const indexOfMonth = months.indexOf(currentMonth.textContent);
+	const indexOfMonth = MONTHS.indexOf(currentMonth.textContent);
 	
 	if (id.includes('month-arrow-next')){
 		currentMonth.textContent = indexOfMonth === 11 ? 'JANUARY' 
-		: months[indexOfMonth+1];
+		: MONTHS[indexOfMonth+1];
 	} else{
 		currentMonth.textContent = indexOfMonth === 0 ? 'DECEMBER' 
-		: months[indexOfMonth-1];
+		: MONTHS[indexOfMonth-1];
 	}
 }
 
@@ -66,7 +65,7 @@ const displayCorrectExpensesForMonth = function(e) {
 	monthArrows(e.target.id);
 	
 	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
-		months.indexOf(currentMonth.textContent)+1);
+		MONTHS.indexOf(currentMonth.textContent)+1);
 	
 	//Below removes each expense element currently displayed on the page
 	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
