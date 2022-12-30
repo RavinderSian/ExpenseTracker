@@ -95,22 +95,24 @@ document.addEventListener("click", (e) => {
 	if (e.target.classList.contains('edit-expense-btn')){
 		e.preventDefault();
 		
-		const expense = e.target.closest('.budget-list');
+		const expenseToEdit = e.target.closest('.budget-list');
 		
-		const currentExpenseId = expense.querySelector('.delete-expense-link').attributes.item(3).name;
-		const currentExpenseContent = Array.from(expense.children).filter(child => child.nodeName === 'P').map(paragraph => paragraph.textContent);
+		const currentExpenseId = expenseToEdit.querySelector('.delete-expense-link').attributes.item(3).name;
+		const currentExpenseContent = Array.from(expenseToEdit.children).filter(child => child.nodeName === 'P').map(paragraph => paragraph.textContent);
 		
-		expense.insertAdjacentHTML('afterend', `<form class = "budget-list-edit-form" th:action="@{/editexpense}" th:object="${expense}" method="post">
-					<input class = "edit-expense-input" type = "hidden" th:value="${currentExpenseId}" th:field="*{id}">
-					<input class = "edit-expense-input" type = "date" th:value="*{purchaseDate}" th:field="*{purchaseDate}" placeholder = "${currentExpenseContent[0]}">
+		console.log(currentExpenseId);
+		
+		expenseToEdit.insertAdjacentHTML('afterend', `<form class = "budget-list-edit-form" action="/editexpense" id=expenseToEdit method="post">
+					<input class = "edit-expense-input" type = "hidden" th:value=${currentExpenseId} th:field="*{id}">
+					<input class = "edit-expense-input" type = "date" th:value="*{purchaseDate} th:field="*{purchaseDate}" placeholder = "${currentExpenseContent[0]}">
 					<select class = "edit-expense-input" name="categories" th:field="*{category}" placeholder = "${currentExpenseContent[1]}">
 				        <option value="DATES">Dates</option>
 				        <option value="MISC">Misc</option>
 				 		<option value="FUEL">Fuel</option>
 				        <option value="DATES">MISC</option>
 			     	</select>
-					<input class = "edit-expense-input" type = "text" th:value="${expense.amount}" th:field="*{amount}" placeholder = "${currentExpenseContent[2]}">
-					<input class = "edit-expense-input" type = "text" th:value="${expense.description}" th:field="*{description}" placeholder = "${currentExpenseContent[3]}">
+					<input class = "edit-expense-input" type = "text" th:value="${expenseToEdit.amount}" th:field="*{amount}" placeholder = "${currentExpenseContent[2]}">
+					<input class = "edit-expense-input" type = "text" th:value="${expenseToEdit.description}" th:field="*{description}" placeholder = "${currentExpenseContent[3]}">
 					<input class = "edit-expense-input" name="submit-login" type="submit" value="submit" />
 				</form>`);
 	}

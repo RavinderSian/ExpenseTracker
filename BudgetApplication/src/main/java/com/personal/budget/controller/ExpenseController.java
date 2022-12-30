@@ -47,6 +47,8 @@ public class ExpenseController {
 		model.addAttribute("currentMonth", LocalDate.now().getMonth().toString());
 		
 		model.addAttribute("expense", new Expense());
+		model.addAttribute("expenseToEdit", new Expense());
+
 
 		model.addAttribute("user", new User());
 		
@@ -91,6 +93,13 @@ public class ExpenseController {
 		
 		service.save(newExpense);
 		return "redirect:/budget";
+	}
+	
+	@PostMapping("/editexpense")
+	public String editExpense(Model model, @ModelAttribute Expense expense, HttpServletRequest request) {
+		
+		service.save(expense);
+		return "";
 	}
 	
 }
