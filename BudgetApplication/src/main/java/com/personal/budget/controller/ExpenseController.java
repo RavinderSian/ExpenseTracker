@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.personal.budget.model.Expense;
+import com.personal.budget.model.ExpenseDTO;
 import com.personal.budget.model.User;
 import com.personal.budget.service.ExpenseService;
 import com.personal.budget.service.UserService;
@@ -47,7 +48,7 @@ public class ExpenseController {
 		model.addAttribute("currentMonth", LocalDate.now().getMonth().toString());
 		
 		model.addAttribute("expense", new Expense());
-		model.addAttribute("expenseToEdit", new Expense());
+		model.addAttribute("expenseToEdit", new ExpenseDTO());
 
 
 		model.addAttribute("user", new User());
@@ -96,9 +97,11 @@ public class ExpenseController {
 	}
 	
 	@PostMapping("/editexpense")
-	public String editExpense(Model model, @ModelAttribute Expense expense, HttpServletRequest request) {
+	public String editExpense(Model model, @ModelAttribute ExpenseDTO expense, HttpServletRequest request) {
 		
-		service.save(expense);
+		expense.getAmount();
+		
+		//service.save(expense);
 		return "";
 	}
 	

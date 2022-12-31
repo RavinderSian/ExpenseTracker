@@ -100,19 +100,19 @@ document.addEventListener("click", (e) => {
 		const currentExpenseId = expenseToEdit.querySelector('.delete-expense-link').attributes.item(3).name;
 		const currentExpenseContent = Array.from(expenseToEdit.children).filter(child => child.nodeName === 'P').map(paragraph => paragraph.textContent);
 		
-		console.log(currentExpenseId);
+		console.log(currentExpenseContent);
 		
-		expenseToEdit.insertAdjacentHTML('afterend', `<form class = "budget-list-edit-form" action="/editexpense" id=expenseToEdit method="post">
-					<input class = "edit-expense-input" type = "hidden" th:value=${currentExpenseId} th:field="*{id}">
-					<input class = "edit-expense-input" type = "date" th:value="*{purchaseDate} th:field="*{purchaseDate}" placeholder = "${currentExpenseContent[0]}">
-					<select class = "edit-expense-input" name="categories" th:field="*{category}" placeholder = "${currentExpenseContent[1]}">
+		expenseToEdit.insertAdjacentHTML('afterend', `<form class = "budget-list-edit-form" action="/editexpense" id=expense method="post">
+					<input class = "edit-expense-input" type = "hidden" name = "id" value = ${currentExpenseId}>
+					<input class = "edit-expense-input" type = "date" name = "purchaseDate" value = ${currentExpenseContent[0]} placeholder=${currentExpenseContent[0]}>
+					<select class = "edit-expense-input" name="category" value = ${currentExpenseContent[1]} placeholder = ${currentExpenseContent[1]}>
 				        <option value="DATES">Dates</option>
 				        <option value="MISC">Misc</option>
 				 		<option value="FUEL">Fuel</option>
 				        <option value="DATES">MISC</option>
 			     	</select>
-					<input class = "edit-expense-input" type = "text" th:value="${expenseToEdit.amount}" th:field="*{amount}" placeholder = "${currentExpenseContent[2]}">
-					<input class = "edit-expense-input" type = "text" th:value="${expenseToEdit.description}" th:field="*{description}" placeholder = "${currentExpenseContent[3]}">
+					<input class = "edit-expense-input" type = "text" name = "amount" value = ${currentExpenseContent[2]} placeholder = ${currentExpenseContent[2]}>
+					<input class = "edit-expense-input" type = "text" name = "description" value = ${currentExpenseContent[3]} placeholder = ${currentExpenseContent[3]}>
 					<input class = "edit-expense-input" name="submit-login" type="submit" value="submit" />
 				</form>`);
 	}
