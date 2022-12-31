@@ -1,5 +1,6 @@
 package com.personal.budget.controller;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -97,12 +98,30 @@ public class ExpenseController {
 	}
 	
 	@PostMapping("/editexpense")
-	public String editExpense(Model model, @ModelAttribute ExpenseDTO expense, HttpServletRequest request) {
+	public String editExpense(Model model, @ModelAttribute ExpenseDTO expenseDTO, HttpServletRequest request) {
 		
-		expense.getAmount();
+		expenseDTO.getAmount();
+		
+		Expense expense2 = expenseDTOToExpense(expenseDTO);
 		
 		//service.save(expense);
 		return "";
+	}
+	
+	private Expense expenseDTOToExpense(ExpenseDTO expenseDTO) {
+		
+		Expense expense = new Expense();
+		
+		String[] splitDate = expenseDTO.getPurchaseDate().split("-");
+		
+		expense.setId(Long.valueOf(expenseDTO.getId()));
+		expense.setCategory(expenseDTO.getCategory());
+		expense.setDescription(expenseDTO.getDescription());
+		expense.setAmount(new BigDecimal(expenseDTO.getAmount()));
+		expense.setPurchaseDate(LocalDate.of(Integer.valueOf(splitDate[0]), Integer.valueOf(splitDate[1]), Integer.valueOf(splitDate[2])));
+		
+		return expense;
+		
 	}
 	
 }

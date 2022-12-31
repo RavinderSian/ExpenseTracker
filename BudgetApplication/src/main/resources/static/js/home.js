@@ -111,7 +111,7 @@ document.addEventListener("click", (e) => {
 				 		<option value="FUEL">Fuel</option>
 				        <option value="DATES">MISC</option>
 			     	</select>
-					<input class = "edit-expense-input" type = "text" name = "amount" value = ${currentExpenseContent[2]} placeholder = ${currentExpenseContent[2]}>
+					<input class = "edit-expense-input" type = "text" name = "amount" value = ${currentExpenseContent[2].replace('£', '')} placeholder = ${currentExpenseContent[2]}>
 					<input class = "edit-expense-input" type = "text" name = "description" value = ${currentExpenseContent[3]} placeholder = ${currentExpenseContent[3]}>
 					<input class = "edit-expense-input" name="submit-login" type="submit" value="submit" />
 				</form>`);

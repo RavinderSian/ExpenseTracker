@@ -14,7 +14,6 @@ public class ExpenseDTO {
 	private String category;
 	private String amount;
 	private String description;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate purchaseDate;
+	private String purchaseDate;
 	
 }
