@@ -101,7 +101,6 @@ public class ExpenseController {
 	public String editExpense(Model model, @ModelAttribute ExpenseDTO expenseDTO, HttpServletRequest request) {
 		
 		service.updateExpense(expenseDTOToExpense(expenseDTO));
-		
 		return "redirect:/budget";
 	}
 	

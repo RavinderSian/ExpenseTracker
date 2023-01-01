@@ -28,9 +28,10 @@ const displayNewExpenses = function() {
 			  		<p>${expense.category}</p>
 			  		<p>&pound${expense.amount}</p>
 			  		<p>${expense.description}</p>
+			  		<a class = "edit-expense-link"><button class = "edit-expense-btn">Edit</button></a>
 			  		<a class = "delete-expense-link" th:href = '/delete/' + ${expense.id}><button class = "delete-expense-btn">Delete</button></a>
 		  	</div>`);
-		});
+		})
 
 	//This is needed so the expensesOnPage is the new set of expenses and not the old
 	expensesOnPage = document.querySelectorAll('.budget-list');
@@ -77,6 +78,31 @@ document.addEventListener("click", (e) => {
 			sendDeleteRequest(e.target.closest('a').href);
 			window.location.reload();
 		}
+	}
+	
+	if (e.target.classList.contains('edit-expense-btn')){
+		e.preventDefault();
+		
+		const expenseToEdit = e.target.closest('.budget-list');
+		
+		const currentExpenseId = expenseToEdit.querySelector('.delete-expense-link').attributes.item(3).name;
+		const currentExpenseContent = Array.from(expenseToEdit.children).filter(child => child.nodeName === 'P').map(paragraph => paragraph.textContent);
+		
+		console.log(currentExpenseContent);
+		
+		expenseToEdit.insertAdjacentHTML('afterend', `<form class = "budget-list-edit-form" action="/editexpense" id=expense method="post">
+					<input class = "edit-expense-input" type = "hidden" name = "id" value = ${currentExpenseId}>
+					<input class = "edit-expense-input" type = "date" name = "purchaseDate" value = ${currentExpenseContent[0]} placeholder=${currentExpenseContent[0]}>
+					<select class = "edit-expense-input" name="category" value = ${currentExpenseContent[1]} placeholder = ${currentExpenseContent[1]}>
+				        <option value="DATES">Dates</option>
+				        <option value="MISC">Misc</option>
+				 		<option value="FUEL">Fuel</option>
+				        <option value="DATES">MISC</option>
+			     	</select>
+					<input class = "edit-expense-input" type = "text" name = "amount" value = ${currentExpenseContent[2].replace('£', '')} placeholder = ${currentExpenseContent[2]}>
+					<input class = "edit-expense-input" type = "text" name = "description" value = ${currentExpenseContent[3]} placeholder = ${currentExpenseContent[3]}>
+					<input class = "edit-expense-input" name="submit-login" type="submit" value="submit" />
+				</form>`);
 	}
 });
 
