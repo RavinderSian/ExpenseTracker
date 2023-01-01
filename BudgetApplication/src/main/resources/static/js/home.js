@@ -34,7 +34,7 @@ const displayNewExpenses = function() {
 			  		<p>&pound${expense.amount}</p>
 			  		<p>${expense.description}</p>
 			  		<a class = "edit-expense-link"><button class = "edit-expense-btn">Edit</button></a>
-			  		<a class = "delete-expense-link" th:href = '/delete/' + ${expense.id}><button class = "delete-expense-btn">Delete</button></a>
+			  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
 		  	</div>`);
 		})
 
@@ -97,10 +97,11 @@ document.addEventListener("click", (e) => {
 		
 		const expenseToEdit = e.target.closest('.budget-list');
 		
-		const currentExpenseId = expenseToEdit.querySelector('.delete-expense-link').attributes.item(3).name;
+		const splitURL = expenseToEdit.querySelector('.delete-expense-link').href.split('/');
+		const currentExpenseId = splitURL[splitURL.length-1];
 		const currentExpenseContent = Array.from(expenseToEdit.children).filter(child => child.nodeName === 'P').map(paragraph => paragraph.textContent);
 		
-		console.log(currentExpenseContent);
+		console.log(currentExpenseContent[3]);
 		
 		expenseToEdit.insertAdjacentHTML('afterend', `<form class = "budget-list-edit-form" action="/editexpense" id=expense method="post">
 					<input class = "edit-expense-input" type = "hidden" name = "id" value = ${currentExpenseId}>
