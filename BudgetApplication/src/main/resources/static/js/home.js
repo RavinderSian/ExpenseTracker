@@ -101,8 +101,6 @@ document.addEventListener("click", (e) => {
 		const currentExpenseId = splitURL[splitURL.length-1];
 		const currentExpenseContent = Array.from(expenseToEdit.children).filter(child => child.nodeName === 'P').map(paragraph => paragraph.textContent);
 		
-		console.log(currentExpenseContent[3]);
-		
 		expenseToEdit.insertAdjacentHTML('afterend', `<form class = "budget-list-edit-form" action="/editexpense" id=expense method="post">
 					<input class = "edit-expense-input" type = "hidden" name = "id" value = ${currentExpenseId}>
 					<input class = "edit-expense-input" type = "date" name = "purchaseDate" value = ${currentExpenseContent[0]} placeholder=${currentExpenseContent[0]}>
@@ -113,7 +111,7 @@ document.addEventListener("click", (e) => {
 				        <option value="DATES">MISC</option>
 			     	</select>
 					<input class = "edit-expense-input" type = "text" name = "amount" value = ${currentExpenseContent[2].replace('£', '')} placeholder = ${currentExpenseContent[2]}>
-					<input class = "edit-expense-input" type = "text" name = "description" value = ${currentExpenseContent[3]} placeholder = ${currentExpenseContent[3]}>
+					<input class = "edit-expense-input" type = "text" name = "description" value = "${currentExpenseContent[3]}" placeholder = "${currentExpenseContent[3]}">
 					<input class = "edit-expense-input" name="submit-login" type="submit" value="submit" />
 				</form>`);
 	}
