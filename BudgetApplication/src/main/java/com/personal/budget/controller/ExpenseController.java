@@ -100,12 +100,9 @@ public class ExpenseController {
 	@PostMapping("/editexpense")
 	public String editExpense(Model model, @ModelAttribute ExpenseDTO expenseDTO, HttpServletRequest request) {
 		
-		expenseDTO.getAmount();
+		service.updateExpense(expenseDTOToExpense(expenseDTO));
 		
-		Expense expense2 = expenseDTOToExpense(expenseDTO);
-		
-		//service.save(expense);
-		return "";
+		return "redirect:/budget";
 	}
 	
 	private Expense expenseDTOToExpense(ExpenseDTO expenseDTO) {

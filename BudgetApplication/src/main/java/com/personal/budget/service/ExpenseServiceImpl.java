@@ -46,5 +46,10 @@ public class ExpenseServiceImpl implements ExpenseService {
 	public List<Expense> findExpensesByYearForUser(Integer year, Long userId) {
 		return repository.findExpensesByYearForUser(year, userId);
 	}
+
+	@Override
+	public void updateExpense(Expense expense) {
+		repository.updateExpense(expense);
+	}
 	
 }
