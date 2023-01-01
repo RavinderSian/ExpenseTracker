@@ -337,4 +337,34 @@ class ExpenseRepositoryImplTest {
 
 	}
 	
+	@Test
+	void test_UpdateExpenses_UpdatesExpenseCorrectly_WhenGivenUpdatedExpense() {
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory("Dates");
+		expense.setDescription("fds");
+		expense.setPurchaseDate(LocalDate.now());
+		
+		repository.save(expense);
+		
+		expense.setUserId(2L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory("Dates");
+		expense.setDescription("test2");
+		expense.setPurchaseDate(LocalDate.now().plusDays(1L));
+		
+		repository.updateExpense(expense);
+		
+		Expense updatedExpense = repository.findById(1L).get();
+		
+		//User id is not updated so this is a good test, it should remain as ones
+		assertThat(updatedExpense.getUserId(), equalTo(1L));
+		assertThat(updatedExpense.getCategory(), equalTo(expense.getCategory()));
+		assertThat(updatedExpense.getAmount(), equalTo(expense.getAmount()));
+		assertThat(updatedExpense.getPurchaseDate(), equalTo(expense.getPurchaseDate()));
+
+	}
+	
 }

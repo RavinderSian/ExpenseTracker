@@ -13,5 +13,6 @@ public interface ExpenseRepository {
 	List<Expense> findAll();
 	List<Expense> findByUserId(Long userId);
 	List<Expense> findExpensesByYearForUser(Integer year, Long userId);
+	void updateExpense(Expense expense);
 	
 }

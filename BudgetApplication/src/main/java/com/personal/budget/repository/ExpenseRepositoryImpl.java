@@ -90,5 +90,12 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 		return jdbcTemplate.query("SELECT * FROM expenses WHERE purchase_date > ? AND purchase_date < ? AND user_id = ?", 
 				new ExpenseRowMapper(), LocalDate.of(year-1, 12, 31), LocalDate.of(year+1, 1, 1), userId);
 	}
-
+	
+	@Override
+	public void updateExpense (Expense expense) {
+		jdbcTemplate.update("UPDATE expenses SET category = ?, amount = ?, description = ?, purchase_date = ? WHERE id = ?;", 
+				expense.getCategory(), expense.getAmount(), expense.getDescription(), expense.getPurchaseDate(), expense.getId());
+		
+	}
+	
 }
