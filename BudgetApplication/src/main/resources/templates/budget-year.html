@@ -15,7 +15,7 @@
 		</nav>
 		
 		<div th:if="${#authentication.getPrincipal() != 'anonymousUser'}" class = "body-app">
-			<div>
+			<div id = "body-app-child">
 				<div class = "budget-date-filter">
 					<div class = "year-grid">
 						<div class = "flex-box-year">
@@ -54,6 +54,9 @@
 			  		<button class = "edit-expense-btn">Edit</button>
 			  		<a class = "delete-expense-link" th:href = "${'/delete/' + expense.id}"><button class = "delete-expense-btn">Delete</button></a>
 			  	</div>
+			  	<div class = "budget-list-total">
+					<h3 class = "total"></h3>
+				</div>
 		  	</div>
 		  	<div class = "add-expense-form">
 			  	<form th:action="@{/addexpensedate}" th:object="${expense}" method="post">

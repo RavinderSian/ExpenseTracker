@@ -8,12 +8,19 @@ const currentMonth = document.querySelector('.month-text');
 
 let expensesOnPage = document.querySelectorAll('.budget-list');
 const expenseHeaders = document.querySelector('.budget-list-header');
+const total = document.querySelector('.total');
+
+console.log(expensesOnPage);
 
 navBar.addEventListener("click", function(e) {
 	if (e.target.classList.contains('btn-register')) {
 		registerBox.classList.toggle("hidden");
 	}
 });
+
+const calculateTotalExpenses = function(filteredExpenses) {
+	return filteredExpenses.reduce((acc, cur) => acc + cur.amount, 0);
+}
 
 //This self executing function displays the current (default) months expenses
 //On the page on load 
@@ -37,7 +44,10 @@ const displayNewExpenses = function() {
 			  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
 		  	</div>`);
 		})
-
+		
+	const expenseTotal = calculateTotalExpenses(filteredExpenses);
+	
+	total.innerHTML = `Total: £${expenseTotal}`;
 	//This is needed so the expensesOnPage is the new set of expenses and not the old
 	expensesOnPage = document.querySelectorAll('.budget-list');
 	

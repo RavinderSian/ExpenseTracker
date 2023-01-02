@@ -1,14 +1,18 @@
 "use strict";
 import { MONTHS } from './config.js';
 
-const deleteBtn = document.querySelector('.delete-expense-btn');
-const currentYear = document.querySelector('.year-text');
 const currentMonth = document.querySelector('.month-text');
 const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 
 	'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
 
 let expensesOnPage = document.querySelectorAll('.budget-list');
 const expenseHeaders = document.querySelector('.budget-list-header');
+const bodyAppChild = document.querySelector('#body-app-child');
+const total = document.querySelector('.total');
+
+const calculateTotalExpenses = function(filteredExpenses) {
+	return filteredExpenses.reduce((acc, cur) => acc + cur.amount, 0);
+}
 
 //This self executing function displays the current (default) months expenses
 //On the page on load 
@@ -32,6 +36,10 @@ const displayNewExpenses = function() {
 			  		<a class = "delete-expense-link" th:href = '/delete/' + ${expense.id}><button class = "delete-expense-btn">Delete</button></a>
 		  	</div>`);
 		})
+		
+	const expenseTotal = calculateTotalExpenses(filteredExpenses);
+	
+	total.innerHTML = `Total: £${expenseTotal}`;
 
 	//This is needed so the expensesOnPage is the new set of expenses and not the old
 	expensesOnPage = document.querySelectorAll('.budget-list');
