@@ -58,7 +58,9 @@ const monthArrows = function(id) {
 
 const displayCorrectExpensesForMonth = function(e) {
 	
-	if (!e.target.id.includes('month-arrow')) return;
+	//console.log(e.target.id);
+	
+	if (e.target.id === null || !e.target.id.includes('month-arrow')) return;
 
 	e.preventDefault();
 	monthArrows(e.target.id);
@@ -69,6 +71,8 @@ const displayCorrectExpensesForMonth = function(e) {
 //We are listening on document because some elements do not exist at certain points
 //This means we need event delegation to listen for them
 document.addEventListener("click", (e) => {
+	
+	console.log(e.target);
 	
 	displayCorrectExpensesForMonth(e);
 
@@ -93,27 +97,33 @@ document.addEventListener("click", (e) => {
 	}
 	
 	if (e.target.classList.contains('edit-expense-btn')){
+		
 		e.preventDefault();
 		
 		const expenseToEdit = e.target.closest('.budget-list');
+		
+		if (expenseToEdit.dataset.editing) return;
+		
+		expenseToEdit.dataset.editing = 'true';
 		
 		const splitURL = expenseToEdit.querySelector('.delete-expense-link').href.split('/');
 		const currentExpenseId = splitURL[splitURL.length-1];
 		const currentExpenseContent = Array.from(expenseToEdit.children).filter(child => child.nodeName === 'P').map(paragraph => paragraph.textContent);
 		
-		expenseToEdit.insertAdjacentHTML('afterend', `<form class = "budget-list-edit-form" action="/editexpense" id=expense method="post">
+		expenseToEdit.insertAdjacentHTML('afterend', 
+			`<form class = "budget-list-edit-form" action="/editexpense" id=expense method="post">
 					<input class = "edit-expense-input" type = "hidden" name = "id" value = ${currentExpenseId}>
 					<input class = "edit-expense-input" type = "date" name = "purchaseDate" value = ${currentExpenseContent[0]} placeholder=${currentExpenseContent[0]}>
 					<select class = "edit-expense-input" name="category" value = ${currentExpenseContent[1]} placeholder = ${currentExpenseContent[1]}>
+				        <option value="" disabled selected>Select something...</option>
 				        <option value="DATES">Dates</option>
 				        <option value="MISC">Misc</option>
 				 		<option value="FUEL">Fuel</option>
-				        <option value="DATES">MISC</option>
 			     	</select>
 					<input class = "edit-expense-input" type = "text" name = "amount" value = ${currentExpenseContent[2].replace('£', '')} placeholder = ${currentExpenseContent[2]}>
 					<input class = "edit-expense-input" type = "text" name = "description" value = "${currentExpenseContent[3]}" placeholder = "${currentExpenseContent[3]}">
 					<input class = "edit-expense-input" name="submit-login" type="submit" value="submit" />
-				</form>`);
+			 </form>`);
 	}
 	
 });

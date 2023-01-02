@@ -85,10 +85,12 @@ document.addEventListener("click", (e) => {
 		
 		const expenseToEdit = e.target.closest('.budget-list');
 		
+		if (expenseToEdit.dataset.editing) return;
+		
+		expenseToEdit.dataset.editing = 'true';
+		
 		const currentExpenseId = expenseToEdit.querySelector('.delete-expense-link').attributes.item(3).name;
 		const currentExpenseContent = Array.from(expenseToEdit.children).filter(child => child.nodeName === 'P').map(paragraph => paragraph.textContent);
-		
-		console.log(currentExpenseContent);
 		
 		expenseToEdit.insertAdjacentHTML('afterend', `<form class = "budget-list-edit-form" action="/editexpense" id=expense method="post">
 					<input class = "edit-expense-input" type = "hidden" name = "id" value = ${currentExpenseId}>
