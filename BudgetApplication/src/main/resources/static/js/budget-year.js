@@ -7,7 +7,6 @@ const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
 
 let expensesOnPage = document.querySelectorAll('.budget-list');
 const expenseHeaders = document.querySelector('.budget-list-header');
-const bodyAppChild = document.querySelector('#body-app-child');
 const total = document.querySelector('.total');
 
 const calculateTotalExpenses = function(filteredExpenses) {
@@ -17,6 +16,8 @@ const calculateTotalExpenses = function(filteredExpenses) {
 //This self executing function displays the current (default) months expenses
 //On the page on load 
 const displayNewExpenses = function() {
+	
+	let expenseTotal;
 
 	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
 		MONTHS.indexOf(currentMonth.textContent)+1);
@@ -24,6 +25,22 @@ const displayNewExpenses = function() {
 	//Below removes each expense element currently displayed on the page
 	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 	
+	if (currentMonth.textContent === 'ALL') {
+	expenses
+	.forEach(expense => {
+				expenseHeaders.insertAdjacentHTML('afterend' ,
+					`<div class = "budget-list">
+					<p>${expense.purchaseDate}</p>
+			  		<p>${expense.category}</p>
+			  		<p>&pound${expense.amount}</p>
+			  		<p>${expense.description}</p>
+			  		<a class = "edit-expense-link"><button class = "edit-expense-btn">Edit</button></a>
+			  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
+		  	</div>`);
+		});
+	expenseTotal = calculateTotalExpenses(expenses);
+
+	} else {
 	filteredExpenses
 	.forEach(expense => {
 				expenseHeaders.insertAdjacentHTML('afterend' ,
@@ -33,28 +50,27 @@ const displayNewExpenses = function() {
 			  		<p>&pound${expense.amount}</p>
 			  		<p>${expense.description}</p>
 			  		<a class = "edit-expense-link"><button class = "edit-expense-btn">Edit</button></a>
-			  		<a class = "delete-expense-link" th:href = '/delete/' + ${expense.id}><button class = "delete-expense-btn">Delete</button></a>
+			  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
 		  	</div>`);
-		})
+		});
+	expenseTotal = calculateTotalExpenses(filteredExpenses);
+	}
 		
-	const expenseTotal = calculateTotalExpenses(filteredExpenses);
-	
 	total.innerHTML = `Total: £${expenseTotal}`;
-
 	//This is needed so the expensesOnPage is the new set of expenses and not the old
 	expensesOnPage = document.querySelectorAll('.budget-list');
+	
 };
-
 displayNewExpenses();
 
 const monthArrows = function(id) {
 	const indexOfMonth = MONTHS.indexOf(currentMonth.textContent);
 	
 	if (id.includes('month-arrow-next')){
-		currentMonth.textContent = indexOfMonth === 11 ? 'JANUARY' 
+		currentMonth.textContent = indexOfMonth === 12 ? 'JANUARY' 
 		: MONTHS[indexOfMonth+1];
 	} else{
-		currentMonth.textContent = indexOfMonth === 0 ? 'DECEMBER' 
+		currentMonth.textContent = indexOfMonth === 0 ? 'ALL' 
 		: MONTHS[indexOfMonth-1];
 	}
 }
