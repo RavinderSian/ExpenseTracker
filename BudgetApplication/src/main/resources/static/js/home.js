@@ -10,8 +10,6 @@ let expensesOnPage = document.querySelectorAll('.budget-list');
 const expenseHeaders = document.querySelector('.budget-list-header');
 const total = document.querySelector('.total');
 
-console.log(expensesOnPage);
-
 navBar.addEventListener("click", function(e) {
 	if (e.target.classList.contains('btn-register')) {
 		registerBox.classList.toggle("hidden");
