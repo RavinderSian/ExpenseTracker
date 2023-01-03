@@ -47,7 +47,7 @@ const displayNewExpenses = function() {
 		});
 	expenseTotal = calculateTotalExpenses(expenses);
 
-	}else {
+	} else {
 	filteredExpenses
 	.forEach(expense => {
 				expenseHeaders.insertAdjacentHTML('afterend' ,
@@ -60,7 +60,7 @@ const displayNewExpenses = function() {
 			  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
 		  	</div>`);
 		});
-	expenseTotal = calculateTotalExpenses(expenses);
+	expenseTotal = calculateTotalExpenses(filteredExpenses);
 	}
 		
 	total.innerHTML = `Total: £${expenseTotal}`;
