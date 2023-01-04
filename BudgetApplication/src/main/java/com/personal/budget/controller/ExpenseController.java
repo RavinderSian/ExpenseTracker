@@ -37,7 +37,7 @@ public class ExpenseController {
 		
 		if (request.getUserPrincipal() == null) {
 			model.addAttribute("expenses", new ArrayList<>());
-		}else {
+		} else {
 			Long userId = userService.findByUsername(request.getUserPrincipal().getName()).get().getId();
 			model.addAttribute("expenses", service.findExpensesByYearForUser(LocalDate.now().getYear(), userId));
 		}
