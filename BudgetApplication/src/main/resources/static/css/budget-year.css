@@ -78,15 +78,6 @@ body {
 	
 }
 
-.add-expense-form {
-	text-align: center;
-	border: 2px solid blue;
-}
-
-.expense-input {
-	border-radius: 10px;
-}
-
 .error {
 	font-weight: bold;
 	color: red;

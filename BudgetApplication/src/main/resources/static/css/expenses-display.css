@@ -25,11 +25,13 @@
 }
 
 .add-expense-form {
-	text-align: center;
+	display: grid;
+	justify-items: center;
 	border: 2px solid blue;
 }
 
 .expense-input {
+	display: block;
 	border-radius: 10px;
 }
 

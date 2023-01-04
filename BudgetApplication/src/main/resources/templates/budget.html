@@ -68,7 +68,7 @@
 		  	</div>
 		  	<div class = "add-expense-form">
 			  	<form th:action="@{/addexpense}" th:object="${expense}" method="post">
-			  		<h3>Add expense</h3>
+					<h3>Add expense</h3>
 					<input class = "expense-input" type = "date" th:value="*{purchaseDate}" th:field="*{purchaseDate}" placeholder = "10-10-2022">
 					<input class = "expense-input" type = "text" th:field="*{amount}" placeholder = "Amount">
 					  <select name="categories" th:field="*{category}">
