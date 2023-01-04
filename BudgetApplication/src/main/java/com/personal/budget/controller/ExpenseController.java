@@ -74,26 +74,16 @@ public class ExpenseController {
 	}
 	
 	@PreAuthorize("hasAuthority('USER')")
-	@PostMapping("/addexpensedate")
-	public String addExpenseDate(@ModelAttribute Expense expense, Model model, HttpServletRequest request,
+	@PostMapping("/addexpense")
+	public String addExpenseDate(@ModelAttribute Expense newExpense, Model model, HttpServletRequest request,
 			 RedirectAttributes redirectAttributes) {
 		
 		String loggedInUsername = request.getUserPrincipal().getName();
 		
-		Expense expense2 = new Expense();
-		
-		expense2.setPurchaseDate(expense.getPurchaseDate());
-		expense2.setUserId(userService.findByUsername(loggedInUsername).get().getId());
-		
-		model.addAttribute("newExpense", expense2);
-		
-		return "addexpense";
-	}
-	
-	@PostMapping("/addexpense")
-	public String addExpense(Model model, @ModelAttribute Expense newExpense, HttpServletRequest request) {
+		newExpense.setUserId(userService.findByUsername(loggedInUsername).get().getId());
 		
 		service.save(newExpense);
+
 		return "redirect:/budget";
 	}
 	
