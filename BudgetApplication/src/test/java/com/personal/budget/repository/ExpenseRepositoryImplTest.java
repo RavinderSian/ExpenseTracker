@@ -367,4 +367,31 @@ class ExpenseRepositoryImplTest {
 
 	}
 	
+	@Test
+	void test_FindExpensesByMatchingDescriptionForUser_ReturnsListOfLength2_When2EntriesContainSearchString() {
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory("Dates");
+		expense.setDescription("fds");
+		expense.setPurchaseDate(LocalDate.now());
+		
+		repository.save(expense);
+		
+		Expense expense2 = new Expense();
+		expense2.setUserId(1L);
+		expense2.setAmount(BigDecimal.valueOf(10));
+		expense2.setCategory("Dates");
+		expense2.setDescription("ssfdsss");
+		expense2.setPurchaseDate(LocalDate.now());
+		
+		repository.save(expense2);
+		
+		List<Expense> expenses = repository.findExpensesByMatchingDescriptionForUser(1L, "fds");
+		
+		assertThat(expenses.size(), equalTo(2));
+		
+	}
+	
 }

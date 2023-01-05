@@ -99,9 +99,10 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 	}
 
 	@Override
-	public List<Expense> findExpensesByDescriptionUser(Long userId, String searchString) {
+	public List<Expense> findExpensesByMatchingDescriptionForUser(Long userId, String searchString) {
+		String comparisonString = "%".concat(searchString.concat("%"));
 		return jdbcTemplate.query("SELECT * FROM expenses WHERE user_id = ? AND LOWER(description) LIKE ?;", 
-				new ExpenseRowMapper(), userId, searchString);
+				new ExpenseRowMapper(), userId, comparisonString);
 	}
 	
 }
