@@ -97,5 +97,11 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 				expense.getCategory(), expense.getAmount(), expense.getDescription(), expense.getPurchaseDate(), expense.getId());
 		
 	}
+
+	@Override
+	public List<Expense> findExpensesByDescriptionUser(Long userId, String searchString) {
+		return jdbcTemplate.query("SELECT * FROM expenses WHERE user_id = ? AND LOWER(description) LIKE ?;", 
+				new ExpenseRowMapper(), userId, searchString);
+	}
 	
 }
