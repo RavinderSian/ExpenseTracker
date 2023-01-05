@@ -52,4 +52,8 @@ public class ExpenseServiceImpl implements ExpenseService {
 		repository.updateExpense(expense);
 	}
 	
+	@Override
+	public List<Expense> getSearchResults(Long userId, String searchString) {
+		return repository.findExpensesByMatchingDescriptionForUser(userId, searchString);
+	}
 }

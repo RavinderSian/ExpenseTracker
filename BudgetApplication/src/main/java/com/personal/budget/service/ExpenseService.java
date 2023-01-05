@@ -14,4 +14,5 @@ public interface ExpenseService {
 	List<Expense> findByUserId(Long userId);
 	List<Expense> findExpensesByYearForUser(Integer year, Long userId);
 	void updateExpense(Expense expense);
+	List<Expense> getSearchResults(Long userId, String searchString);
 }
