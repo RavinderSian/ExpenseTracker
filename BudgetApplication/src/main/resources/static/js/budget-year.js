@@ -9,6 +9,19 @@ let expensesOnPage = document.querySelectorAll('.budget-list');
 const expenseHeaders = document.querySelector('.budget-list-header');
 const total = document.querySelector('.total');
 
+const searchRequest = async function(){
+	const expenseList = await fetch("/search", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: 'car',
+	});
+	const data = await expenseList.json();
+	console.log(data);
+}
+searchRequest();
+
 const calculateTotalExpenses = function(filteredExpenses) {
 	return filteredExpenses.reduce((acc, cur) => acc + cur.amount, 0);
 }

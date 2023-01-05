@@ -1,5 +1,7 @@
 package com.personal.budget.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.personal.budget.model.Expense;
 import com.personal.budget.service.ExpenseService;
 import com.personal.budget.service.UserService;
 
@@ -40,8 +43,9 @@ public class ExpenseJsonController {
 		
 		Long userId = userService.findByUsername(request.getUserPrincipal().getName()).get().getId();
 
-		service.getSearchResults(userId, searchString);
-		return new ResponseEntity<>(HttpStatus.OK);
+		List<Expense> results = service.getSearchResults(userId, searchString);
+		
+		return new ResponseEntity<>(results, HttpStatus.OK);
 	}
 
 }
