@@ -12,6 +12,7 @@
 	<body>
 		<nav class = "nav-box">
 			<h1>Budget Application</h1>
+			<input class = "search-bar" type='search' placeholder = "search"></input>
 		</nav>
 		
 		<div th:if="${#authentication.getPrincipal() != 'anonymousUser'}" class = "body-app">
