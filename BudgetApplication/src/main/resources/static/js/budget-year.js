@@ -8,26 +8,77 @@ const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
 let expensesOnPage = document.querySelectorAll('.budget-list');
 const expenseHeaders = document.querySelector('.budget-list-header');
 const total = document.querySelector('.total');
+const searchBar = document.querySelector('.search-bar');
+const bodyApp = document.querySelector('.body-app');
 
-const searchRequest = async function(){
-	const expenseList = await fetch("/search", {
+const getJson = async function(promise){
+	return promise.json();
+}
+
+const searchRequest = async function(searchQuery) {
+	return fetch("/search", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 		},
-		body: 'car',
-	});
-	const data = await expenseList.json();
-	console.log(data);
+		body: searchQuery,
+		}).then((response) => response.json()).then((result) => { 
+			return result
+		});
+		
+		
 }
-searchRequest();
+
+const getSearchResults = async (query) => {
+	const result = await searchRequest(query);
+	return result;
+}
+
+const results = await getSearchResults("car");
+console.log(results);
 
 const calculateTotalExpenses = function(filteredExpenses) {
 	return filteredExpenses.reduce((acc, cur) => acc + cur.amount, 0);
 }
 
-//This self executing function displays the current (default) months expenses
-//On the page on load 
+searchBar.addEventListener('keyup', function() {
+	bodyApp.classList.add('hidden-opacity');
+	//const searchResults = searchRequest(searchBar.value);
+	
+	const result = getSearchResults(searchBar.value);
+	
+	console.log(result);
+	
+	//displayExpenses(new Array(getSearchResults(searchBar.value)));
+	bodyApp.classList.remove('hidden-opacity');
+})
+
+const search = function() {
+	
+}
+
+const displayExpenses = function(expensesToDisplay) {
+	
+	console.log(expensesToDisplay);
+	
+	expensesToDisplay
+	.forEach(expense => {
+			console.log(expenseHeaders);
+			console.log(expense);
+				expenseHeaders.insertAdjacentHTML('afterend' ,
+					`<div class = "budget-list">
+						<p>${expense.purchaseDate}</p>
+				  		<p>${expense.category}</p>
+				  		<p>&pound${expense.amount}</p>
+				  		<p>${expense.description}</p>
+				  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
+		  			</div>`);
+		});
+
+	//This is needed so the expensesOnPage is the new set of expenses and not the old
+	expensesOnPage = document.querySelectorAll('.budget-list');
+}
+	
 const displayNewExpenses = function() {
 	
 	let expenseTotal;
