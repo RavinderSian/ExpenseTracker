@@ -5,6 +5,7 @@ const currentMonth = document.querySelector('.month-text');
 const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
 	'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
 
+const dateBanner = document.querySelector('.budget-date-filter');
 let expensesOnPage = document.querySelectorAll('.budget-list');
 const expenseHeaders = document.querySelector('.budget-list-header');
 const total = document.querySelector('.total');
@@ -41,7 +42,7 @@ searchBar.addEventListener('keyup', async () => {
 
 	console.log(result);
 
-	//displayExpenses(new Array(getSearchResults(searchBar.value)));
+	displayExpenses(result);
 	bodyApp.classList.remove('hidden-opacity');
 })
 
