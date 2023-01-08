@@ -7,10 +7,11 @@ const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
 
 const dateBanner = document.querySelector('.budget-date-filter');
 let expensesOnPage = document.querySelectorAll('.budget-list');
+const expenseForm = document.querySelector('.add-expense-form');
 const expenseHeaders = document.querySelector('.budget-list-header');
 const total = document.querySelector('.total');
+const totalBar = document.querySelector('.budget-list-total');
 const searchBar = document.querySelector('.search-bar');
-const bodyApp = document.querySelector('.body-app');
 
 const searchRequest = async function(searchQuery) {
 
@@ -35,15 +36,30 @@ const searchRequest = async function(searchQuery) {
 }
 
 searchBar.addEventListener('keyup', async () => {
-	bodyApp.classList.add('hidden-opacity');
+	
+	if(searchBar.value.length === 0) return;
+	
+	expenseForm.classList.add('hidden-opacity-collapse');
+	dateBanner.classList.add('hidden-opacity-collapse');
+	totalBar.classList.add('hidden-opacity-collapse');
 	//const searchResults = searchRequest(searchBar.value);
 
 	const result = await searchRequest(searchBar.value);
 
 	console.log(result);
+	
+	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 
 	displayExpenses(result);
-	bodyApp.classList.remove('hidden-opacity');
+})
+
+searchBar.addEventListener('input', function(e) {
+	if(searchBar.value.length === 0){ 
+		expenseForm.classList.remove('hidden-opacity-collapse');
+		dateBanner.classList.remove('hidden-opacity-collapse');
+		totalBar.classList.remove('hidden-opacity-collapse');
+	}
+	displayNewExpenses();
 })
 
 const calculateTotalExpenses = function(filteredExpenses) {
@@ -148,7 +164,7 @@ const displayCorrectExpensesForMonth = function(e) {
 //We are listening on document because some elements do not exist at certain points
 //This means we need event delegation to listen for them
 document.addEventListener("click", (e) => {
-
+	console.log(e.target);
 	displayCorrectExpensesForMonth(e);
 
 	if (e.target.classList.contains('delete-expense-btn')) {
