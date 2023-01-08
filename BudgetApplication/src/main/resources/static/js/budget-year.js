@@ -2,7 +2,7 @@
 import { MONTHS } from './config.js';
 
 const currentMonth = document.querySelector('.month-text');
-const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 
+const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
 	'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
 
 let expensesOnPage = document.querySelectorAll('.budget-list');
@@ -11,62 +11,54 @@ const total = document.querySelector('.total');
 const searchBar = document.querySelector('.search-bar');
 const bodyApp = document.querySelector('.body-app');
 
-const getJson = async function(promise){
-	return promise.json();
-}
-
 const searchRequest = async function(searchQuery) {
-	return fetch("/search", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: searchQuery,
-		}).then((response) => response.json()).then((result) => { 
-			return result
+
+	try {
+		const res = await fetch("/search", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: searchQuery,
 		});
 		
+		if (!res.ok) return;
 		
+		const data = await res.json();
+		return data;
+
+	} catch (err) {
+		console.error(err);
+	}
+
 }
 
-const getSearchResults = async (query) => {
-	const result = await searchRequest(query);
-	return result;
-}
+searchBar.addEventListener('keyup', async () => {
+	bodyApp.classList.add('hidden-opacity');
+	//const searchResults = searchRequest(searchBar.value);
 
-const results = await getSearchResults("car");
-console.log(results);
+	const result = await searchRequest(searchBar.value);
+
+	console.log(result);
+
+	//displayExpenses(new Array(getSearchResults(searchBar.value)));
+	bodyApp.classList.remove('hidden-opacity');
+})
 
 const calculateTotalExpenses = function(filteredExpenses) {
 	return filteredExpenses.reduce((acc, cur) => acc + cur.amount, 0);
 }
 
-searchBar.addEventListener('keyup', function() {
-	bodyApp.classList.add('hidden-opacity');
-	//const searchResults = searchRequest(searchBar.value);
-	
-	const result = getSearchResults(searchBar.value);
-	
-	console.log(result);
-	
-	//displayExpenses(new Array(getSearchResults(searchBar.value)));
-	bodyApp.classList.remove('hidden-opacity');
-})
-
-const search = function() {
-	
-}
-
 const displayExpenses = function(expensesToDisplay) {
-	
+
 	console.log(expensesToDisplay);
-	
+
 	expensesToDisplay
-	.forEach(expense => {
+		.forEach(expense => {
 			console.log(expenseHeaders);
 			console.log(expense);
-				expenseHeaders.insertAdjacentHTML('afterend' ,
-					`<div class = "budget-list">
+			expenseHeaders.insertAdjacentHTML('afterend',
+				`<div class = "budget-list">
 						<p>${expense.purchaseDate}</p>
 				  		<p>${expense.category}</p>
 				  		<p>&pound${expense.amount}</p>
@@ -78,21 +70,21 @@ const displayExpenses = function(expensesToDisplay) {
 	//This is needed so the expensesOnPage is the new set of expenses and not the old
 	expensesOnPage = document.querySelectorAll('.budget-list');
 }
-	
+
 const displayNewExpenses = function() {
-	
+
 	let expenseTotal;
 
-	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
-		MONTHS.indexOf(currentMonth.textContent)+1);
-	
+	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) ===
+		MONTHS.indexOf(currentMonth.textContent) + 1);
+
 	//Below removes each expense element currently displayed on the page
 	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
-	
+
 	if (currentMonth.textContent === 'ALL') {
-	expenses
-	.forEach(expense => {
-				expenseHeaders.insertAdjacentHTML('afterend' ,
+		expenses
+			.forEach(expense => {
+				expenseHeaders.insertAdjacentHTML('afterend',
 					`<div class = "budget-list">
 					<p>${expense.purchaseDate}</p>
 			  		<p>${expense.category}</p>
@@ -101,13 +93,13 @@ const displayNewExpenses = function() {
 			  		<a class = "edit-expense-link"><button class = "edit-expense-btn">Edit</button></a>
 			  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
 		  	</div>`);
-		});
-	expenseTotal = calculateTotalExpenses(expenses);
+			});
+		expenseTotal = calculateTotalExpenses(expenses);
 
 	} else {
-	filteredExpenses
-	.forEach(expense => {
-				expenseHeaders.insertAdjacentHTML('afterend' ,
+		filteredExpenses
+			.forEach(expense => {
+				expenseHeaders.insertAdjacentHTML('afterend',
 					`<div class = "budget-list">
 					<p>${expense.purchaseDate}</p>
 			  		<p>${expense.category}</p>
@@ -116,26 +108,26 @@ const displayNewExpenses = function() {
 			  		<a class = "edit-expense-link"><button class = "edit-expense-btn">Edit</button></a>
 			  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
 		  	</div>`);
-		});
-	expenseTotal = calculateTotalExpenses(filteredExpenses);
+			});
+		expenseTotal = calculateTotalExpenses(filteredExpenses);
 	}
-		
+
 	total.innerHTML = `Total: £${expenseTotal}`;
 	//This is needed so the expensesOnPage is the new set of expenses and not the old
 	expensesOnPage = document.querySelectorAll('.budget-list');
-	
+
 };
 displayNewExpenses();
 
 const monthArrows = function(id) {
 	const indexOfMonth = MONTHS.indexOf(currentMonth.textContent);
-	
-	if (id.includes('month-arrow-next')){
-		currentMonth.textContent = indexOfMonth === 12 ? 'JANUARY' 
-		: MONTHS[indexOfMonth+1];
-	} else{
-		currentMonth.textContent = indexOfMonth === 0 ? 'ALL' 
-		: MONTHS[indexOfMonth-1];
+
+	if (id.includes('month-arrow-next')) {
+		currentMonth.textContent = indexOfMonth === 12 ? 'JANUARY'
+			: MONTHS[indexOfMonth + 1];
+	} else {
+		currentMonth.textContent = indexOfMonth === 0 ? 'ALL'
+			: MONTHS[indexOfMonth - 1];
 	}
 }
 
@@ -143,41 +135,41 @@ const displayCorrectExpensesForMonth = function(e) {
 	if (!e.target.id.includes('month-arrow')) return;
 
 	e.preventDefault();
-	
+
 	monthArrows(e.target.id);
-	
-	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
-		months.indexOf(currentMonth.textContent)+1);
-	
+
+	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) ===
+		months.indexOf(currentMonth.textContent) + 1);
+
 	displayNewExpenses();
 }
 
 //We are listening on document because some elements do not exist at certain points
 //This means we need event delegation to listen for them
 document.addEventListener("click", (e) => {
-	
+
 	displayCorrectExpensesForMonth(e);
 
 	if (e.target.classList.contains('delete-expense-btn')) {
 		e.preventDefault();
 		const confirm = window.confirm('Are you sure you want to delete this? This operation CANNOT be undone');
-		
-		if (confirm){
+
+		if (confirm) {
 			sendDeleteRequest(e.target.closest('a').href);
 			window.location.reload();
 		}
 	}
-	
-	if (e.target.classList.contains('edit-expense-btn')){
+
+	if (e.target.classList.contains('edit-expense-btn')) {
 		e.preventDefault();
-		
+
 		const expenseToEdit = e.target.closest('.budget-list');
-		
+
 		const currentExpenseId = expenseToEdit.querySelector('.delete-expense-link').attributes.item(3).name;
 		const currentExpenseContent = Array.from(expenseToEdit.children).filter(child => child.nodeName === 'P').map(paragraph => paragraph.textContent);
-		
+
 		console.log(currentExpenseContent);
-		
+
 		expenseToEdit.insertAdjacentHTML('afterend', `<form class = "budget-list-edit-form" action="/editexpense" id=expense method="post">
 					<input class = "edit-expense-input" type = "hidden" name = "id" value = ${currentExpenseId}>
 					<input class = "edit-expense-input" type = "date" name = "purchaseDate" value = ${currentExpenseContent[0]} placeholder=${currentExpenseContent[0]}>
@@ -197,7 +189,7 @@ document.addEventListener("click", (e) => {
 const sendDeleteRequest = async function(url) {
 	try {
 		fetch(url);
-	} catch(err) {
+	} catch (err) {
 		console.error(err);
 	}
 };
