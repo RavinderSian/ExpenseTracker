@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,17 +60,54 @@ class UserControllerTest {
 		
 	    ObjectMapper mapper = new ObjectMapper();
 		
-		when(userRepository.save(user)).thenReturn(user2);
+		when(service.save(user)).thenReturn(user2);
 	
 		mockMvc.perform(post("/user/newuser").contentType(MediaType.APPLICATION_JSON).content(mapper.writer().writeValueAsString(user)))
 				.andExpect(status().isOk());
-		
 	}
 	
 	
 	@Test
-	@WithMockUser(username = "rsian", password = "pw", roles = "USER")
-	void test_RegisterUser_SavesUserCorrectly_WhenValid() throws Exception {
+	void test_RegisterUser_GivesBadRequestStatus_WhenNoEmailPresent() throws Exception {
+
+		User user = new User();
+		user.setPassword("testing");
+		user.setUsername("rsian");
+		
+	    ObjectMapper mapper = new ObjectMapper();
+		
+		mockMvc.perform(post("/user/newuser").contentType(MediaType.APPLICATION_JSON).content(mapper.writer().writeValueAsString(user)))
+				.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	void test_RegisterUser_GivesBadRequestStatus_WhenNoUsernamePresent() throws Exception {
+
+		User user = new User();
+		user.setEmail("rsian761@gmail.com");
+		user.setPassword("testing");
+		
+	    ObjectMapper mapper = new ObjectMapper();
+		
+		mockMvc.perform(post("/user/newuser").contentType(MediaType.APPLICATION_JSON).content(mapper.writer().writeValueAsString(user)))
+				.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	void test_RegisterUser_GivesBadRequestStatus_WhenNoPasswordPresent() throws Exception {
+
+		User user = new User();
+		user.setEmail("rsian761@gmail.com");
+		user.setUsername("rsian");
+		
+	    ObjectMapper mapper = new ObjectMapper();
+		
+		mockMvc.perform(post("/user/newuser").contentType(MediaType.APPLICATION_JSON).content(mapper.writer().writeValueAsString(user)))
+				.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	void test_RegisterUser_ReturnsCorrectStatusAndResponse_WhenDuplicateKeyExceptionThrown() throws Exception {
 
 		User user = new User();
 		user.setEmail("rsian761@gmail.com");
@@ -86,10 +123,9 @@ class UserControllerTest {
 		
 	    ObjectMapper mapper = new ObjectMapper();
 		
-		when(userRepository.save(user)).thenReturn(user2);
+		when(service.save(user)).thenThrow(new DuplicateKeyException("Username already taken"));
 	
 		mockMvc.perform(post("/user/newuser").contentType(MediaType.APPLICATION_JSON).content(mapper.writer().writeValueAsString(user)))
-				.andExpect(status().isOk());
-		
+				.andExpect(status().isBadRequest());
 	}
 }
