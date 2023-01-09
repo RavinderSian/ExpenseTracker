@@ -24,6 +24,15 @@
 	
 }
 
+.hidden {
+  display: none;
+}
+
+.hidden-opacity-collapse {
+  opacity: 0;
+  height: 0;
+}
+
 .add-expense-form {
 	display: grid;
 	justify-items: center;
