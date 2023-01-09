@@ -14,12 +14,13 @@
 			<h1>Budget Application</h1>
 			<button th:if="${#authentication.getPrincipal() == 'anonymousUser'}" class = "btn-register">Register</button>
 			<form name='loginForm' action="/performlogin" method='POST'>
-			<div th:if="${#authentication.getPrincipal() == 'anonymousUser'}" class = "login-inputs">
-				<input class = "login-input" type = "text" name='username' placeholder = "Username"></input>
-				<input class = "login-input" type='password' name='password' placeholder = "Password"></input>
-				<input name="submit-login" type="submit" value="submit" />
-			</div>
+				<div th:if="${#authentication.getPrincipal() == 'anonymousUser'}" class = "login-inputs">
+					<input class = "login-input" type = "text" name='username' placeholder = "Username"></input>
+					<input class = "login-input" type='password' name='password' placeholder = "Password"></input>
+					<input name="submit-login" type="submit" value="submit" />
+				</div>
 			</form>
+			<input th:if="${#authentication.getPrincipal() != 'anonymousUser'}" class = "search-bar" type='search' placeholder = "search"></input>
 		</nav>
 		
 		<div th:if="${#authentication.getPrincipal() != 'anonymousUser'}" class = "body-app">

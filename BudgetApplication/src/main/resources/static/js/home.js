@@ -10,6 +10,57 @@ let expensesOnPage = document.querySelectorAll('.budget-list');
 const expenseHeaders = document.querySelector('.budget-list-header');
 const total = document.querySelector('.total');
 
+const totalBar = document.querySelector('.budget-list-total');
+const searchBar = document.querySelector('.search-bar');
+const expenseForm = document.querySelector('.add-expense-form');
+const dateBanner = document.querySelector('.budget-date-filter');
+
+const searchRequest = async function(searchQuery) {
+	try {
+		const res = await fetch("/search", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: searchQuery,
+		});
+		
+		if (!res.ok) return;
+		
+		const data = await res.json();
+		return data;
+
+	} catch (err) {
+		console.error(err);
+	}
+
+}
+
+searchBar.addEventListener('keyup', async () => {
+	
+	if(searchBar.value.length === 0) return;
+	
+	expenseForm.classList.add('hidden-opacity-collapse');
+	dateBanner.classList.add('hidden-opacity-collapse');
+	totalBar.classList.add('hidden-opacity-collapse');
+
+	const result = await searchRequest(searchBar.value);
+
+	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
+
+	displayExpenses(result);
+})
+
+searchBar.addEventListener('input', function(e) {
+	if(searchBar.value.length === 0){ 
+		expenseForm.classList.remove('hidden-opacity-collapse');
+		dateBanner.classList.remove('hidden-opacity-collapse');
+		totalBar.classList.remove('hidden-opacity-collapse');
+	}
+	displayNewExpenses();
+})
+
+
 navBar.addEventListener("click", function(e) {
 	if (e.target.classList.contains('btn-register')) {
 		registerBox.classList.toggle("hidden");
@@ -69,6 +120,24 @@ const displayNewExpenses = function() {
 	
 };
 displayNewExpenses();
+
+const displayExpenses = function(expensesToDisplay) {
+
+	expensesToDisplay
+		.forEach(expense => {
+			expenseHeaders.insertAdjacentHTML('afterend',
+				`<div class = "budget-list">
+						<p>${expense.purchaseDate}</p>
+				  		<p>${expense.category}</p>
+				  		<p>&pound${expense.amount}</p>
+				  		<p>${expense.description}</p>
+				  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
+		  			</div>`);
+		});
+
+	//This is needed so the expensesOnPage is the new set of expenses and not the old
+	expensesOnPage = document.querySelectorAll('.budget-list');
+}
 
 const monthArrows = function(id) {
 	const indexOfMonth = MONTHS.indexOf(currentMonth.textContent);
