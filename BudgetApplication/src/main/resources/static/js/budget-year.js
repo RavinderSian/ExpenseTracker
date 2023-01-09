@@ -2,9 +2,6 @@
 import { MONTHS } from './config.js';
 
 const currentMonth = document.querySelector('.month-text');
-const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
-	'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
-
 const dateBanner = document.querySelector('.budget-date-filter');
 let expensesOnPage = document.querySelectorAll('.budget-list');
 const expenseForm = document.querySelector('.add-expense-form');
@@ -148,7 +145,7 @@ const displayCorrectExpensesForMonth = function(e) {
 	monthArrows(e.target.id);
 
 	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) ===
-		months.indexOf(currentMonth.textContent) + 1);
+		MONTHS.indexOf(currentMonth.textContent) + 1);
 
 	displayNewExpenses();
 }
