@@ -14,7 +14,6 @@ const totalBar = document.querySelector('.budget-list-total');
 const searchBar = document.querySelector('.search-bar');
 
 const searchRequest = async function(searchQuery) {
-
 	try {
 		const res = await fetch("/search", {
 			method: "POST",
@@ -42,12 +41,9 @@ searchBar.addEventListener('keyup', async () => {
 	expenseForm.classList.add('hidden-opacity-collapse');
 	dateBanner.classList.add('hidden-opacity-collapse');
 	totalBar.classList.add('hidden-opacity-collapse');
-	//const searchResults = searchRequest(searchBar.value);
 
 	const result = await searchRequest(searchBar.value);
 
-	console.log(result);
-	
 	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 
 	displayExpenses(result);
@@ -68,12 +64,8 @@ const calculateTotalExpenses = function(filteredExpenses) {
 
 const displayExpenses = function(expensesToDisplay) {
 
-	console.log(expensesToDisplay);
-
 	expensesToDisplay
 		.forEach(expense => {
-			console.log(expenseHeaders);
-			console.log(expense);
 			expenseHeaders.insertAdjacentHTML('afterend',
 				`<div class = "budget-list">
 						<p>${expense.purchaseDate}</p>
@@ -164,7 +156,6 @@ const displayCorrectExpensesForMonth = function(e) {
 //We are listening on document because some elements do not exist at certain points
 //This means we need event delegation to listen for them
 document.addEventListener("click", (e) => {
-	console.log(e.target);
 	displayCorrectExpensesForMonth(e);
 
 	if (e.target.classList.contains('delete-expense-btn')) {
@@ -184,8 +175,6 @@ document.addEventListener("click", (e) => {
 
 		const currentExpenseId = expenseToEdit.querySelector('.delete-expense-link').attributes.item(3).name;
 		const currentExpenseContent = Array.from(expenseToEdit.children).filter(child => child.nodeName === 'P').map(paragraph => paragraph.textContent);
-
-		console.log(currentExpenseContent);
 
 		expenseToEdit.insertAdjacentHTML('afterend', `<form class = "budget-list-edit-form" action="/editexpense" id=expense method="post">
 					<input class = "edit-expense-input" type = "hidden" name = "id" value = ${currentExpenseId}>
