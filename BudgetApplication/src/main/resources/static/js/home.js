@@ -36,9 +36,9 @@ const searchRequest = async function(searchQuery) {
 
 }
 
-searchBar.addEventListener('keyup', async () => {
+navBar.addEventListener('keyup', async (e) => {
 	
-	if(searchBar.value.length === 0) return;
+	if(!e.target.classList.contains('search-bar') || searchBar.value.length === 0) return;
 	
 	expenseForm.classList.add('hidden-opacity-collapse');
 	dateBanner.classList.add('hidden-opacity-collapse');
@@ -51,7 +51,8 @@ searchBar.addEventListener('keyup', async () => {
 	displayExpenses(result);
 })
 
-searchBar.addEventListener('input', function(e) {
+navBar.addEventListener('input', function(e) {
+	if (!e.target.classList.contains('search-bar')) return;
 	if(searchBar.value.length === 0){ 
 		expenseForm.classList.remove('hidden-opacity-collapse');
 		dateBanner.classList.remove('hidden-opacity-collapse');
@@ -59,7 +60,6 @@ searchBar.addEventListener('input', function(e) {
 	}
 	displayNewExpenses();
 })
-
 
 navBar.addEventListener("click", function(e) {
 	if (e.target.classList.contains('btn-register')) {
@@ -74,6 +74,8 @@ const calculateTotalExpenses = function(filteredExpenses) {
 //This self executing function displays the current (default) months expenses
 //On the page on load 
 const displayNewExpenses = function() {
+	
+	if (!currentMonth) return;
 	
 	let expenseTotal;
 
@@ -113,7 +115,7 @@ const displayNewExpenses = function() {
 		});
 	expenseTotal = calculateTotalExpenses(filteredExpenses);
 	}
-		
+	
 	total.innerHTML = `Total: £${expenseTotal}`;
 	//This is needed so the expensesOnPage is the new set of expenses and not the old
 	expensesOnPage = document.querySelectorAll('.budget-list');
