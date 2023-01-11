@@ -36,29 +36,26 @@ const searchRequest = async function(searchQuery) {
 
 }
 
-navBar.addEventListener('keyup', async (e) => {
+navBar.addEventListener('input', async (e) => {
 	
-	if(!e.target.classList.contains('search-bar') || searchBar.value.length === 0) return;
-	
-	expenseForm.classList.add('hidden-opacity-collapse');
-	dateBanner.classList.add('hidden-opacity-collapse');
-	totalBar.classList.add('hidden-opacity-collapse');
-
-	const result = await searchRequest(searchBar.value);
-
-	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
-
-	displayExpenses(result);
-})
-
-navBar.addEventListener('input', function(e) {
-	if (!e.target.classList.contains('search-bar')) return;
+	if(!e.target.classList.contains('search-bar')) return;
 	if(searchBar.value.length === 0){ 
 		expenseForm.classList.remove('hidden-opacity-collapse');
 		dateBanner.classList.remove('hidden-opacity-collapse');
 		totalBar.classList.remove('hidden-opacity-collapse');
+		displayNewExpenses();
+	} else {
+	
+		expenseForm.classList.add('hidden-opacity-collapse');
+		dateBanner.classList.add('hidden-opacity-collapse');
+		totalBar.classList.add('hidden-opacity-collapse');
+	
+		const result = await searchRequest(searchBar.value);
+	
+		expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
+	
+		displayExpenses(result);
 	}
-	displayNewExpenses();
 })
 
 navBar.addEventListener("click", function(e) {
