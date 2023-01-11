@@ -117,8 +117,8 @@ const displayNewExpenses = function() {
 	//This is needed so the expensesOnPage is the new set of expenses and not the old
 	expensesOnPage = document.querySelectorAll('.budget-list');
 	
-};
-displayNewExpenses();
+}();
+
 
 const displayExpenses = function(expensesToDisplay) {
 
