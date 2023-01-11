@@ -58,7 +58,7 @@ public class UserController {
 		} catch(DuplicateKeyException exception) {
 			
 			String exceptionMessage = exception.getMessage();
-			
+			System.out.println(exceptionMessage);
 			String field = exceptionMessage.substring(exceptionMessage.indexOf("\"")+1, 
 					exceptionMessage.indexOf("\"", exceptionMessage.indexOf("\"")+1)).split("_")[1];
 			

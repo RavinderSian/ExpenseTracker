@@ -1,5 +1,6 @@
 package com.personal.budget.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -122,8 +123,8 @@ class UserControllerTest {
 		user2.setUsername("rsian");
 		
 	    ObjectMapper mapper = new ObjectMapper();
-		
-		when(service.save(user)).thenThrow(new DuplicateKeyException("Username already taken"));
+	    
+		when(service.save(any(User.class))).thenThrow(new DuplicateKeyException("duplicate key value violates unique constraint \"unique_username\""));
 	
 		mockMvc.perform(post("/user/newuser").contentType(MediaType.APPLICATION_JSON).content(mapper.writer().writeValueAsString(user)))
 				.andExpect(status().isBadRequest());
