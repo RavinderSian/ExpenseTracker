@@ -68,6 +68,21 @@ const calculateTotalExpenses = function(filteredExpenses) {
 	return filteredExpenses.reduce((acc, cur) => acc + cur.amount, 0);
 }
 
+const displayExpensesTest = function(expenseToShow){
+	expenseToShow
+	.forEach(expense => {
+				expenseHeaders.insertAdjacentHTML('afterend' ,
+					`<div class = "budget-list">
+					<p>${expense.purchaseDate}</p>
+			  		<p>${expense.category}</p>
+			  		<p>&pound${expense.amount}</p>
+			  		<p>${expense.description}</p>
+			  		<a class = "edit-expense-link"><button class = "edit-expense-btn">Edit</button></a>
+			  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
+		  	</div>`);
+		});
+}
+
 //This self executing function displays the current (default) months expenses
 //On the page on load 
 const displayNewExpenses = function() {
@@ -83,33 +98,11 @@ const displayNewExpenses = function() {
 	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 	
 	if (currentMonth.textContent === 'ALL') {
-	expenses
-	.forEach(expense => {
-				expenseHeaders.insertAdjacentHTML('afterend' ,
-					`<div class = "budget-list">
-					<p>${expense.purchaseDate}</p>
-			  		<p>${expense.category}</p>
-			  		<p>&pound${expense.amount}</p>
-			  		<p>${expense.description}</p>
-			  		<a class = "edit-expense-link"><button class = "edit-expense-btn">Edit</button></a>
-			  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
-		  	</div>`);
-		});
+	displayExpensesTest(expenses);
 	expenseTotal = calculateTotalExpenses(expenses);
 
 	} else {
-	filteredExpenses
-	.forEach(expense => {
-				expenseHeaders.insertAdjacentHTML('afterend' ,
-					`<div class = "budget-list">
-					<p>${expense.purchaseDate}</p>
-			  		<p>${expense.category}</p>
-			  		<p>&pound${expense.amount}</p>
-			  		<p>${expense.description}</p>
-			  		<a class = "edit-expense-link"><button class = "edit-expense-btn">Edit</button></a>
-			  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
-		  	</div>`);
-		});
+	displayExpensesTest(filteredExpenses);
 	expenseTotal = calculateTotalExpenses(filteredExpenses);
 	}
 	
@@ -117,8 +110,8 @@ const displayNewExpenses = function() {
 	//This is needed so the expensesOnPage is the new set of expenses and not the old
 	expensesOnPage = document.querySelectorAll('.budget-list');
 	
-}();
-
+};
+displayNewExpenses();
 
 const displayExpenses = function(expensesToDisplay) {
 
