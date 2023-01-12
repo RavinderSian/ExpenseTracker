@@ -72,7 +72,7 @@ const calculateTotalExpenses = function(filteredExpenses) {
 
 //This self executing function displays the current (default) months expenses
 //On the page on load 
-const displayNewExpenses = function() {
+const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
 	
 	if (!currentMonth) return;
 	
@@ -96,9 +96,8 @@ const displayNewExpenses = function() {
 	total.innerHTML = `Total: £${expenseTotal}`;
 	//This is needed so the expensesOnPage is the new set of expenses and not the old
 	expensesOnPage = document.querySelectorAll('.budget-list');
-	
-};
-displayNewExpenses();
+	return displayMonthlyExpenses;
+})();
 
 
 const monthArrows = function(id) {
@@ -119,7 +118,7 @@ const displayCorrectExpensesForMonth = function(e) {
 
 	e.preventDefault();
 	monthArrows(e.target.id);
-	displayNewExpenses();
+	displayExpensesBasedOnMonth();
 }
 
 
