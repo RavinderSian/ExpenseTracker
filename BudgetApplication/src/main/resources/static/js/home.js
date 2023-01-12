@@ -68,7 +68,7 @@ const calculateTotalExpenses = function(filteredExpenses) {
 	return filteredExpenses.reduce((acc, cur) => acc + cur.amount, 0);
 }
 
-const displayExpensesTest = function(expenseToShow){
+const displayExpenses = function(expenseToShow){
 	expenseToShow
 	.forEach(expense => {
 				expenseHeaders.insertAdjacentHTML('afterend' ,
@@ -98,11 +98,11 @@ const displayNewExpenses = function() {
 	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 	
 	if (currentMonth.textContent === 'ALL') {
-	displayExpensesTest(expenses);
+	displayExpenses(expenses);
 	expenseTotal = calculateTotalExpenses(expenses);
 
 	} else {
-	displayExpensesTest(filteredExpenses);
+	displayExpenses(filteredExpenses);
 	expenseTotal = calculateTotalExpenses(filteredExpenses);
 	}
 	
@@ -113,23 +113,6 @@ const displayNewExpenses = function() {
 };
 displayNewExpenses();
 
-const displayExpenses = function(expensesToDisplay) {
-
-	expensesToDisplay
-		.forEach(expense => {
-			expenseHeaders.insertAdjacentHTML('afterend',
-				`<div class = "budget-list">
-						<p>${expense.purchaseDate}</p>
-				  		<p>${expense.category}</p>
-				  		<p>&pound${expense.amount}</p>
-				  		<p>${expense.description}</p>
-				  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
-		  			</div>`);
-		});
-
-	//This is needed so the expensesOnPage is the new set of expenses and not the old
-	expensesOnPage = document.querySelectorAll('.budget-list');
-}
 
 const monthArrows = function(id) {
 	const indexOfMonth = MONTHS.indexOf(currentMonth.textContent);
