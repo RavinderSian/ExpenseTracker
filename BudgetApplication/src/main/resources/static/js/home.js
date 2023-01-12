@@ -1,5 +1,7 @@
 "use strict";
 import { MONTHS } from './config.js';
+import { displayExpenses } from './helpers.js';
+
 
 const navBar = document.querySelector('.nav-box')
 const registerBox = document.querySelector(".register-box");
@@ -68,21 +70,6 @@ const calculateTotalExpenses = function(filteredExpenses) {
 	return filteredExpenses.reduce((acc, cur) => acc + cur.amount, 0);
 }
 
-const displayExpenses = function(expenseToShow){
-	expenseToShow
-	.forEach(expense => {
-				expenseHeaders.insertAdjacentHTML('afterend' ,
-					`<div class = "budget-list">
-					<p>${expense.purchaseDate}</p>
-			  		<p>${expense.category}</p>
-			  		<p>&pound${expense.amount}</p>
-			  		<p>${expense.description}</p>
-			  		<a class = "edit-expense-link"><button class = "edit-expense-btn">Edit</button></a>
-			  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
-		  	</div>`);
-		});
-}
-
 //This self executing function displays the current (default) months expenses
 //On the page on load 
 const displayNewExpenses = function() {
@@ -98,11 +85,11 @@ const displayNewExpenses = function() {
 	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 	
 	if (currentMonth.textContent === 'ALL') {
-	displayExpenses(expenses);
+	displayExpenses(expenses, expenseHeaders);
 	expenseTotal = calculateTotalExpenses(expenses);
 
 	} else {
-	displayExpenses(filteredExpenses);
+	displayExpenses(filteredExpenses, expenseHeaders);
 	expenseTotal = calculateTotalExpenses(filteredExpenses);
 	}
 	
