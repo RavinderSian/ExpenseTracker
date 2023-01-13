@@ -1,6 +1,6 @@
 "use strict";
 import { MONTHS } from './config.js';
-import { displayExpenses } from './helpers.js';
+import { displayExpenses, monthArrows } from './helpers.js';
 
 
 const navBar = document.querySelector('.nav-box')
@@ -100,24 +100,14 @@ const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
 })();
 
 
-const monthArrows = function(id) {
-	const indexOfMonth = MONTHS.indexOf(currentMonth.textContent);
-	
-	if (id.includes('month-arrow-next')){
-		currentMonth.textContent = indexOfMonth === 12 ? 'JANUARY' 
-		: MONTHS[indexOfMonth+1];
-	} else{
-		currentMonth.textContent = indexOfMonth === 0 ? 'ALL' 
-		: MONTHS[indexOfMonth-1];
-	}
-}
-
 const displayCorrectExpensesForMonth = function(e) {
 	
 	if (!e.target.id.includes('month-arrow')) return;
 
 	e.preventDefault();
-	monthArrows(e.target.id);
+	const newMonth = monthArrows(e.target.id, currentMonth);
+	currentMonth.textContent = newMonth;
+	
 	displayExpensesBasedOnMonth();
 }
 

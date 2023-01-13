@@ -1,4 +1,6 @@
 'use strict'
+import { MONTHS } from './config.js';
+
 
 export const displayExpenses = function(expenseToShow, expenseHeaders){
 	expenseToShow
@@ -13,4 +15,21 @@ export const displayExpenses = function(expenseToShow, expenseHeaders){
 			  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
 		  	</div>`);
 		});
+}
+
+
+export const monthArrows = function(id, currentMonth) {
+	const indexOfMonth = MONTHS.indexOf(currentMonth.textContent);
+	
+	let result;
+	
+	if (id.includes('month-arrow-next')) {
+		result = indexOfMonth === 12 ? 'JANUARY' 
+		: MONTHS[indexOfMonth+1];
+	} else{
+		result = indexOfMonth === 0 ? 'ALL' 
+		: MONTHS[indexOfMonth-1];
+	}
+	
+	return result;
 }
