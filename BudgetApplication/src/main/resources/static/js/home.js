@@ -95,7 +95,7 @@ const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
 	expenseTotal = calculateTotalExpenses(filteredExpenses);
 	}
 	
-	total.innerHTML = `Total: £${expenseTotal}`;
+	total.innerHTML = `Total: £${parseFloat(expenseTotal).toFixed(2)}`;
 	//This is needed so the expensesOnPage is the new set of expenses and not the old
 	expensesOnPage = document.querySelectorAll('.budget-list');
 	return displayMonthlyExpenses;
