@@ -2,7 +2,7 @@
 import { consumeRegister } from './register.js';
 import { MONTHS } from './config.js';
 import { displayExpenses, monthArrows } from './helpers.js';
-import { sendDeleteRequest } from './requests.js';
+import { sendDeleteRequest, searchRequest } from './requests.js';
 
 
 const navBar = document.querySelector('.nav-box')
@@ -19,27 +19,6 @@ const searchBar = document.querySelector('.search-bar');
 const expenseForm = document.querySelector('.add-expense-form');
 const dateBanner = document.querySelector('.budget-date-filter');
 
-const searchRequest = async function(searchQuery) {
-	try {
-		const res = await fetch("/search", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: searchQuery,
-		});
-		
-		if (!res.ok) return;
-		
-		const data = await res.json();
-		return data;
-
-	} catch (err) {
-		console.error(err);
-	}
-
-}
-
 navBar.addEventListener('input', async (e) => {
 	
 	if(!e.target.classList.contains('search-bar')) return;
@@ -55,10 +34,11 @@ navBar.addEventListener('input', async (e) => {
 		totalBar.classList.add('hidden-opacity-collapse');
 	
 		const result = await searchRequest(searchBar.value);
-	
+		
 		expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 	
-		displayExpenses(result);
+		displayExpenses(result, expenseHeaders);
+		expensesOnPage = document.querySelectorAll('.budget-list');
 	}
 })
 
