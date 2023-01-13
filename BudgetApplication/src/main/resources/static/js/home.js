@@ -1,7 +1,8 @@
 "use strict";
+import { consumeRegister } from './register.js';
 import { MONTHS } from './config.js';
 import { displayExpenses, monthArrows } from './helpers.js';
-import { consumeRegister } from './register.js';
+import { sendDeleteRequest } from './requests.js';
 
 
 const navBar = document.querySelector('.nav-box')
@@ -164,14 +165,6 @@ document.addEventListener("click", (e) => {
 	}
 	
 });
-
-const sendDeleteRequest = async function(url) {
-	try {
-		fetch(url);
-	} catch(err) {
-		console.error(err);
-	}
-};
 
 registerSubmitBtn.addEventListener("click", function(e) {
 	e.preventDefault();
