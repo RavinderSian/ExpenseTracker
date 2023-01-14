@@ -1,5 +1,7 @@
 "use strict";
 import { MONTHS } from './config.js';
+import { displayExpenses, monthArrows, calculateTotalExpenses } from './helpers.js';
+import { sendDeleteRequest, searchRequest } from './requests.js';
 
 const currentMonth = document.querySelector('.month-text');
 const dateBanner = document.querySelector('.budget-date-filter');
@@ -9,27 +11,6 @@ const expenseHeaders = document.querySelector('.budget-list-header');
 const total = document.querySelector('.total');
 const totalBar = document.querySelector('.budget-list-total');
 const searchBar = document.querySelector('.search-bar');
-
-const searchRequest = async function(searchQuery) {
-	try {
-		const res = await fetch("/search", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: searchQuery,
-		});
-		
-		if (!res.ok) return;
-		
-		const data = await res.json();
-		return data;
-
-	} catch (err) {
-		console.error(err);
-	}
-
-}
 
 searchBar.addEventListener('keyup', async () => {
 	
@@ -52,102 +33,45 @@ searchBar.addEventListener('input', function(e) {
 		dateBanner.classList.remove('hidden-opacity-collapse');
 		totalBar.classList.remove('hidden-opacity-collapse');
 	}
-	displayNewExpenses();
+	displayMonthlyExpenses();
 })
 
-const calculateTotalExpenses = function(filteredExpenses) {
-	return filteredExpenses.reduce((acc, cur) => acc + cur.amount, 0);
-}
-
-const displayExpenses = function(expensesToDisplay) {
-
-	expensesToDisplay
-		.forEach(expense => {
-			expenseHeaders.insertAdjacentHTML('afterend',
-				`<div class = "budget-list">
-						<p>${expense.purchaseDate}</p>
-				  		<p>${expense.category}</p>
-				  		<p>&pound${expense.amount}</p>
-				  		<p>${expense.description}</p>
-				  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
-		  			</div>`);
-		});
-
-	//This is needed so the expensesOnPage is the new set of expenses and not the old
-	expensesOnPage = document.querySelectorAll('.budget-list');
-}
-
-const displayNewExpenses = function() {
-
+const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
+	
+	if (!currentMonth) return;
+	
 	let expenseTotal;
 
-	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) ===
-		MONTHS.indexOf(currentMonth.textContent) + 1);
-
+	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
+		MONTHS.indexOf(currentMonth.textContent)+1);
+	
 	//Below removes each expense element currently displayed on the page
 	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
-
+	
 	if (currentMonth.textContent === 'ALL') {
-		expenses
-			.forEach(expense => {
-				expenseHeaders.insertAdjacentHTML('afterend',
-					`<div class = "budget-list">
-					<p>${expense.purchaseDate}</p>
-			  		<p>${expense.category}</p>
-			  		<p>&pound${expense.amount}</p>
-			  		<p>${expense.description}</p>
-			  		<a class = "edit-expense-link"><button class = "edit-expense-btn">Edit</button></a>
-			  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
-		  	</div>`);
-			});
-		expenseTotal = calculateTotalExpenses(expenses);
+	displayExpenses(expenses, expenseHeaders);
+	expenseTotal = calculateTotalExpenses(expenses);
 
 	} else {
-		filteredExpenses
-			.forEach(expense => {
-				expenseHeaders.insertAdjacentHTML('afterend',
-					`<div class = "budget-list">
-					<p>${expense.purchaseDate}</p>
-			  		<p>${expense.category}</p>
-			  		<p>&pound${expense.amount}</p>
-			  		<p>${expense.description}</p>
-			  		<a class = "edit-expense-link"><button class = "edit-expense-btn">Edit</button></a>
-			  		<a class = "delete-expense-link" href = /delete/${expense.id}><button class = "delete-expense-btn">Delete</button></a>
-		  	</div>`);
-			});
-		expenseTotal = calculateTotalExpenses(filteredExpenses);
+	displayExpenses(filteredExpenses, expenseHeaders);
+	expenseTotal = calculateTotalExpenses(filteredExpenses);
 	}
-
-	total.innerHTML = `Total: £${expenseTotal}`;
+	
+	total.innerHTML = `Total: £${parseFloat(expenseTotal).toFixed(2)}`;
 	//This is needed so the expensesOnPage is the new set of expenses and not the old
 	expensesOnPage = document.querySelectorAll('.budget-list');
-
-};
-displayNewExpenses();
-
-const monthArrows = function(id) {
-	const indexOfMonth = MONTHS.indexOf(currentMonth.textContent);
-
-	if (id.includes('month-arrow-next')) {
-		currentMonth.textContent = indexOfMonth === 12 ? 'JANUARY'
-			: MONTHS[indexOfMonth + 1];
-	} else {
-		currentMonth.textContent = indexOfMonth === 0 ? 'ALL'
-			: MONTHS[indexOfMonth - 1];
-	}
-}
+	return displayMonthlyExpenses;
+})();
 
 const displayCorrectExpensesForMonth = function(e) {
 	if (!e.target.id.includes('month-arrow')) return;
 
 	e.preventDefault();
 
-	monthArrows(e.target.id);
-
-	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) ===
-		MONTHS.indexOf(currentMonth.textContent) + 1);
-
-	displayNewExpenses();
+	const newMonth = monthArrows(e.target.id, currentMonth);
+	currentMonth.textContent = newMonth;
+	
+	displayExpensesBasedOnMonth();
 }
 
 //We are listening on document because some elements do not exist at certain points
@@ -188,11 +112,3 @@ document.addEventListener("click", (e) => {
 				</form>`);
 	}
 });
-
-const sendDeleteRequest = async function(url) {
-	try {
-		fetch(url);
-	} catch (err) {
-		console.error(err);
-	}
-};
