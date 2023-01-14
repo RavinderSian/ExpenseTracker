@@ -33,3 +33,7 @@ export const monthArrows = function(id, currentMonth) {
 	
 	return result;
 }
+
+export const calculateTotalExpenses = function(filteredExpenses) {
+	return filteredExpenses.reduce((acc, cur) => acc + cur.amount, 0);
+}

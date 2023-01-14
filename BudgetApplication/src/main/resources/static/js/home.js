@@ -1,7 +1,7 @@
 "use strict";
 import { consumeRegister } from './register.js';
 import { MONTHS } from './config.js';
-import { displayExpenses, monthArrows } from './helpers.js';
+import { displayExpenses, monthArrows, calculateTotalExpenses } from './helpers.js';
 import { sendDeleteRequest, searchRequest } from './requests.js';
 
 
@@ -26,7 +26,7 @@ navBar.addEventListener('input', async (e) => {
 		expenseForm.classList.remove('hidden-opacity-collapse');
 		dateBanner.classList.remove('hidden-opacity-collapse');
 		totalBar.classList.remove('hidden-opacity-collapse');
-		displayNewExpenses();
+		displayExpensesBasedOnMonth();
 	} else {
 	
 		expenseForm.classList.add('hidden-opacity-collapse');
@@ -47,10 +47,6 @@ navBar.addEventListener("click", function(e) {
 		registerBox.classList.toggle("hidden");
 	}
 });
-
-const calculateTotalExpenses = function(filteredExpenses) {
-	return filteredExpenses.reduce((acc, cur) => acc + cur.amount, 0);
-}
 
 //This self executing function displays the current (default) months expenses
 //On the page on load 
