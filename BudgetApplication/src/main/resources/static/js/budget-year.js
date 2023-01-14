@@ -3,6 +3,7 @@ import { MONTHS } from './config.js';
 import { displayExpenses, monthArrows, calculateTotalExpenses } from './helpers.js';
 import { sendDeleteRequest, searchRequest } from './requests.js';
 
+const navBar = document.querySelector('.nav-box')
 const currentMonth = document.querySelector('.month-text');
 const dateBanner = document.querySelector('.budget-date-filter');
 let expensesOnPage = document.querySelectorAll('.budget-list');
@@ -12,28 +13,27 @@ const total = document.querySelector('.total');
 const totalBar = document.querySelector('.budget-list-total');
 const searchBar = document.querySelector('.search-bar');
 
-searchBar.addEventListener('keyup', async () => {
+navBar.addEventListener('input', async (e) => {
 	
-	if(searchBar.value.length === 0) return;
-	
-	expenseForm.classList.add('hidden-opacity-collapse');
-	dateBanner.classList.add('hidden-opacity-collapse');
-	totalBar.classList.add('hidden-opacity-collapse');
-
-	const result = await searchRequest(searchBar.value);
-
-	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
-
-	displayExpenses(result);
-})
-
-searchBar.addEventListener('input', function(e) {
+	if(!e.target.classList.contains('search-bar')) return;
 	if(searchBar.value.length === 0){ 
 		expenseForm.classList.remove('hidden-opacity-collapse');
 		dateBanner.classList.remove('hidden-opacity-collapse');
 		totalBar.classList.remove('hidden-opacity-collapse');
+		displayExpensesBasedOnMonth();
+	} else {
+	
+		expenseForm.classList.add('hidden-opacity-collapse');
+		dateBanner.classList.add('hidden-opacity-collapse');
+		totalBar.classList.add('hidden-opacity-collapse');
+	
+		const result = await searchRequest(searchBar.value);
+		
+		expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
+	
+		displayExpenses(result, expenseHeaders);
+		expensesOnPage = document.querySelectorAll('.budget-list');
 	}
-	displayMonthlyExpenses();
 })
 
 const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
