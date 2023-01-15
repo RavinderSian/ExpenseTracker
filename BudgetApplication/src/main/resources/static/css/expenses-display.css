@@ -116,7 +116,6 @@
 
 .budget-date-filter {
 	margin-left: 40px;
-	display: grid;
 	border: 2px solid blue;
 	border-radius: 10px;
 	background-color: #8ce99a;
@@ -128,13 +127,16 @@
 	justify-content: center;
 }
 
-.month-grid {
-	display: grid;
-	justify-content: center;
-}
-
 .flex-box-month {
 	display: flex;
+	justify-content: space-evenly;
+}
+
+.month-text {
+	display: flex;
+	margin: 10px;
+	justify-content: center;
+	flex-basis: 150px;
 }
 
 .flex-box-year {
@@ -146,10 +148,6 @@
 }
 
 .year-text {
-	margin: 10px;
-}
-
-.month-text {
 	margin: 10px;
 }
 
