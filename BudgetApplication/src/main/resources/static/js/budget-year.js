@@ -15,7 +15,6 @@ const searchBar = document.querySelector('.search-bar');
 const categoryFilter = document.querySelector('#category-filter-input');
 
 categoryFilter.onchange = function() {
-	console.log(categoryFilter.value.toLowerCase());
 	displayExpensesBasedOnCategory(categoryFilter.value.toLowerCase());
 }
 
