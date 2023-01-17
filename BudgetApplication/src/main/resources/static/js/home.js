@@ -19,8 +19,10 @@ const expenseForm = document.querySelector('.add-expense-form');
 const dateBanner = document.querySelector('.budget-date-filter');
 const categoryFilter = document.querySelector('#category-filter-input');
 
-categoryFilter.onchange = function() {
-	displayExpensesBasedOnCategory(categoryFilter.value.toLowerCase());
+if (categoryFilter){
+		categoryFilter.onchange = function() {
+		displayExpensesBasedOnCategory(categoryFilter.value.toLowerCase());
+	}
 }
 
 const displayExpensesBasedOnCategory = function(category){
