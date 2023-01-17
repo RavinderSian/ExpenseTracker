@@ -34,6 +34,8 @@ const displayExpensesBasedOnCategory = function(category){
 		expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 		displayExpenses(filteredExpenses, expenseHeaders);
 		expensesOnPage = document.querySelectorAll('.budget-list');
+		total.innerHTML = `Total: £${parseFloat(calculateTotalExpenses(filteredExpenses)).toFixed(2)}`;
+
 	}
 }
 
