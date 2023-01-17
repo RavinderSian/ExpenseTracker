@@ -12,6 +12,27 @@ const expenseHeaders = document.querySelector('.budget-list-header');
 const total = document.querySelector('.total');
 const totalBar = document.querySelector('.budget-list-total');
 const searchBar = document.querySelector('.search-bar');
+const categoryFilter = document.querySelector('#category-filter-input');
+
+categoryFilter.onchange = function() {
+	console.log(categoryFilter.value.toLowerCase());
+	displayExpensesBasedOnCategory(categoryFilter.value.toLowerCase());
+}
+
+const displayExpensesBasedOnCategory = function(category){
+	
+	if (category.toLowerCase() === 'all'){
+		displayExpensesBasedOnMonth();
+	} else {
+		const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === MONTHS.indexOf(currentMonth.textContent)+1)
+			.filter(expense => expense.category.toLowerCase() === category.toLowerCase());
+		expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
+		displayExpenses(filteredExpenses, expenseHeaders);
+		expensesOnPage = document.querySelectorAll('.budget-list');
+		total.innerHTML = `Total: £${parseFloat(calculateTotalExpenses(filteredExpenses)).toFixed(2)}`;
+
+	}
+}
 
 navBar.addEventListener('input', async (e) => {
 	

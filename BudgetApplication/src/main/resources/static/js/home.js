@@ -20,7 +20,6 @@ const dateBanner = document.querySelector('.budget-date-filter');
 const categoryFilter = document.querySelector('#category-filter-input');
 
 categoryFilter.onchange = function() {
-	console.log(categoryFilter.value.toLowerCase());
 	displayExpensesBasedOnCategory(categoryFilter.value.toLowerCase());
 }
 
