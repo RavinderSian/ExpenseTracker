@@ -17,7 +17,6 @@ export const displayExpenses = function(expenseToShow, expenseHeaders){
 		});
 }
 
-
 export const monthArrows = function(id, currentMonth) {
 	const indexOfMonth = MONTHS.indexOf(currentMonth.textContent);
 	

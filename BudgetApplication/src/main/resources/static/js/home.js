@@ -4,7 +4,6 @@ import { MONTHS } from './config.js';
 import { displayExpenses, monthArrows, calculateTotalExpenses } from './helpers.js';
 import { sendDeleteRequest, searchRequest } from './requests.js';
 
-
 const navBar = document.querySelector('.nav-box')
 const registerBox = document.querySelector(".register-box");
 const registerSubmitBtn = document.querySelector("#btn-register-submit");
@@ -18,6 +17,25 @@ const totalBar = document.querySelector('.budget-list-total');
 const searchBar = document.querySelector('.search-bar');
 const expenseForm = document.querySelector('.add-expense-form');
 const dateBanner = document.querySelector('.budget-date-filter');
+const categoryFilter = document.querySelector('#category-filter-input');
+
+categoryFilter.onchange = function() {
+	console.log(categoryFilter.value.toLowerCase());
+	displayExpensesBasedOnCategory(categoryFilter.value.toLowerCase());
+}
+
+const displayExpensesBasedOnCategory = function(category){
+	
+	if (category.toLowerCase() === 'all'){
+		displayExpensesBasedOnMonth();
+	} else {
+		const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === MONTHS.indexOf(currentMonth.textContent)+1)
+			.filter(expense => expense.category.toLowerCase() === category.toLowerCase());
+		expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
+		displayExpenses(filteredExpenses, expenseHeaders);
+		expensesOnPage = document.querySelectorAll('.budget-list');
+	}
+}
 
 navBar.addEventListener('input', async (e) => {
 	
@@ -95,8 +113,6 @@ const displayCorrectExpensesForMonth = function(e) {
 //We are listening on document because some elements do not exist at certain points
 //This means we need event delegation to listen for them
 document.addEventListener("click", (e) => {
-	
-	console.log(e.target);
 	
 	displayCorrectExpensesForMonth(e);
 

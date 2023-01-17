@@ -49,7 +49,15 @@
 			  	</div>
 			  	<div class = "budget-list-header">
 					<p>Date</p>
-			  		<p>Category</p>
+					<div>
+						<p class="category-header">Category</p>
+						<select id="category-filter-input">
+				  		  <option value="All">All</option>
+					      <option value="DATES">Dates</option>
+					      <option value="MISC">Misc</option>
+					 	  <option value="FUEL">Fuel</option>
+					    </select>
+					</div>
 			  		<p>Cost</p>
 			  		<p>Description</p>
 			  	</div>
@@ -70,11 +78,11 @@
 					<h3>Add expense</h3>
 					<input class = "expense-input" type = "date" th:field="*{purchaseDate}" placeholder = "10-10-2022">
 					<input class = "expense-input" type = "text" th:field="*{amount}" placeholder = "Amount">
-					  <select name="categories" th:field="*{category}">
-				        <option value="DATES">Dates</option>
-				        <option value="MISC">Misc</option>
-				 		<option value="FUEL">Fuel</option>
-				      </select>
+					<select name="categories" th:field="*{category}">
+				      <option value="DATES">Dates</option>
+				      <option value="MISC">Misc</option>
+				 	  <option value="FUEL">Fuel</option>
+				    </select>
 					<input class = "expense-input" th:field="*{description}" placeholder = "Description"/>
 					<input name="submit-login" type="submit" value="submit" />
 				</form>

@@ -114,6 +114,10 @@
 	display: block;
 }
 
+.category-header {
+	margin-bottom: 0;
+}
+
 .budget-date-filter {
 	margin-left: 40px;
 	border: 2px solid blue;
