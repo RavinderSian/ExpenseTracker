@@ -13,6 +13,7 @@ const total = document.querySelector('.total');
 const totalBar = document.querySelector('.budget-list-total');
 const searchBar = document.querySelector('.search-bar');
 const categoryFilter = document.querySelector('#category-filter-input');
+const sortingArrows = document.querySelector('.sorting-arrows');
 
 categoryFilter.onchange = function() {
 	displayExpensesBasedOnCategory(categoryFilter.value.toLowerCase());
@@ -98,6 +99,26 @@ const displayCorrectExpensesForMonth = function(e) {
 //This means we need event delegation to listen for them
 document.addEventListener("click", (e) => {
 	displayCorrectExpensesForMonth(e);
+	
+	if (e.target.classList.contains('sorting-arrows')){
+		
+		const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
+		MONTHS.indexOf(currentMonth.textContent)+1);
+		
+		if (sortingArrows.textContent === '↓') {
+			sortingArrows.innerHTML = '↑';
+			const asc = filteredExpenses.slice().sort((a, b) => a.amount - b.amount);
+			displayExpenses(asc, expenseHeaders);
+		} else if (sortingArrows.textContent === '↑') {
+			sortingArrows.innerHTML = '↑↓';
+			displayExpenses(filteredExpenses, expenseHeaders);
+		} else if (sortingArrows.textContent === '↑↓') {
+			sortingArrows.innerHTML = '↓';
+			const desc = filteredExpenses.slice().sort((a, b) => b.amount - a.amount);
+			displayExpenses(desc, expenseHeaders);
+		}
+		
+	}
 
 	if (e.target.classList.contains('delete-expense-btn')) {
 		e.preventDefault();
