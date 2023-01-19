@@ -21,7 +21,6 @@
 	grid-gap: 20px;
 	grid-template-columns: 1fr 0.5fr;
 	grid-template-rows: 1fr 3fr;
-	
 }
 
 .hidden {
@@ -129,7 +128,6 @@
 
 .sorting-arrows {
 	width: min-content;
-	border: 2px solid black;
 }
 
 .sorting-arrows:hover {
