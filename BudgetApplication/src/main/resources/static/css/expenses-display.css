@@ -45,6 +45,7 @@
 }
 
 .budget-list-header {
+	justify-content: space-evenly;
 	padding-left: 10px;
 	margin-left: 40px;
 	display: grid;
@@ -127,7 +128,8 @@
 }
 
 .sorting-arrows {
-	border: 3px solid black;
+	width: min-content;
+	border: 2px solid black;
 }
 
 .sorting-arrows:hover {
