@@ -126,6 +126,14 @@
 	margin-bottom: 10px;
 }
 
+.sorting-arrows {
+	border: 3px solid black;
+}
+
+.sorting-arrows:hover {
+	cursor: pointer;
+}
+
 .year-grid {
 	display: grid;
 	justify-content: center;
