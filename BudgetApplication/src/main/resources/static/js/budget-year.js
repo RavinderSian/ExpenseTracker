@@ -102,20 +102,31 @@ document.addEventListener("click", (e) => {
 	
 	if (e.target.classList.contains('sorting-arrows')){
 		
-		const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
-		MONTHS.indexOf(currentMonth.textContent)+1);
+		let filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
+			MONTHS.indexOf(currentMonth.textContent)+1);
+		
+		if (currentMonth.textContent === 'ALL') {
+			filteredExpenses = expenses;
+		}
 		
 		if (sortingArrows.textContent === '↓') {
 			sortingArrows.innerHTML = '↑';
 			const asc = filteredExpenses.slice().sort((a, b) => a.amount - b.amount);
+			expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 			displayExpenses(asc, expenseHeaders);
+			expensesOnPage = document.querySelectorAll('.budget-list');
 		} else if (sortingArrows.textContent === '↑') {
 			sortingArrows.innerHTML = '↑↓';
+			expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 			displayExpenses(filteredExpenses, expenseHeaders);
+			expensesOnPage = document.querySelectorAll('.budget-list');
 		} else if (sortingArrows.textContent === '↑↓') {
 			sortingArrows.innerHTML = '↓';
 			const desc = filteredExpenses.slice().sort((a, b) => b.amount - a.amount);
+			
+			expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 			displayExpenses(desc, expenseHeaders);
+			expensesOnPage = document.querySelectorAll('.budget-list');
 		}
 		
 	}

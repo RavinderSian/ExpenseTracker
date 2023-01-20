@@ -84,12 +84,12 @@ const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
 	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 	
 	if (currentMonth.textContent === 'ALL') {
-	displayExpenses(expenses, expenseHeaders);
-	expenseTotal = calculateTotalExpenses(expenses);
+		displayExpenses(expenses, expenseHeaders);
+		expenseTotal = calculateTotalExpenses(expenses);
 
 	} else {
-	displayExpenses(filteredExpenses, expenseHeaders);
-	expenseTotal = calculateTotalExpenses(filteredExpenses);
+		displayExpenses(filteredExpenses, expenseHeaders);
+		expenseTotal = calculateTotalExpenses(filteredExpenses);
 	}
 	
 	total.innerHTML = `Total: £${parseFloat(expenseTotal).toFixed(2)}`;
@@ -100,8 +100,6 @@ const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
 
 
 const displayCorrectExpensesForMonth = function(e) {
-	
-	//console.log(e.target.id);
 	
 	if (e.target.id === null || !e.target.id.includes('month-arrow')) return;
 
@@ -121,20 +119,31 @@ document.addEventListener("click", (e) => {
 	
 	if (e.target.classList.contains('sorting-arrows')){
 		
-		const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
+		let filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
 		MONTHS.indexOf(currentMonth.textContent)+1);
+		
+		if (currentMonth.textContent === 'ALL') {
+			filteredExpenses = expenses;
+		}
 		
 		if (sortingArrows.textContent === '↓') {
 			sortingArrows.innerHTML = '↑';
 			const asc = filteredExpenses.slice().sort((a, b) => a.amount - b.amount);
+			expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 			displayExpenses(asc, expenseHeaders);
+			expensesOnPage = document.querySelectorAll('.budget-list');
 		} else if (sortingArrows.textContent === '↑') {
 			sortingArrows.innerHTML = '↑↓';
+			expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 			displayExpenses(filteredExpenses, expenseHeaders);
+			expensesOnPage = document.querySelectorAll('.budget-list');
 		} else if (sortingArrows.textContent === '↑↓') {
 			sortingArrows.innerHTML = '↓';
 			const desc = filteredExpenses.slice().sort((a, b) => b.amount - a.amount);
+			
+			expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 			displayExpenses(desc, expenseHeaders);
+			expensesOnPage = document.querySelectorAll('.budget-list');
 		}
 		
 	}
