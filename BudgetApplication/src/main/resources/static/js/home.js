@@ -19,6 +19,7 @@ const expenseForm = document.querySelector('.add-expense-form');
 const dateBanner = document.querySelector('.budget-date-filter');
 const categoryFilter = document.querySelector('#category-filter-input');
 const sortingArrows = document.querySelector('.sorting-arrows');
+const ignoreCheck = document.querySelector('#ignore-expense-checkbox');
 
 if (categoryFilter){
 		categoryFilter.onchange = function() {
@@ -110,6 +111,26 @@ const displayCorrectExpensesForMonth = function(e) {
 	displayExpensesBasedOnMonth();
 }
 
+//Listens for ignore checkbox
+document.addEventListener("change", (e) => {
+	
+	if (e.target.id !== 'ignore-expense-checkbox') return;
+	
+	const expenseElement = e.target.parentElement.parentElement;
+	
+	if (e.target.checked) {
+		expenseElement.style.opacity = '0.5';
+		
+	} else {
+		expenseElement.style.opacity = '1';
+	}
+	
+	console.log(e.target.checked);
+	//Best way to get parent
+	console.log(e.target.parentElement.parentElement);
+	console.log(e.target.closest('budget-list'));
+	
+})
 
 //We are listening on document because some elements do not exist at certain points
 //This means we need event delegation to listen for them
