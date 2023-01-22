@@ -118,11 +118,17 @@ document.addEventListener("change", (e) => {
 	
 	const expenseElement = e.target.parentElement.parentElement;
 	
+	const currentTotal = parseFloat(total.innerHTML.substring(total.innerHTML.indexOf('£') + 1));
+	
 	if (e.target.checked) {
 		expenseElement.style.opacity = '0.5';
+		const blurredExpenseAmount = 5+parseFloat(expenseElement.children[2].innerHTML.replace('£', ''));
 		
+		total.innerHTML = `Total: £${(currentTotal - blurredExpenseAmount).toFixed(2)}`;
 	} else {
+		const blurredExpenseAmount = 5+parseFloat(expenseElement.children[2].innerHTML.replace('£', ''));
 		expenseElement.style.opacity = '1';
+		total.innerHTML = `Total: £${(currentTotal + blurredExpenseAmount).toFixed(2)}`;
 	}
 	
 	console.log(e.target.checked);
