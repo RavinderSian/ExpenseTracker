@@ -19,7 +19,6 @@ const expenseForm = document.querySelector('.add-expense-form');
 const dateBanner = document.querySelector('.budget-date-filter');
 const categoryFilter = document.querySelector('#category-filter-input');
 const sortingArrows = document.querySelector('.sorting-arrows');
-const ignoreCheck = document.querySelector('#ignore-expense-checkbox');
 
 if (categoryFilter){
 		categoryFilter.onchange = function() {
