@@ -116,25 +116,21 @@ document.addEventListener("change", (e) => {
 	
 	if (e.target.id !== 'ignore-expense-checkbox') return;
 	
+	//Best way to get parent
 	const expenseElement = e.target.parentElement.parentElement;
 	
 	const currentTotal = parseFloat(total.innerHTML.substring(total.innerHTML.indexOf('£') + 1));
 	
 	if (e.target.checked) {
 		expenseElement.style.opacity = '0.5';
-		const blurredExpenseAmount = 5+parseFloat(expenseElement.children[2].innerHTML.replace('£', ''));
+		const blurredExpenseAmount = +parseFloat(expenseElement.children[2].innerHTML.replace('£', ''));
 		
 		total.innerHTML = `Total: £${(currentTotal - blurredExpenseAmount).toFixed(2)}`;
 	} else {
-		const blurredExpenseAmount = 5+parseFloat(expenseElement.children[2].innerHTML.replace('£', ''));
+		const blurredExpenseAmount = +parseFloat(expenseElement.children[2].innerHTML.replace('£', ''));
 		expenseElement.style.opacity = '1';
 		total.innerHTML = `Total: £${(currentTotal + blurredExpenseAmount).toFixed(2)}`;
 	}
-	
-	console.log(e.target.checked);
-	//Best way to get parent
-	console.log(e.target.parentElement.parentElement);
-	console.log(e.target.closest('budget-list'));
 	
 })
 
