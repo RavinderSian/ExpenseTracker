@@ -42,11 +42,6 @@ public class AnalysisController {
 		
 		model.addAttribute("currentMonth", LocalDate.now().getMonth().toString());
 		
-		model.addAttribute("expense", new Expense());
-		model.addAttribute("expenseToEdit", new ExpenseDTO());
-
-
-		model.addAttribute("user", new User());
 		return "line-chart";
 	}
 }
