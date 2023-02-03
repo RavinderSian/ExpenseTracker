@@ -6,6 +6,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -21,9 +22,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.personal.budget.config.SecurityConfig;
 import com.personal.budget.model.Expense;
 import com.personal.budget.model.ExpenseDTO;
@@ -172,6 +176,34 @@ class ExpenseControllerTest {
 		mockMvc.perform(get("/budget/" + LocalDate.now().getYear()))
 		.andExpect(status().isUnauthorized());
 		
+	}
+	
+	@Test
+	@WithMockUser(username = "rsian", password = "pw", authorities = "USER")
+	void test_AddExpense_ReturnsCorrectStatusAndResponse_WhenGivenValidExpense() throws Exception {
+
+		User user = new User();
+		user.setId(1L);
+		user.setAuthority("USER");
+		user.setEmail("rsian761@gmail.com");
+		user.setPassword("testing");
+		user.setUsername("rsian");
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory("Dates");
+		expense.setDescription("car");
+		expense.setPurchaseDate(LocalDate.now());
+		
+	    ObjectMapper mapper = new ObjectMapper();
+	    mapper.registerModule(new JavaTimeModule()); 
+	    
+		when(userService.findByUsername("rsian")).thenReturn(Optional.of(user));
+		
+		mockMvc.perform(post("/addexpense").contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writer().writeValueAsString(expense)))
+				.andExpect(status().isFound());
 	}
 
 
