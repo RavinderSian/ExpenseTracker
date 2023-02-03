@@ -205,6 +205,33 @@ class ExpenseControllerTest {
 				.content(mapper.writer().writeValueAsString(expense)))
 				.andExpect(status().isFound());
 	}
+	
+	@Test
+	@WithMockUser(username = "rsian", password = "pw", authorities = "USER")
+	void test_EditExpense_ReturnsCorrectStatusAndResponse_WhenGivenValidExpenseDTO() throws Exception {
+
+		User user = new User();
+		user.setId(1L);
+		user.setAuthority("USER");
+		user.setEmail("rsian761@gmail.com");
+		user.setPassword("testing");
+		user.setUsername("rsian");
+		
+		ExpenseDTO expense = new ExpenseDTO();
+		expense.setUserId("1");
+		expense.setAmount("10");
+		expense.setCategory("Dates");
+		expense.setDescription("car");
+		expense.setPurchaseDate("2023-2-3");
+		
+	    ObjectMapper mapper = new ObjectMapper();
+	    
+		when(userService.findByUsername("rsian")).thenReturn(Optional.of(user));
+		
+		mockMvc.perform(post("/editexpense").contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writer().writeValueAsString(expense)))
+				.andExpect(status().isFound());
+	}
 
 
 }
