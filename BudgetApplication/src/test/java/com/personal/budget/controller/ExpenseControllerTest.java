@@ -122,5 +122,57 @@ class ExpenseControllerTest {
 		
 		verify(service, times(1)).findExpensesByYearForUser(LocalDate.now().getYear(), 1L);
 	}
+	
+	@Test
+	@WithMockUser(username = "rsian", password = "pw", authorities = "USER")
+	void test_BudgetYear_DisplaysPageAsExpected_WhenGivenCurrentYear() throws Exception {
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory("Dates");
+		expense.setDescription("car");
+		expense.setPurchaseDate(LocalDate.now());
+		
+		Expense expense2 = new Expense();
+		expense2.setUserId(1L);
+		expense2.setAmount(BigDecimal.valueOf(10));
+		expense2.setCategory("Dates");
+		expense2.setDescription("cars");
+		expense2.setPurchaseDate(LocalDate.now());
+		
+		User user = new User();
+		user.setId(1L);
+		user.setAuthority("USER");
+		user.setEmail("rsian@gmail.com");
+		user.setPassword("test");
+		user.setUsername("testing");
+		
+		when(userService.findByUsername("rsian")).thenReturn(Optional.of(user));
+		
+		when(service.findExpensesByYearForUser(LocalDate.now().getYear(), 1L))
+			.thenReturn(Arrays.asList(expense, expense2));
+		
+		mockMvc.perform(get("/budget/" + LocalDate.now().getYear()))
+		.andExpect(status().isOk())
+		.andExpect(view().name("budget-year"))
+		.andExpect(model().attribute("expenses", hasSize(2)))
+		.andExpect(model().attribute("currentYear", equalTo(LocalDate.now().getYear())))
+		.andExpect(model().attribute("previousYear", equalTo(LocalDate.now().getYear()-1)))
+		.andExpect(model().attribute("nextYear", equalTo(LocalDate.now().getYear()+1)))
+		.andExpect(model().attribute("currentMonth", LocalDate.now().getMonth().toString()))
+		.andExpect(model().attribute("expense", equalTo(new Expense())));
+		
+		verify(service, times(1)).findExpensesByYearForUser(LocalDate.now().getYear(), 1L);
+	}
+	
+	@Test
+	void test_BudgetYear_ReturnsHTTPStatus401_WhenNoUserLoggedIn() throws Exception {
+		
+		mockMvc.perform(get("/budget/" + LocalDate.now().getYear()))
+		.andExpect(status().isUnauthorized());
+		
+	}
+
 
 }
