@@ -75,7 +75,7 @@ public class ExpenseController {
 	
 	@PreAuthorize("hasAuthority('USER')")
 	@PostMapping("/addexpense")
-	public String addExpenseDate(@ModelAttribute Expense newExpense, Model model, HttpServletRequest request,
+	public String addExpense(@ModelAttribute Expense newExpense, Model model, HttpServletRequest request,
 			 RedirectAttributes redirectAttributes) {
 		
 		String loggedInUsername = request.getUserPrincipal().getName();
