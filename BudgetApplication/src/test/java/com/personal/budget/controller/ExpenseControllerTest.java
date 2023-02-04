@@ -217,19 +217,15 @@ class ExpenseControllerTest {
 		user.setPassword("testing");
 		user.setUsername("rsian");
 		
-		ExpenseDTO expense = new ExpenseDTO();
-		expense.setUserId("1");
-		expense.setAmount("10");
-		expense.setCategory("Dates");
-		expense.setDescription("car");
-		expense.setPurchaseDate("2023-2-3");
-		
-	    ObjectMapper mapper = new ObjectMapper();
-	    
 		when(userService.findByUsername("rsian")).thenReturn(Optional.of(user));
 		
 		mockMvc.perform(post("/editexpense").contentType(MediaType.APPLICATION_JSON)
-				.content(mapper.writer().writeValueAsString(expense)))
+				.param("amount", "10")
+				.param("id", "1")
+				.param("userId", "1")
+				.param("description", "car")
+				.param("category", "Dates")
+				.param("purchaseDate", "2023-02-03"))
 				.andExpect(status().isFound());
 	}
 
