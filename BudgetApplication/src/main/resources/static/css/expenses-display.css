@@ -51,7 +51,7 @@
 	border: 2px solid blue;
 	border-radius: 10px;
 	background-color: #8ce99a;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 	margin-bottom: 10px;
 }
 
