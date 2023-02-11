@@ -20,18 +20,18 @@ const dateBanner = document.querySelector('.budget-date-filter');
 const categoryFilter = document.querySelector('#category-filter-input');
 const sortingArrows = document.querySelector('.sorting-arrows');
 
-if (categoryFilter){
-		categoryFilter.onchange = function() {
+if (categoryFilter) {
+	categoryFilter.onchange = function() {
 		displayExpensesBasedOnCategory(categoryFilter.value.toLowerCase());
 	}
 }
 
-const displayExpensesBasedOnCategory = function(category){
-	
-	if (category.toLowerCase() === 'all'){
+const displayExpensesBasedOnCategory = function(category) {
+
+	if (category.toLowerCase() === 'all') {
 		displayExpensesBasedOnMonth();
 	} else {
-		const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === MONTHS.indexOf(currentMonth.textContent)+1)
+		const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === MONTHS.indexOf(currentMonth.textContent) + 1)
 			.filter(expense => expense.category.toLowerCase() === category.toLowerCase());
 		expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 		displayExpenses(filteredExpenses, expenseHeaders);
@@ -41,27 +41,72 @@ const displayExpensesBasedOnCategory = function(category){
 }
 
 navBar.addEventListener('input', async (e) => {
-	
-	if(!e.target.classList.contains('search-bar')) return;
-	if(searchBar.value.length === 0){ 
+
+	if (!e.target.classList.contains('search-bar')) return;
+	if (searchBar.value.length === 0) {
 		expenseForm.classList.remove('hidden-opacity-collapse');
 		dateBanner.classList.remove('hidden-opacity-collapse');
 		totalBar.classList.remove('hidden-opacity-collapse');
 		displayExpensesBasedOnMonth();
 	} else {
-	
+
 		expenseForm.classList.add('hidden-opacity-collapse');
 		dateBanner.classList.add('hidden-opacity-collapse');
 		totalBar.classList.add('hidden-opacity-collapse');
-	
+
 		const result = await searchRequest(searchBar.value);
-		
+
 		expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
-	
+
 		displayExpenses(result, expenseHeaders);
 		expensesOnPage = document.querySelectorAll('.budget-list');
 	}
 })
+
+document.addEventListener("submit", async (e) => {
+
+	if (e.target.name === 'addExpenseForm') {
+		e.preventDefault();
+
+		const addExpenseInputFields = ['amount', 'purchaseDate', 'description'];
+
+		const response = await addExpense();
+
+		if (response.ok) {
+			window.location.reload();
+		} else {
+			
+			const responseText = await response.text();
+			
+			addExpenseInputFields.filter(field => responseText.includes(field))
+				.forEach(filteredField => console.log(filteredField));
+								
+			
+			
+			console.log(responseText);
+		}
+	}
+
+
+}
+)
+
+
+const addExpense = function() {
+	return fetch($('form[name="addExpenseForm"]').attr("action"), {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			purchaseDate: document.querySelector("#add-expense-purchase-date").value,
+			amount: document.querySelector("#add-expense-amount").value,
+			category: document.querySelector("#add-expense-category").value,
+			description: document.querySelector("#add-expense-description").value,
+		}),
+	});
+};
+
 
 navBar.addEventListener("click", function(e) {
 	if (e.target.classList.contains('btn-register')) {
@@ -72,17 +117,17 @@ navBar.addEventListener("click", function(e) {
 //This self executing function displays the current (default) months expenses
 //On the page on load 
 const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
-	
+
 	if (!currentMonth) return;
-	
+
 	let expenseTotal;
 
-	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
-		MONTHS.indexOf(currentMonth.textContent)+1);
-	
+	const filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) ===
+		MONTHS.indexOf(currentMonth.textContent) + 1);
+
 	//Below removes each expense element currently displayed on the page
 	expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
-	
+
 	if (currentMonth.textContent === 'ALL') {
 		displayExpenses(expenses, expenseHeaders);
 		expenseTotal = calculateTotalExpenses(expenses);
@@ -91,7 +136,7 @@ const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
 		displayExpenses(filteredExpenses, expenseHeaders);
 		expenseTotal = calculateTotalExpenses(filteredExpenses);
 	}
-	
+
 	total.innerHTML = `Total: £${parseFloat(expenseTotal).toFixed(2)}`;
 	//This is needed so the expensesOnPage is the new set of expenses and not the old
 	expensesOnPage = document.querySelectorAll('.budget-list');
@@ -100,54 +145,54 @@ const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
 
 
 const displayCorrectExpensesForMonth = function(e) {
-	
+
 	if (e.target.id === null || !e.target.id.includes('month-arrow')) return;
 
 	e.preventDefault();
 	const newMonth = monthArrows(e.target.id, currentMonth);
 	currentMonth.textContent = newMonth;
-	
+
 	displayExpensesBasedOnMonth();
 }
 
 //Listens for ignore checkbox
 document.addEventListener("change", (e) => {
-	
+
 	if (e.target.id !== 'ignore-expense-checkbox') return;
-	
+
 	//Best way to get parent
 	const expenseElement = e.target.parentElement.parentElement;
-	
+
 	const currentTotal = parseFloat(total.innerHTML.substring(total.innerHTML.indexOf('£') + 1));
-	
+
 	if (e.target.checked) {
 		expenseElement.style.opacity = '0.5';
 		const blurredExpenseAmount = +parseFloat(expenseElement.children[2].innerHTML.replace('£', ''));
-		
+
 		total.innerHTML = `Total: £${(currentTotal - blurredExpenseAmount).toFixed(2)}`;
 	} else {
 		const blurredExpenseAmount = +parseFloat(expenseElement.children[2].innerHTML.replace('£', ''));
 		expenseElement.style.opacity = '1';
 		total.innerHTML = `Total: £${(currentTotal + blurredExpenseAmount).toFixed(2)}`;
 	}
-	
+
 })
 
 //We are listening on document because some elements do not exist at certain points
 //This means we need event delegation to listen for them
 document.addEventListener("click", (e) => {
-	
+
 	displayCorrectExpensesForMonth(e);
-	
-	if (e.target.classList.contains('sorting-arrows')){
-		
-		let filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) === 
-		MONTHS.indexOf(currentMonth.textContent)+1);
-		
+
+	if (e.target.classList.contains('sorting-arrows')) {
+
+		let filteredExpenses = expenses.filter(expense => parseInt(expense.purchaseDate.split('-')[1]) ===
+			MONTHS.indexOf(currentMonth.textContent) + 1);
+
 		if (currentMonth.textContent === 'ALL') {
 			filteredExpenses = expenses;
 		}
-		
+
 		if (sortingArrows.textContent === '↓') {
 			sortingArrows.innerHTML = '↑';
 			const asc = filteredExpenses.slice().sort((a, b) => a.amount - b.amount);
@@ -162,19 +207,19 @@ document.addEventListener("click", (e) => {
 		} else if (sortingArrows.textContent === '↑↓') {
 			sortingArrows.innerHTML = '↓';
 			const desc = filteredExpenses.slice().sort((a, b) => b.amount - a.amount);
-			
+
 			expensesOnPage.forEach(expense => expense.parentNode.removeChild(expense));
 			displayExpenses(desc, expenseHeaders);
 			expensesOnPage = document.querySelectorAll('.budget-list');
 		}
-		
+
 	}
 
 	if (e.target.classList.contains('delete-expense-btn')) {
 		e.preventDefault();
 		const confirm = window.confirm('Are you sure you want to delete this? This operation CANNOT be undone');
-		
-		if (confirm){
+
+		if (confirm) {
 			sendDeleteRequest(e.target.closest('a').href);
 			window.location.reload();
 		}
@@ -184,27 +229,27 @@ document.addEventListener("click", (e) => {
 	//So a second condition is needed to ensure that does not happen
 	const isClickInside =
 		registerBox.contains(e.target) || e.target.classList.contains('btn-register');
-	
+
 	//If we are outside the box when it appears, hide it again 
 	if (!isClickInside) {
 		registerBox.classList.add("hidden");
 	}
-	
-	if (e.target.classList.contains('edit-expense-btn')){
-		
+
+	if (e.target.classList.contains('edit-expense-btn')) {
+
 		e.preventDefault();
-		
+
 		const expenseToEdit = e.target.closest('.budget-list');
-		
+
 		if (expenseToEdit.dataset.editing) return;
-		
+
 		expenseToEdit.dataset.editing = 'true';
-		
+
 		const splitURL = expenseToEdit.querySelector('.delete-expense-link').href.split('/');
-		const currentExpenseId = splitURL[splitURL.length-1];
+		const currentExpenseId = splitURL[splitURL.length - 1];
 		const currentExpenseContent = Array.from(expenseToEdit.children).filter(child => child.nodeName === 'P').map(paragraph => paragraph.textContent);
-		
-		expenseToEdit.insertAdjacentHTML('afterend', 
+
+		expenseToEdit.insertAdjacentHTML('afterend',
 			`<form class = "budget-list-edit-form" action="/editexpense" id=expense method="post">
 					<input class = "edit-expense-input" type = "hidden" name = "id" value = ${currentExpenseId}>
 					<input class = "edit-expense-input" type = "date" name = "purchaseDate" value = ${currentExpenseContent[0]} placeholder=${currentExpenseContent[0]}>
@@ -219,7 +264,7 @@ document.addEventListener("click", (e) => {
 					<input class = "edit-expense-input" name="submit-login" type="submit" value="submit" />
 			 </form>`);
 	}
-	
+
 });
 
 registerSubmitBtn.addEventListener("click", function(e) {

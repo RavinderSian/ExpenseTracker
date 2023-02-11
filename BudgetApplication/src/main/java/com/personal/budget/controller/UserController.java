@@ -42,8 +42,6 @@ public class UserController {
 			
 			Map<String, String> errorMap = new HashMap<>();
 			
-			httpServletResponse.setStatus(400);
-			
 			bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
 			
 			return new ResponseEntity<>(errorMap.toString(), HttpStatus.BAD_REQUEST);

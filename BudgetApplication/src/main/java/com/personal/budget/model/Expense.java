@@ -1,5 +1,6 @@
 package com.personal.budget.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -12,12 +13,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Data;
 
 @Data
-public class Expense {
+public class Expense implements Serializable {
 
 	private Long id;
 	private Long userId;
 	@NotBlank
 	private String category;
+	@NotNull
     @DecimalMin(value = "0.0", inclusive = false)
 	private BigDecimal amount;
 	@NotBlank

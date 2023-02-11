@@ -83,18 +83,20 @@
 				</div>
 		  	</div>
 		  	<div class = "add-expense-form">
-			  	<form th:action="@{/addexpensejson}" th:object="${expense}" method="post">
+			  	<form name='addExpenseForm' th:action="@{/addexpensejson}" th:object="${expense}" method="post">
 					<h3>Add expense</h3>
-					<input class = "expense-input" type = "date" th:field="*{purchaseDate}" placeholder = "10-10-2022">
-					<input class = "expense-input" type = "number" step="0.01" th:field="*{amount}" placeholder = "Amount">
-					<select name="categories" th:field="*{category}">
+					<input id = "add-expense-purchase-date" class = "expense-input" type = "date" th:field="*{purchaseDate}" placeholder = "10-10-2022">
+					<input id = "add-expense-amount" class = "expense-input" type = "number" step="0.01" th:field="*{amount}" placeholder = "Amount">
+					<select id = "add-expense-category" name="categories" th:field="*{category}">
 				      <option value="DATES">Dates</option>
 				      <option value="MISC">Misc</option>
 				 	  <option value="FUEL">Fuel</option>
 				    </select>
-					<input class = "expense-input" th:field="*{description}" placeholder = "Description"/>
+					<input id = "add-expense-description" class = "expense-input" th:field="*{description}" placeholder = "Description"/>
 					<input name="submit-login" type="submit" value="submit" />
 				</form>
+				<label id = "invalid-expense-amount" class = "error">Please enter an amount greater than 0</label> 
+				
 		  	</div>
 		</div>
 		<div class = "register-box hidden">
