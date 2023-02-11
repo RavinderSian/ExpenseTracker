@@ -75,24 +75,25 @@ public class ExpenseController {
 		return "budget-year";
 	}
 	
-	@PreAuthorize("hasAuthority('USER')")
-	@PostMapping("/addexpense")
-	public String addExpense(@ModelAttribute @Valid Expense newExpense, Model model, BindingResult bindingResult,
-			HttpServletRequest request,
-			 RedirectAttributes redirectAttributes) {
-		
-		if (bindingResult.hasErrors()) {
-			
-		}
-		
-		String loggedInUsername = request.getUserPrincipal().getName();
-		
-		newExpense.setUserId(userService.findByUsername(loggedInUsername).get().getId());
-		
-		service.save(newExpense);
-
-		return "redirect:/budget";
-	}
+	//Save incase we need this again
+//	@PreAuthorize("hasAuthority('USER')")
+//	@PostMapping("/addexpense")
+//	public String addExpense(@ModelAttribute @Valid Expense newExpense, Model model, BindingResult bindingResult,
+//			HttpServletRequest request,
+//			 RedirectAttributes redirectAttributes) {
+//		
+//		if (bindingResult.hasErrors()) {
+//			
+//		}
+//		
+//		String loggedInUsername = request.getUserPrincipal().getName();
+//		
+//		newExpense.setUserId(userService.findByUsername(loggedInUsername).get().getId());
+//		
+//		service.save(newExpense);
+//
+//		return "redirect:/budget";
+//	}
 	
 	@PostMapping("/editexpense")
 	public String editExpense(Model model, @ModelAttribute ExpenseDTO expenseDTO, HttpServletRequest request) {

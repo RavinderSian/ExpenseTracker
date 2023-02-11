@@ -182,60 +182,62 @@ class ExpenseControllerTest {
 		
 	}
 	
-	@Test
-	@WithMockUser(username = "rsian", password = "pw", authorities = "USER")
-	void test_AddExpense_ReturnsCorrectStatusAndResponse_WhenGivenValidExpense() throws Exception {
-
-		User user = new User();
-		user.setId(1L);
-		user.setAuthority("USER");
-		user.setEmail("rsian761@gmail.com");
-		user.setPassword("testing");
-		user.setUsername("rsian");
-		
-		Expense expense = new Expense();
-		expense.setUserId(1L);
-		expense.setAmount(BigDecimal.valueOf(10));
-		expense.setCategory("Dates");
-		expense.setDescription("car");
-		expense.setPurchaseDate(LocalDate.now());
-		
-	    ObjectMapper mapper = new ObjectMapper();
-	    mapper.registerModule(new JavaTimeModule()); 
-	    
-		when(userService.findByUsername("rsian")).thenReturn(Optional.of(user));
-		
-		mockMvc.perform(post("/addexpense").contentType(MediaType.APPLICATION_JSON)
-				.content(mapper.writer().writeValueAsString(expense)))
-				.andExpect(status().isBadRequest());
-	}
+	//Keep incase we add add expense endpoint again
+//	@Test
+//	@WithMockUser(username = "rsian", password = "pw", authorities = "USER")
+//	void test_AddExpense_ReturnsCorrectStatusAndResponse_WhenGivenValidExpense() throws Exception {
+//
+//		User user = new User();
+//		user.setId(1L);
+//		user.setAuthority("USER");
+//		user.setEmail("rsian761@gmail.com");
+//		user.setPassword("testing");
+//		user.setUsername("rsian");
+//		
+//		Expense expense = new Expense();
+//		expense.setUserId(1L);
+//		expense.setAmount(BigDecimal.valueOf(10));
+//		expense.setCategory("Dates");
+//		expense.setDescription("car");
+//		expense.setPurchaseDate(LocalDate.now());
+//		
+//	    ObjectMapper mapper = new ObjectMapper();
+//	    mapper.registerModule(new JavaTimeModule()); 
+//	    
+//		when(userService.findByUsername("rsian")).thenReturn(Optional.of(user));
+//		
+//		mockMvc.perform(post("/addexpense").contentType(MediaType.APPLICATION_JSON)
+//				.content(mapper.writer().writeValueAsString(expense)))
+//				.andExpect(status().isBadRequest());
+//	}
 	
-	@Test
-	@WithMockUser(username = "rsian", password = "pw", authorities = "USER")
-	void test_AddExpense_ReturnsCorrectStatusAndResponse_WhenGivenInValidExpense() throws Exception {
-
-		User user = new User();
-		user.setId(1L);
-		user.setAuthority("USER");
-		user.setEmail("rsian761@gmail.com");
-		user.setPassword("testing");
-		user.setUsername("rsian");
-		
-		Expense expense = new Expense();
-		expense.setUserId(1L);
-		expense.setAmount(BigDecimal.valueOf(10));
-		expense.setCategory("Dates");
-		expense.setPurchaseDate(LocalDate.now());
-		
-	    ObjectMapper mapper = new ObjectMapper();
-	    mapper.registerModule(new JavaTimeModule()); 
-	    
-		when(userService.findByUsername("rsian")).thenReturn(Optional.of(user));
-		
-		mockMvc.perform(post("/addexpense").contentType(MediaType.APPLICATION_JSON)
-				.content(mapper.writer().writeValueAsString(expense)))
-				.andExpect(status().isBadRequest());
-	}
+	//Keep incase we add add expense endpoint again
+//	@Test
+//	@WithMockUser(username = "rsian", password = "pw", authorities = "USER")
+//	void test_AddExpense_ReturnsCorrectStatusAndResponse_WhenGivenInValidExpense() throws Exception {
+//
+//		User user = new User();
+//		user.setId(1L);
+//		user.setAuthority("USER");
+//		user.setEmail("rsian761@gmail.com");
+//		user.setPassword("testing");
+//		user.setUsername("rsian");
+//		
+//		Expense expense = new Expense();
+//		expense.setUserId(1L);
+//		expense.setAmount(BigDecimal.valueOf(10));
+//		expense.setCategory("Dates");
+//		expense.setPurchaseDate(LocalDate.now());
+//		
+//	    ObjectMapper mapper = new ObjectMapper();
+//	    mapper.registerModule(new JavaTimeModule()); 
+//	    
+//		when(userService.findByUsername("rsian")).thenReturn(Optional.of(user));
+//		
+//		mockMvc.perform(post("/addexpense").contentType(MediaType.APPLICATION_JSON)
+//				.content(mapper.writer().writeValueAsString(expense)))
+//				.andExpect(status().isBadRequest());
+//	}
 	
 	@Test
 	@WithMockUser(username = "rsian", password = "pw", authorities = "USER")
