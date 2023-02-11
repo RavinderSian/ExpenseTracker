@@ -1,13 +1,19 @@
 package com.personal.budget.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,6 +52,30 @@ public class ExpenseJsonController {
 		List<Expense> results = service.getSearchResults(userId, searchString);
 		
 		return new ResponseEntity<>(results, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasAuthority('USER')")
+	@PostMapping("/addexpensejson")
+	public ResponseEntity<?> addExpenseJSON(@RequestBody @Valid Expense newExpense, Model model, BindingResult bindingResult,
+			HttpServletRequest request,
+			 RedirectAttributes redirectAttributes) {
+		
+		if (bindingResult.hasFieldErrors()) {
+			
+			Map<String, String> errorMap = new HashMap<>();
+			bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
+			
+			return new ResponseEntity<>(errorMap.toString(), HttpStatus.BAD_REQUEST);
+		}
+		
+		
+		String loggedInUsername = request.getUserPrincipal().getName();
+		
+		newExpense.setUserId(userService.findByUsername(loggedInUsername).get().getId());
+		
+		service.save(newExpense);
+
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

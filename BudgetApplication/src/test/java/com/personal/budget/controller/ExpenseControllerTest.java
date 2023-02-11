@@ -1,15 +1,18 @@
 package com.personal.budget.controller;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,6 +28,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -203,7 +207,34 @@ class ExpenseControllerTest {
 		
 		mockMvc.perform(post("/addexpense").contentType(MediaType.APPLICATION_JSON)
 				.content(mapper.writer().writeValueAsString(expense)))
-				.andExpect(status().isFound());
+				.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	@WithMockUser(username = "rsian", password = "pw", authorities = "USER")
+	void test_AddExpense_ReturnsCorrectStatusAndResponse_WhenGivenInValidExpense() throws Exception {
+
+		User user = new User();
+		user.setId(1L);
+		user.setAuthority("USER");
+		user.setEmail("rsian761@gmail.com");
+		user.setPassword("testing");
+		user.setUsername("rsian");
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory("Dates");
+		expense.setPurchaseDate(LocalDate.now());
+		
+	    ObjectMapper mapper = new ObjectMapper();
+	    mapper.registerModule(new JavaTimeModule()); 
+	    
+		when(userService.findByUsername("rsian")).thenReturn(Optional.of(user));
+		
+		mockMvc.perform(post("/addexpense").contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writer().writeValueAsString(expense)))
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
