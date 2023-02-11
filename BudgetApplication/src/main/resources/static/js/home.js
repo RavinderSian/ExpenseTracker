@@ -74,16 +74,34 @@ document.addEventListener("submit", async (e) => {
 
 		if (response.ok) {
 			window.location.reload();
+		} else if (response.status === 503) {
+			document.querySelector('#add-expense-error-maintenance').classList.toggle('hidden');
 		} else {
-			
+
+			document.querySelector('#add-expense-error').classList.remove('hidden');
+
 			const responseText = await response.text();
+
+			const invalidFields = addExpenseInputFields.filter(field => responseText.includes(field));
 			
-			addExpenseInputFields.filter(field => responseText.includes(field))
-				.forEach(filteredField => console.log(filteredField));
-								
-			
-			
-			console.log(responseText);
+			addExpenseInputFields.filter(field => !invalidFields.includes(field)).forEach(validField => {
+				if (validField === 'purchaseDate') {
+						document.querySelector('#add-expense-purchase-date').style.backgroundColor = 'white';
+					} else {
+						document.querySelector(`#add-expense-${validField}`).style.backgroundColor = 'white';
+					}
+			})
+
+			invalidFields.forEach(invalidField => {
+
+					if (invalidField === 'purchaseDate') {
+						document.querySelector('#add-expense-purchase-date').style.backgroundColor = 'red';
+					} else {
+						document.querySelector(`#add-expense-${invalidField}`).style.backgroundColor = 'red';
+					}
+
+				});
+
 		}
 	}
 

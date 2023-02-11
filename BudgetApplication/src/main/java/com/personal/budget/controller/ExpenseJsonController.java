@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -69,8 +71,13 @@ public class ExpenseJsonController {
 		
 		newExpense.setUserId(userService.findByUsername(loggedInUsername).get().getId());
 		
-		service.save(newExpense);
-
+		try {
+			service.save(newExpense);
+		}
+		catch(DataAccessException exception) {
+			return new ResponseEntity<>("Currently down due to maintenance", HttpStatus.SERVICE_UNAVAILABLE);
+		}
+		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
