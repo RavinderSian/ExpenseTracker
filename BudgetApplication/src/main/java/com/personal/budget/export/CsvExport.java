@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.opencsv.bean.ColumnPositionMappingStrategy;
+import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.personal.budget.model.Expense;
@@ -16,10 +18,16 @@ import com.personal.budget.service.ExpenseService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 public class CsvExport {
 	
-	@Autowired
 	private ExpenseService service;
+	
+	public CsvExport(ExpenseService service) {
+		this.service = service;
+	}
+
+
 
 	public void generateCSV(Long userId) throws IOException {
 
@@ -37,15 +45,15 @@ public class CsvExport {
   
             // Create Mapping Strategy to arrange the 
             // column name in order
-            ColumnPositionMappingStrategy<Expense> mappingStrategy = new ColumnPositionMappingStrategy<>();
+            HeaderColumnNameMappingStrategy<Expense> mappingStrategy = new HeaderColumnNameMappingStrategy<>();
            
             mappingStrategy.setType(Expense.class);
   
-            // Arrange column name as provided in below array.
-            String[] columns = new String[] 
-                    { "id", "user_id", "category", "amount", "description", "purchaseDate" };
-            mappingStrategy.setColumnMapping(columns);
-  
+//            // Arrange column name as provided in below array.
+//            String[] columns = new String[] 
+//                    { "id", "userId", "category", "amount", "description", "purchaseDate" };
+//            mappingStrategy.setco
+//  
             // Creating StatefulBeanToCsv object
             StatefulBeanToCsvBuilder<Expense> builder = new StatefulBeanToCsvBuilder<>(writer);
             
@@ -58,7 +66,7 @@ public class CsvExport {
             writer.close();
         }
         catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
         }
     }
 
