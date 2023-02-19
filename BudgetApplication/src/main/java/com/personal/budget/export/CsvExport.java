@@ -1,14 +1,21 @@
 package com.personal.budget.export;
 
-import java.io.FileWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.opencsv.bean.HeaderColumnNameMappingStrategy;
-import com.opencsv.bean.StatefulBeanToCsv;
-import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.opencsv.CSVWriter;
 import com.personal.budget.model.Expense;
 import com.personal.budget.service.ExpenseService;
 
@@ -24,7 +31,9 @@ public class CsvExport {
 		this.service = service;
 	}
 
-
+	private CSVWriter buildCSVWriter(OutputStreamWriter streamWriter) {
+	    return new CSVWriter(streamWriter, ',', Character.MIN_VALUE, '"', System.lineSeparator());
+	}
 
 	public void generateCSV(Long userId) throws IOException {
 //
@@ -67,10 +76,41 @@ public class CsvExport {
 //        }
     }
 	
-	public void generateCSVAndUploadToS3(Long userId) throws IOException {
-		
+	public void writeRecords(List<String[]> lines) throws IOException {
+	    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	    OutputStreamWriter streamWriter = new OutputStreamWriter(stream, StandardCharsets.UTF_8);
+	    try (CSVWriter writer = buildCSVWriter(streamWriter)) {
+	        writer.writeAll(lines);
+            writer.flush();
+            ObjectMetadata meta = new ObjectMetadata();
+            meta.setContentLength(stream.toByteArray().length);
+            getS3().putObject("budget-app-spreadsheets", "testing.csv", new ByteArrayInputStream(stream.toByteArray()), meta);
+        
+	    }
 	}
 	
+	public void generateCSVAndUploadToS3(Long userId) throws IOException {
+		
+      List<Expense> expenseList = service.findByUserId(userId);
 
+        List<String[]> listToUse = new ArrayList<>();
+        
+        listToUse.add(new String[] { "id", "Purchase Date", "Amount", "Category", "Description"});
+        
+        expenseList.forEach(expense -> 
+        			listToUse.add(new String[] {expense.getId().toString(), 
+        					expense.getPurchaseDate().toString(), expense.getAmount().toString(),
+        					expense.getCategory(), expense.getDescription()}));
+        
+        this.writeRecords(listToUse);
+
+	}
+	
+    private AmazonS3 getS3() {
+        return AmazonS3ClientBuilder.standard()
+                                    .withCredentials(new ProfileCredentialsProvider())
+                                    .withRegion(Regions.EU_WEST_2)
+                                    .build();
+    }
 
 }

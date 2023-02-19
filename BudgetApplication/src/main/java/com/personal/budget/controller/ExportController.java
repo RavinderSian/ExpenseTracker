@@ -26,7 +26,7 @@ public class ExportController {
 
 	@GetMapping("/export/{id}")
 	public ResponseEntity<?> exportForUser(@PathVariable Long id) throws IOException {
-		export.generateCSV(id);
+		export.generateCSVAndUploadToS3(id);
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 		
