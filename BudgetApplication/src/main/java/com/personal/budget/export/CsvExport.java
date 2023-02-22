@@ -14,7 +14,9 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.opencsv.CSVWriter;
 import com.personal.budget.model.Expense;
 import com.personal.budget.service.ExpenseService;
@@ -34,8 +36,14 @@ public class CsvExport {
 	private CSVWriter buildCSVWriter(OutputStreamWriter streamWriter) {
 	    return new CSVWriter(streamWriter, ',', Character.MIN_VALUE, '"', System.lineSeparator());
 	}
+	
+	public List<S3ObjectSummary> listBucketFiles(Long userId) {
+		ObjectListing bucketListing = getS3().listObjects("budget-app-spreadsheets");
+		
+		return bucketListing.getObjectSummaries();
+	}
 
-	public void writeRecords(List<String[]> lines) throws IOException {
+	public void writeRecords(List<String[]> lines, Long userId) throws IOException {
 	    ByteArrayOutputStream stream = new ByteArrayOutputStream();
 	    OutputStreamWriter streamWriter = new OutputStreamWriter(stream, StandardCharsets.UTF_8);
 	    try (CSVWriter writer = buildCSVWriter(streamWriter)) {
@@ -43,7 +51,8 @@ public class CsvExport {
             writer.flush();
             ObjectMetadata meta = new ObjectMetadata();
             meta.setContentLength(stream.toByteArray().length);
-            getS3().putObject("budget-app-spreadsheets", "testing.csv", new ByteArrayInputStream(stream.toByteArray()), meta);
+            getS3().putObject("budget-app-spreadsheets", userId + "/testing.csv", 
+            		new ByteArrayInputStream(stream.toByteArray()), meta);
         
 	    }
 	}
@@ -60,8 +69,8 @@ public class CsvExport {
         			listToUse.add(new String[] {expense.getId().toString(), 
         					expense.getPurchaseDate().toString(), expense.getAmount().toString(),
         					expense.getCategory(), expense.getDescription()}));
-        
-        this.writeRecords(listToUse);
+        listBucketFiles(userId);
+        this.writeRecords(listToUse, userId);
 
 	}
 	
