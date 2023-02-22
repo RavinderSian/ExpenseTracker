@@ -1,30 +1,33 @@
 package com.personal.budget.controller;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.personal.budget.model.Expense;
 import com.personal.budget.model.ExpenseDTO;
 import com.personal.budget.model.User;
+import com.personal.budget.repository.ExpenseRepositoryImplTransaction;
 import com.personal.budget.service.ExpenseService;
 import com.personal.budget.service.UserService;
 
 @Controller
 public class ExpenseController {
+	
+	@Autowired
+	private ExpenseRepositoryImplTransaction transactionRepo;
 	
 	private final ExpenseService service;
 	private final UserService userService;
@@ -32,6 +35,22 @@ public class ExpenseController {
 	public ExpenseController(ExpenseService service, UserService userService) {
 		this.service = service;
 		this.userService = userService;
+	}
+	
+	@GetMapping("/transactional")
+	public String transaction(HttpServletRequest request) throws SQLException {
+		Expense expense = transactionRepo.findById(76L).get();
+		expense.setAmount(BigDecimal.valueOf(200));
+		transactionRepo.updateExpenseTransaction(expense);
+		return "/";
+	}
+	
+	@GetMapping("/nontransactional")
+	public String nontransaction() throws SQLException {
+		Expense expense = transactionRepo.findById(76L).get();
+		expense.setAmount(BigDecimal.valueOf(250));
+		transactionRepo.updateExpense(expense);
+		return "/";
 	}
 	
 	@GetMapping("/budget")
