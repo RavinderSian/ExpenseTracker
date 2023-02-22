@@ -35,6 +35,44 @@ public class CsvExport {
 	    return new CSVWriter(streamWriter, ',', Character.MIN_VALUE, '"', System.lineSeparator());
 	}
 
+	public void writeRecords(List<String[]> lines) throws IOException {
+	    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	    OutputStreamWriter streamWriter = new OutputStreamWriter(stream, StandardCharsets.UTF_8);
+	    try (CSVWriter writer = buildCSVWriter(streamWriter)) {
+	        writer.writeAll(lines);
+            writer.flush();
+            ObjectMetadata meta = new ObjectMetadata();
+            meta.setContentLength(stream.toByteArray().length);
+            getS3().putObject("budget-app-spreadsheets", "testing.csv", new ByteArrayInputStream(stream.toByteArray()), meta);
+        
+	    }
+	}
+	
+	public void generateCSVAndUploadToS3(Long userId) throws IOException {
+		
+		List<Expense> expenseList = service.findByUserId(userId);
+
+        List<String[]> listToUse = new ArrayList<>();
+        
+        listToUse.add(new String[] { "id", "Purchase Date", "Amount", "Category", "Description"});
+        
+        expenseList.forEach(expense -> 
+        			listToUse.add(new String[] {expense.getId().toString(), 
+        					expense.getPurchaseDate().toString(), expense.getAmount().toString(),
+        					expense.getCategory(), expense.getDescription()}));
+        
+        this.writeRecords(listToUse);
+
+	}
+	
+    private AmazonS3 getS3() {
+        return AmazonS3ClientBuilder.standard()
+                                    .withCredentials(new ProfileCredentialsProvider())
+                                    .withRegion(Regions.EU_WEST_2)
+                                    .build();
+    }
+    
+	//This writes locally
 	public void generateCSV(Long userId) throws IOException {
 //
 //        // name of generated csv
@@ -74,43 +112,6 @@ public class CsvExport {
 //        catch (Exception e) {
 //            log.error(e.getMessage(), e);
 //        }
-    }
-	
-	public void writeRecords(List<String[]> lines) throws IOException {
-	    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-	    OutputStreamWriter streamWriter = new OutputStreamWriter(stream, StandardCharsets.UTF_8);
-	    try (CSVWriter writer = buildCSVWriter(streamWriter)) {
-	        writer.writeAll(lines);
-            writer.flush();
-            ObjectMetadata meta = new ObjectMetadata();
-            meta.setContentLength(stream.toByteArray().length);
-            getS3().putObject("budget-app-spreadsheets", "testing.csv", new ByteArrayInputStream(stream.toByteArray()), meta);
-        
-	    }
-	}
-	
-	public void generateCSVAndUploadToS3(Long userId) throws IOException {
-		
-      List<Expense> expenseList = service.findByUserId(userId);
-
-        List<String[]> listToUse = new ArrayList<>();
-        
-        listToUse.add(new String[] { "id", "Purchase Date", "Amount", "Category", "Description"});
-        
-        expenseList.forEach(expense -> 
-        			listToUse.add(new String[] {expense.getId().toString(), 
-        					expense.getPurchaseDate().toString(), expense.getAmount().toString(),
-        					expense.getCategory(), expense.getDescription()}));
-        
-        this.writeRecords(listToUse);
-
-	}
-	
-    private AmazonS3 getS3() {
-        return AmazonS3ClientBuilder.standard()
-                                    .withCredentials(new ProfileCredentialsProvider())
-                                    .withRegion(Regions.EU_WEST_2)
-                                    .build();
     }
 
 }
