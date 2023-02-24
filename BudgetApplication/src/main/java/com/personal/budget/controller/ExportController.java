@@ -2,17 +2,15 @@ package com.personal.budget.controller;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.personal.budget.export.CsvExport;
 import com.personal.budget.service.ExpenseService;
 
-@RestController
+@Controller
 public class ExportController {
 	
 	private final ExpenseService service;
@@ -25,10 +23,18 @@ public class ExportController {
 	}
 
 	@GetMapping("/export/{id}")
-	public ResponseEntity<?> exportForUser(@PathVariable Long id) throws IOException {
+	public String exportForUser(@PathVariable Long id) throws IOException {
 		export.generateCSVAndUploadToS3(id);
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		return "/";		
+	}
+	
+	@GetMapping("/exports/{id}")
+	public String exportsForUser(@PathVariable Long id, Model model) throws IOException {
+		
+		model.addAttribute("files", export.listBucketFiles(id));
+		
+		return "exports";		
 		
 	}
 }
