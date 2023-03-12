@@ -1,0 +1,8 @@
+.export-link {
+	pointer-events: none;
+}
+
+.export-btn {
+	cursor: pointer;
+	pointer-events: auto;
+}

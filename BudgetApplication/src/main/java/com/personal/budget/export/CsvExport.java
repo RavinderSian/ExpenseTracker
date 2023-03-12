@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +52,10 @@ public class CsvExport {
             writer.flush();
             ObjectMetadata meta = new ObjectMetadata();
             meta.setContentLength(stream.toByteArray().length);
-            getS3().putObject("budget-app-spreadsheets", userId + "/testing.csv", 
+            getS3().putObject("budget-app-spreadsheets", userId + "/" + ZonedDateTime.now().getYear()
+            		+ "/" + ZonedDateTime.now().getMonthValue() + "/" + ZonedDateTime.now().getDayOfMonth()
+            		+ "/" + ZonedDateTime.now().getMinute()
+            		 + "/testing.csv", 
             		new ByteArrayInputStream(stream.toByteArray()), meta);
         
 	    }
