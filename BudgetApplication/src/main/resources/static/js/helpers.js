@@ -1,12 +1,11 @@
-'use strict'
-import { MONTHS } from './config.js';
+"use strict";
+import { MONTHS } from "./config.js";
 
-
-export const displayExpenses = function(expenseToShow, expenseHeaders){
-	expenseToShow
-	.forEach(expense => {
-				expenseHeaders.insertAdjacentHTML('afterend' ,
-					`<div class = "budget-list">
+export const displayExpenses = function (expenseToShow, expenseHeaders) {
+  expenseToShow.forEach((expense) => {
+    expenseHeaders.insertAdjacentHTML(
+      "afterend",
+      `<div class = "budget-list">
 					<p>${expense.purchaseDate}</p>
 			  		<p>${expense.category}</p>
 			  		<p>&pound${expense.amount}</p>
@@ -16,26 +15,25 @@ export const displayExpenses = function(expenseToShow, expenseHeaders){
 		  			<div>
 			  			<input type="checkbox" id="ignore-expense-checkbox">
 			  		</div>
-		  	</div>`);
-		});
-}
+		  	</div>`
+    );
+  });
+};
 
-export const monthArrows = function(id, currentMonth) {
-	const indexOfMonth = MONTHS.indexOf(currentMonth.textContent);
-	
-	let result;
-	
-	if (id.includes('month-arrow-next')) {
-		result = indexOfMonth === 12 ? 'JANUARY' 
-		: MONTHS[indexOfMonth+1];
-	} else{
-		result = indexOfMonth === 0 ? 'ALL' 
-		: MONTHS[indexOfMonth-1];
-	}
-	
-	return result;
-}
+export const monthArrows = function (id, currentMonth) {
+  const indexOfMonth = MONTHS.indexOf(currentMonth.textContent);
 
-export const calculateTotalExpenses = function(filteredExpenses) {
-	return filteredExpenses.reduce((acc, cur) => acc + cur.amount, 0);
-}
+  let result;
+
+  if (id.includes("month-arrow-next")) {
+    result = indexOfMonth === 12 ? "JANUARY" : MONTHS[indexOfMonth + 1];
+  } else {
+    result = indexOfMonth === 0 ? "ALL" : MONTHS[indexOfMonth - 1];
+  }
+
+  return result;
+};
+
+export const calculateTotalExpenses = function (filteredExpenses) {
+  return filteredExpenses.reduce((acc, cur) => acc + cur.amount, 0);
+};
