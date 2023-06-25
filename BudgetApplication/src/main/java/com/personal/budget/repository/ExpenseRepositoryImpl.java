@@ -104,5 +104,11 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 		return jdbcTemplate.query("SELECT * FROM expenses WHERE user_id = ? AND LOWER(description) LIKE ?;", 
 				new ExpenseRowMapper(), userId, comparisonString);
 	}
+
+	@Override
+	public List<Expense> findExpensesByYearAndMonthForUser(Integer Month, Integer year, Long userId) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'findExpensesByYearAndMonthForUser'");
+	}
 	
 }

@@ -56,4 +56,10 @@ public class ExpenseServiceImpl implements ExpenseService {
 	public List<Expense> getSearchResults(Long userId, String searchString) {
 		return repository.findExpensesByMatchingDescriptionForUser(userId, searchString);
 	}
+
+	@Override
+	public List<Expense> findExpensesByYearAndMonthForUser(Integer Month, Integer year, Long userId) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'findExpensesByYearAndMonthForUser'");
+	}
 }
