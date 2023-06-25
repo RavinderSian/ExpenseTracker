@@ -35,13 +35,16 @@ public class ExpenseController {
 	public String budget(Model model, HttpServletRequest request) {
 		
 		Long userId = userService.findByUsername(request.getUserPrincipal().getName()).get().getId();
-		model.addAttribute("expenses", service.findExpensesByYearForUser(LocalDate.now().getYear(), userId));
 		
-		model.addAttribute("currentYear", LocalDate.now().getYear());
-		model.addAttribute("previousYear", LocalDate.now().getYear() - 1);
-		model.addAttribute("nextYear", LocalDate.now().getYear() + 1);
+		LocalDate today = LocalDate.now();
 		
-		model.addAttribute("currentMonth", LocalDate.now().getMonth().toString());
+		model.addAttribute("expenses", service.findExpensesByYearForUser(today.getYear(), userId));
+		
+		model.addAttribute("currentYear", today.getYear());
+		model.addAttribute("previousYear", today.getYear() - 1);
+		model.addAttribute("nextYear", today.getYear() + 1);
+		
+		model.addAttribute("currentMonth", today.getMonth().toString());
 		
 		model.addAttribute("expense", new Expense());
 		model.addAttribute("expenseToEdit", new ExpenseDTO());
