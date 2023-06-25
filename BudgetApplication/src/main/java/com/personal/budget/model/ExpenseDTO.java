@@ -1,9 +1,5 @@
 package com.personal.budget.model;
 
-import java.time.LocalDate;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import lombok.Data;
 
 @Data
