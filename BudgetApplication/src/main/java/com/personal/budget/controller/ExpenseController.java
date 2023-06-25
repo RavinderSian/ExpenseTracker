@@ -2,20 +2,16 @@ package com.personal.budget.controller;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.personal.budget.model.Expense;
 import com.personal.budget.model.ExpenseDTO;
@@ -23,6 +19,7 @@ import com.personal.budget.model.User;
 import com.personal.budget.service.ExpenseService;
 import com.personal.budget.service.UserService;
 
+@PreAuthorize("hasAuthority('USER')")
 @Controller
 public class ExpenseController {
 	
@@ -37,12 +34,8 @@ public class ExpenseController {
 	@GetMapping("/budget")
 	public String budget(Model model, HttpServletRequest request) {
 		
-		if (request.getUserPrincipal() == null) {
-			model.addAttribute("expenses", new ArrayList<>());
-		} else {
-			Long userId = userService.findByUsername(request.getUserPrincipal().getName()).get().getId();
-			model.addAttribute("expenses", service.findExpensesByYearForUser(LocalDate.now().getYear(), userId));
-		}
+		Long userId = userService.findByUsername(request.getUserPrincipal().getName()).get().getId();
+		model.addAttribute("expenses", service.findExpensesByYearForUser(LocalDate.now().getYear(), userId));
 		
 		model.addAttribute("currentYear", LocalDate.now().getYear());
 		model.addAttribute("previousYear", LocalDate.now().getYear() - 1);
@@ -52,7 +45,6 @@ public class ExpenseController {
 		
 		model.addAttribute("expense", new Expense());
 		model.addAttribute("expenseToEdit", new ExpenseDTO());
-
 
 		model.addAttribute("user", new User());
 		
