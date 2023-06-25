@@ -38,7 +38,7 @@ public class ExpenseController {
 		
 		LocalDate today = LocalDate.now();
 		
-		model.addAttribute("expenses", service.findExpensesByYearForUser(today.getYear(), userId));
+		model.addAttribute("expenses", service.findExpensesByYearAndMonthForUser(today.getYear(), userId));
 		
 		model.addAttribute("currentYear", today.getYear());
 		model.addAttribute("previousYear", today.getYear() - 1);

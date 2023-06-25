@@ -13,7 +13,7 @@ public interface ExpenseRepository {
 	List<Expense> findAll();
 	List<Expense> findByUserId(Long userId);
 	List<Expense> findExpensesByYearForUser(Integer year, Long userId);
-	List<Expense> findExpensesByYearAndMonthForUser(Integer Month, Integer year, Long userId);
+	List<Expense> findExpensesByMonthAndYearForUser(Integer Month, Integer year, Long userId);
 	void updateExpense(Expense expense);
 	List<Expense> findExpensesByMatchingDescriptionForUser(Long userId, String searchString);
 	

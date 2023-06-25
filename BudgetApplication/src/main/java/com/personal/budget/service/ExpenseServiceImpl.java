@@ -58,7 +58,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 	}
 
 	@Override
-	public List<Expense> findExpensesByYearAndMonthForUser(Integer Month, Integer year, Long userId) {
+	public List<Expense> findExpensesByMonthAndYearForUser(Integer Month, Integer year, Long userId) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'findExpensesByYearAndMonthForUser'");
 	}
