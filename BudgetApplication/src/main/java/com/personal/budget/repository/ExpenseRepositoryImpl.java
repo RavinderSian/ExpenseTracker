@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,8 +108,9 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 
 	@Override
 	public List<Expense> findExpensesByMonthAndCurrentYearForUser(Integer month, Long userId) {
+		
 		return jdbcTemplate.query("SELECT * FROM expenses WHERE purchase_date > ? AND purchase_date < ? AND user_id = ?", 
-				new ExpenseRowMapper(), LocalDate.of(LocalDate.now().getYear(), month, 1), LocalDate.of(LocalDate.now().getYear(), month, 31), userId);
+				new ExpenseRowMapper(), LocalDate.of(LocalDate.now().getYear(), month, 1), LocalDate.of(LocalDate.now().getYear(), month, LocalDate.now().getMonth().maxLength()), userId);
 	}
 	
 }

@@ -154,6 +154,19 @@ navBar.addEventListener("click", function (e) {
 //On the page on load
 const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
   if (!currentMonth) return;
+  
+/*    const expensesForMonth = fetch("/expenseformonth").attr(), {
+	    method: "POST",
+	    headers: {
+	      "Content-Type": "application/json",
+	    },
+	    body: JSON.stringify({
+	      year: 2023,
+	      month: 3
+	    }),
+  	};
+  	*/
+  	//const expensesForMonthData = expensesForMonth.JSON();
 
   let expenseTotal;
 

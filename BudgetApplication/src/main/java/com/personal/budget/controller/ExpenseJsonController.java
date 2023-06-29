@@ -79,5 +79,32 @@ public class ExpenseJsonController {
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	@PreAuthorize("hasAuthority('USER')")
+	@PostMapping("/expenseformonth")
+	public ResponseEntity<?> getExpensesForMonthJSON(@RequestBody @Valid Expense newExpense, BindingResult bindingResult,
+			HttpServletRequest request) {
+		
+		if (bindingResult.hasFieldErrors()) {
+			
+			Map<String, String> errorMap = new HashMap<>();
+			bindingResult.getFieldErrors().forEach(error -> errorMap.put(error.getField(), error.getDefaultMessage()));
+			
+			return new ResponseEntity<>(errorMap.toString(), HttpStatus.BAD_REQUEST);
+		}
+		
+		String loggedInUsername = request.getUserPrincipal().getName();
+		
+		newExpense.setUserId(userService.findByUsername(loggedInUsername).get().getId());
+		
+		try {
+			service.save(newExpense);
+		}
+		catch(DataAccessException exception) {
+			return new ResponseEntity<>("Currently down due to maintenance", HttpStatus.SERVICE_UNAVAILABLE);
+		}
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
 }

@@ -501,4 +501,31 @@ class ExpenseRepositoryImplTest {
 		assertThat(expenses.size(), equalTo(2));
 		
 	}
+	
+	@Test
+	void test_FindExpensesByMonthAndCurrentYearForUser_ReturnsListOfLength2_WhenTableHasEntriesAtEndOfJune() {
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory("Dates");
+		expense.setDescription("fds");
+		expense.setPurchaseDate(LocalDate.of(LocalDate.now().getYear(), 6, 31));
+		
+		repository.save(expense);
+		
+		Expense expense2 = new Expense();
+		expense2.setUserId(1L);
+		expense2.setAmount(BigDecimal.valueOf(10));
+		expense2.setCategory("Dates");
+		expense2.setDescription("test2");
+		expense2.setPurchaseDate(LocalDate.of(LocalDate.now().getYear(), 6, 31));
+		
+		repository.save(expense2);
+		
+		List<Expense> expenses = repository.findExpensesByMonthAndCurrentYearForUser(1, 1L);
+		
+		assertThat(expenses.size(), equalTo(2));
+		
+	}
 }
