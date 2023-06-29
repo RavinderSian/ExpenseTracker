@@ -54,7 +54,6 @@ public class ExpenseController {
 		return "budget";
 	}
 	
-	@PreAuthorize("hasAuthority('USER')")
 	@GetMapping("/budget/{year}")
 	public String budgetForYear(@PathVariable Integer year, Model model, HttpServletRequest request) {
 		
