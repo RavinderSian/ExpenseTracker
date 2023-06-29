@@ -1,7 +1,7 @@
 package com.personal.budget.repository;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -418,6 +418,60 @@ class ExpenseRepositoryImplTest {
 		List<Expense> expenses = repository.findExpensesByMatchingDescriptionForUser(1L, "fds");
 		
 		assertThat(expenses.size(), equalTo(0));
+		
+	}
+
+	@Test
+	void test_FindExpensesByMonthAndCurrentYearForUser_ReturnsListOfLength0_WhenTableHasEntriesForDifferentMonthInCurrentYear() {
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory("Dates");
+		expense.setDescription("fds");
+		expense.setPurchaseDate(LocalDate.of(LocalDate.now().getYear(), 2, 1));
+		
+		repository.save(expense);
+		
+		Expense expense2 = new Expense();
+		expense2.setUserId(1L);
+		expense2.setAmount(BigDecimal.valueOf(10));
+		expense2.setCategory("Dates");
+		expense2.setDescription("test2");
+		expense2.setPurchaseDate(LocalDate.of(LocalDate.now().getYear(), 2, 1));
+		
+		repository.save(expense2);
+		
+		List<Expense> expenses = repository.findExpensesByMonthAndCurrentYearForUser(1, 1L);
+		
+		assertThat(expenses.size(), equalTo(0));
+		
+	}
+
+	@Test
+	void test_FindExpensesByMonthAndCurrentYearForUser_ReturnsListOfLength2_WhenTableHasEntriesForGivenMonth() {
+		
+		Expense expense = new Expense();
+		expense.setUserId(1L);
+		expense.setAmount(BigDecimal.valueOf(10));
+		expense.setCategory("Dates");
+		expense.setDescription("fds");
+		expense.setPurchaseDate(LocalDate.of(LocalDate.now().getYear(), 1, 3));
+		
+		repository.save(expense);
+		
+		Expense expense2 = new Expense();
+		expense2.setUserId(1L);
+		expense2.setAmount(BigDecimal.valueOf(10));
+		expense2.setCategory("Dates");
+		expense2.setDescription("test2");
+		expense2.setPurchaseDate(LocalDate.of(LocalDate.now().getYear(), 1, 3));
+		
+		repository.save(expense2);
+		
+		List<Expense> expenses = repository.findExpensesByMonthAndCurrentYearForUser(1, 1L);
+		
+		assertThat(expenses.size(), equalTo(2));
 		
 	}
 	
