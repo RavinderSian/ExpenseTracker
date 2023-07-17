@@ -317,17 +317,6 @@ document.addEventListener("click", (e) => {
     }
   }
 
-  //If the login button also triggers the hidden class to be added the box never appears
-  //So a second condition is needed to ensure that does not happen
-  const isClickInside =
-    registerBox.contains(e.target) ||
-    e.target.classList.contains("btn-register");
-
-  //If we are outside the box when it appears, hide it again
-  if (!isClickInside) {
-    registerBox.classList.add("hidden");
-  }
-
   if (e.target.classList.contains("edit-expense-btn")) {
     e.preventDefault();
 
@@ -371,17 +360,5 @@ document.addEventListener("click", (e) => {
 					<input class = "edit-expense-input" name="submit-login" type="submit" value="submit" />
 			 </form>`
     );
-  }
-});
-
-registerSubmitBtn.addEventListener("click", function (e) {
-  e.preventDefault();
-  consumeRegister();
-});
-
-registerBox.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    consumeRegister();
   }
 });
