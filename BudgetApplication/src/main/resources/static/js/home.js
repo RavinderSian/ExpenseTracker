@@ -30,6 +30,8 @@ if (categoryFilter) {
   };
 }
 
+console.log("testing");
+
 const displayExpensesBasedOnCategory = function (category) {
   if (category.toLowerCase() === "all") {
     displayExpensesBasedOnMonth();
@@ -155,19 +157,6 @@ navBar.addEventListener("click", function (e) {
 const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
   if (!currentMonth) return;
   
-/*    const expensesForMonth = fetch("/expenseformonth").attr(), {
-	    method: "POST",
-	    headers: {
-	      "Content-Type": "application/json",
-	    },
-	    body: JSON.stringify({
-	      year: 2023,
-	      month: 3
-	    }),
-  	};
-  	*/
-  	//const expensesForMonthData = expensesForMonth.JSON();
-
   let expenseTotal;
 
   const filteredExpenses = expenses.filter(
@@ -192,6 +181,25 @@ const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
   expensesOnPage = document.querySelectorAll(".budget-list");
   return displayMonthlyExpenses;
 })();
+
+  console.log("test");
+  const expensesForMonth = async function() {
+	  const res = await fetch("/expenseformonth", {
+	   method: "POST",
+	   headers: {
+	     "Content-Type": "application/json",
+	   },
+	    body: JSON.stringify({
+	    year: 2023,
+	    month: 3
+	   }),
+    });
+    const expensesForMonthData = await res.json();
+    console.log(expensesForMonthData);
+
+  }
+  
+  expensesForMonth();
 
 const displayCorrectExpensesForMonth = function (e) {
   if (e.target.id === null || !e.target.id.includes("month-arrow")) return;
