@@ -109,8 +109,15 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 	@Override
 	public List<Expense> findExpensesByMonthAndCurrentYearForUser(Integer month, Long userId) {
 		
+		LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), month, 1);
+		//We want this as the end so the final day of the month is included
+		LocalDate endDate = LocalDate.of(LocalDate.now().getYear(), month, 1).plusMonths(1L);
+
+		
 		return jdbcTemplate.query("SELECT * FROM expenses WHERE purchase_date > ? AND purchase_date < ? AND user_id = ?", 
-				new ExpenseRowMapper(), LocalDate.of(LocalDate.now().getYear(), month, 1), LocalDate.of(LocalDate.now().getYear(), month, LocalDate.now().getMonth().maxLength()), userId);
+				new ExpenseRowMapper(), startDate, 
+				endDate, 
+					userId);
 	}
 	
 }

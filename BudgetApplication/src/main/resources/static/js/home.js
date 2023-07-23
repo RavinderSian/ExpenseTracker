@@ -191,7 +191,7 @@ const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
 	   },
 	    body: JSON.stringify({
 	    year: 2023,
-	    month: 3
+	    month: 6
 	   }),
     });
     const expensesForMonthData = await res.json();
