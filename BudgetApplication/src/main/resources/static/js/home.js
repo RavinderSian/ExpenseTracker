@@ -1,5 +1,5 @@
 "use strict";
-import { MONTHS } from "./config.js";
+import { MONTHS, MONTHS_DICTIONARY } from "./config.js";
 import {
   calculateTotalExpenses,
   displayExpenses,
@@ -39,8 +39,6 @@ const expensesForMonth = async function(month) {
    }),
 });
     const expensesForMonthData = await res.json();
-    
-    console.log(expensesForMonthData);
     
 	return expensesForMonthData;
 
@@ -162,10 +160,12 @@ const addExpense = function () {
 
 //This self executing function displays the current (default) months expenses
 //On the page on load
-const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
+const displayExpensesBasedOnMonth = (async function displayMonthlyExpenses() {
   if (!currentMonth) return;
   
   let expenseTotal;
+  
+  const expenses = await expensesForMonth(MONTHS_DICTIONARY[currentMonth.innerHTML])
 
   const filteredExpenses = expenses.filter(
     (expense) =>
@@ -190,6 +190,25 @@ const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
   return displayMonthlyExpenses;
 })();
 
+const displayExpensesBasedOnMonthNew = async function displayMonthlyExpenses() {
+  if (!currentMonth) return;
+  
+  let expenseTotal;
+  
+  const expenses = await expensesForMonth(MONTHS_DICTIONARY[currentMonth.innerHTML])
+
+  //Below removes each expense element currently displayed on the page
+  expensesOnPage.forEach((expense) => expense.parentNode.removeChild(expense));
+
+  displayExpenses(expenses, expenseHeaders);
+  expenseTotal = calculateTotalExpenses(expenses);
+
+  total.innerHTML = `Total: £${parseFloat(expenseTotal).toFixed(2)}`;
+  //This is needed so the expensesOnPage is the new set of expenses and not the old
+  expensesOnPage = document.querySelectorAll(".budget-list");
+  return displayMonthlyExpenses;
+};
+
 const displayCorrectExpensesForMonth = function (e) {
   if (e.target.id === null || !e.target.id.includes("month-arrow")) return;
 
@@ -197,9 +216,7 @@ const displayCorrectExpensesForMonth = function (e) {
   const newMonth = monthArrows(e.target.id, currentMonth);
   currentMonth.textContent = newMonth;
   
-  
-
-  displayExpensesBasedOnMonth();
+  displayExpensesBasedOnMonthNew();
 };
 
 //Listens for ignore checkbox
