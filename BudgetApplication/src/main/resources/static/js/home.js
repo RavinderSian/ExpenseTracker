@@ -5,7 +5,6 @@ import {
   displayExpenses,
   monthArrows,
 } from "./helpers.js";
-import { consumeRegister } from "./register.js";
 import { searchRequest, sendDeleteRequest } from "./requests.js";
 
 const navBar = document.querySelector(".nav-box");
@@ -30,7 +29,24 @@ if (categoryFilter) {
   };
 }
 
-console.log("testing");
+const expensesForMonth = async function(month) {
+	const res = await fetch("/expenseformonth", {
+	 method: "POST",
+	 headers: {
+	   "Content-Type": "application/json",
+	 },
+	  body: JSON.stringify({
+	  year: new Date().getFullYear(),
+	  month: month
+   }),
+});
+    const expensesForMonthData = await res.json();
+    
+    console.log(expensesForMonthData);
+    
+	return expensesForMonthData;
+
+  }
 
 const displayExpensesBasedOnCategory = function (category) {
   if (category.toLowerCase() === "all") {
@@ -146,12 +162,6 @@ const addExpense = function () {
   });
 };
 
-navBar.addEventListener("click", function (e) {
-  if (e.target.classList.contains("btn-register")) {
-    registerBox.classList.toggle("hidden");
-  }
-});
-
 //This self executing function displays the current (default) months expenses
 //On the page on load
 const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
@@ -181,25 +191,6 @@ const displayExpensesBasedOnMonth = (function displayMonthlyExpenses() {
   expensesOnPage = document.querySelectorAll(".budget-list");
   return displayMonthlyExpenses;
 })();
-
-  console.log("test");
-  const expensesForMonth = async function() {
-	  const res = await fetch("/expenseformonth", {
-	   method: "POST",
-	   headers: {
-	     "Content-Type": "application/json",
-	   },
-	    body: JSON.stringify({
-	    year: 2023,
-	    month: 6
-	   }),
-    });
-    const expensesForMonthData = await res.json();
-    console.log(expensesForMonthData);
-
-  }
-  
-  expensesForMonth();
 
 const displayCorrectExpensesForMonth = function (e) {
   if (e.target.id === null || !e.target.id.includes("month-arrow")) return;
