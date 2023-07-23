@@ -8,8 +8,6 @@ import {
 import { searchRequest, sendDeleteRequest } from "./requests.js";
 
 const navBar = document.querySelector(".nav-box");
-const registerBox = document.querySelector(".register-box");
-const registerSubmitBtn = document.querySelector("#btn-register-submit");
 const currentMonth = document.querySelector(".month-text");
 
 let expensesOnPage = document.querySelectorAll(".budget-list");
@@ -198,6 +196,8 @@ const displayCorrectExpensesForMonth = function (e) {
   e.preventDefault();
   const newMonth = monthArrows(e.target.id, currentMonth);
   currentMonth.textContent = newMonth;
+  
+  
 
   displayExpensesBasedOnMonth();
 };
