@@ -167,22 +167,11 @@ const displayExpensesBasedOnMonth = (async function displayMonthlyExpenses() {
   
   const expenses = await expensesForMonth(MONTHS_DICTIONARY[currentMonth.innerHTML])
 
-  const filteredExpenses = expenses.filter(
-    (expense) =>
-      parseInt(expense.purchaseDate.split("-")[1]) ===
-      MONTHS.indexOf(currentMonth.textContent) + 1
-  );
-
   //Below removes each expense element currently displayed on the page
   expensesOnPage.forEach((expense) => expense.parentNode.removeChild(expense));
 
-  if (currentMonth.textContent === "ALL") {
-    displayExpenses(expenses, expenseHeaders);
-    expenseTotal = calculateTotalExpenses(expenses);
-  } else {
-    displayExpenses(filteredExpenses, expenseHeaders);
-    expenseTotal = calculateTotalExpenses(filteredExpenses);
-  }
+  displayExpenses(expenses, expenseHeaders);
+  expenseTotal = calculateTotalExpenses(expenses);
 
   total.innerHTML = `Total: £${parseFloat(expenseTotal).toFixed(2)}`;
   //This is needed so the expensesOnPage is the new set of expenses and not the old
@@ -256,7 +245,6 @@ document.addEventListener("click", (e) => {
   displayCorrectExpensesForMonth(e);
 
   if (e.target.classList.contains("sorting-arrows")) {
-    console.log(e.target.textContent);
 
     let filteredExpenses = expenses.filter(
       (expense) =>
