@@ -8,7 +8,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 
@@ -111,13 +110,14 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 		
 		LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), month, 1);
 		//We want this as the end so the final day of the month is included
-		LocalDate endDate = LocalDate.of(LocalDate.now().getYear(), month, 1).plusMonths(1L);
+		LocalDate endDate = LocalDate.of(LocalDate.now().getYear(), month, startDate.lengthOfMonth());
 
 		
-		return jdbcTemplate.query("SELECT * FROM expenses WHERE purchase_date > ? AND purchase_date < ? AND user_id = ?", 
+		return jdbcTemplate.query("SELECT * FROM expenses WHERE purchase_date >= ? "
+				+ "AND purchase_date <= ? "
+				+ "AND user_id = ?", 
 				new ExpenseRowMapper(), startDate, 
-				endDate, 
-					userId);
+				endDate, userId);
 	}
 	
 }
