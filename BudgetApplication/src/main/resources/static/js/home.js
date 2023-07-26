@@ -184,17 +184,20 @@ const displayExpensesBasedOnMonthNew = async function displayMonthlyExpenses() {
   
   let expenseTotal;
   
-  const expenses = await expensesForMonth(MONTHS_DICTIONARY[currentMonth.innerHTML])
+  const expensesResult = await expensesForMonth(MONTHS_DICTIONARY[currentMonth.innerHTML])
 
   //Below removes each expense element currently displayed on the page
   expensesOnPage.forEach((expense) => expense.parentNode.removeChild(expense));
 
-  displayExpenses(expenses, expenseHeaders);
-  expenseTotal = calculateTotalExpenses(expenses);
+  displayExpenses(expensesResult, expenseHeaders);
+  expenseTotal = calculateTotalExpenses(expensesResult);
 
   total.innerHTML = `Total: £${parseFloat(expenseTotal).toFixed(2)}`;
   //This is needed so the expensesOnPage is the new set of expenses and not the old
   expensesOnPage = document.querySelectorAll(".budget-list");
+  
+  expenses = expensesResult;
+  
   return displayMonthlyExpenses;
 };
 
@@ -246,12 +249,6 @@ document.addEventListener("click", (e) => {
 
   if (e.target.classList.contains("sorting-arrows")) {
 
-    let filteredExpenses = expenses.filter(
-      (expense) =>
-        parseInt(expense.purchaseDate.split("-")[1]) ===
-        MONTHS.indexOf(currentMonth.textContent) + 1
-    );
-
     if (currentMonth.textContent === "ALL") {
       filteredExpenses = expenses;
     }
@@ -262,11 +259,11 @@ document.addEventListener("click", (e) => {
       e.target.innerHTML = "↑";
 
       if (e.target.dataset.toSort === "cost") {
-        asc = filteredExpenses.slice().sort((a, b) => a.amount - b.amount);
+        asc = expenses.slice().sort((a, b) => a.amount - b.amount);
       }
 
       if (e.target.dataset.toSort === "date") {
-        asc = filteredExpenses.sort(
+        asc = expenses.sort(
           (a, b) =>
             parseInt(a.purchaseDate.split("-")[2]) -
             parseInt(b.purchaseDate.split("-")[2])
@@ -283,18 +280,18 @@ document.addEventListener("click", (e) => {
       expensesOnPage.forEach((expense) =>
         expense.parentNode.removeChild(expense)
       );
-      displayExpenses(filteredExpenses, expenseHeaders);
+      displayExpenses(expenses, expenseHeaders);
       expensesOnPage = document.querySelectorAll(".budget-list");
     } else if (e.target.textContent === "↑↓") {
       let desc;
       e.target.innerHTML = "↓";
 
       if (e.target.dataset.toSort === "cost") {
-        desc = filteredExpenses.slice().sort((a, b) => b.amount - a.amount);
+        desc = expenses.slice().sort((a, b) => b.amount - a.amount);
       }
 
       if (e.target.dataset.toSort === "date") {
-        desc = filteredExpenses.sort(
+        desc = expenses.sort(
           (a, b) =>
             parseInt(b.purchaseDate.split("-")[2]) -
             parseInt(a.purchaseDate.split("-")[2])
