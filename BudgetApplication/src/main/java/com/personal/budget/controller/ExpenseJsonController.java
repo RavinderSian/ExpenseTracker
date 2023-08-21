@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.personal.budget.apimodels.ExpenseRangeRequest;
+import com.personal.budget.apimodels.ExpenseRangeRequestRecord;
 import com.personal.budget.model.Expense;
 import com.personal.budget.model.User;
 import com.personal.budget.service.ExpenseService;
@@ -84,7 +84,7 @@ public class ExpenseJsonController {
 	
 	@PreAuthorize("hasAuthority('USER')")
 	@PostMapping("/expenseformonth")
-	public ResponseEntity<?> getExpensesForMonthJSON(@RequestBody @Valid ExpenseRangeRequest expenseRange, BindingResult bindingResult,
+	public ResponseEntity<?> getExpensesForMonthJSON(@RequestBody @Valid ExpenseRangeRequestRecord expenseRequest, BindingResult bindingResult,
 			HttpServletRequest request) {
 		
 		if (bindingResult.hasFieldErrors()) {
@@ -100,7 +100,7 @@ public class ExpenseJsonController {
 		User user = userService.findByUsername(loggedInUsername).get();
 		
 		
-		List<Expense> expensesForRange = service.findExpensesByMonthAndCurrentYearForUser(expenseRange.getMonth(), user.getId());
+		List<Expense> expensesForRange = service.findExpensesByMonthAndCurrentYearForUser(expenseRequest.month(), user.getId());
 
 		return new ResponseEntity<>(expensesForRange, HttpStatus.OK);
 	}
