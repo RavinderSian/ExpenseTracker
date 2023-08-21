@@ -21,11 +21,11 @@ const dateBanner = document.querySelector(".budget-date-filter");
 const categoryFilter = document.querySelector("#category-filter-input");
 const sortingArrows = document.querySelector(".sorting-arrows");
 
-if (categoryFilter) {
-  categoryFilter.onchange = function () {
+
+
+  $('#category-filter-input').on("change", function () {
     displayExpensesBasedOnCategory(categoryFilter.value.toLowerCase());
-  };
-}
+  });
 
 const expensesForMonth = async function(month) {
 	const res = await fetch("/expenseformonth", {
@@ -38,11 +38,11 @@ const expensesForMonth = async function(month) {
 	  month: month
    }),
 });
-    const expensesForMonthData = await res.json();
+
+const expensesForMonthData = await res.json();
     
 	return expensesForMonthData;
-
-  }
+}
 
 const displayExpensesBasedOnCategory = function (category) {
   if (category.toLowerCase() === "all") {
@@ -61,10 +61,8 @@ const displayExpensesBasedOnCategory = function (category) {
       expense.parentNode.removeChild(expense)
     );
     displayExpenses(filteredExpenses, expenseHeaders);
-    expensesOnPage = document.querySelectorAll(".budget-list");
-    total.innerHTML = `Total: £${parseFloat(
-      calculateTotalExpenses(filteredExpenses)
-    ).toFixed(2)}`;
+    expensesOnPage = $("*.budget-list");
+    $('.total').html(`Total: £${parseFloat(calculateTotalExpenses(filteredExpenses)).toFixed(2)}`)
   }
 };
 
@@ -227,7 +225,6 @@ document.addEventListener("change", (e) => {
     const blurredExpenseAmount = +parseFloat(
       expenseElement.children[2].innerHTML.replace("£", "")
     );
-
     total.innerHTML = `Total: £${(currentTotal - blurredExpenseAmount).toFixed(
       2
     )}`;
@@ -242,86 +239,21 @@ document.addEventListener("change", (e) => {
   }
 });
 
-//We are listening on document because some elements do not exist at certain points
-//This means we need event delegation to listen for them
-document.addEventListener("click", (e) => {
-  displayCorrectExpensesForMonth(e);
 
-  if (e.target.classList.contains("sorting-arrows")) {
-
-    if (currentMonth.textContent === "ALL") {
-      filteredExpenses = expenses;
-    }
-
-    if (e.target.textContent === "↓") {
-      let asc;
-
-      e.target.innerHTML = "↑";
-
-      if (e.target.dataset.toSort === "cost") {
-        asc = expenses.slice().sort((a, b) => a.amount - b.amount);
-      }
-
-      if (e.target.dataset.toSort === "date") {
-        asc = expenses.sort(
-          (a, b) =>
-            parseInt(a.purchaseDate.split("-")[2]) -
-            parseInt(b.purchaseDate.split("-")[2])
-        );
-      }
-
-      expensesOnPage.forEach((expense) =>
-        expense.parentNode.removeChild(expense)
-      );
-      displayExpenses(asc, expenseHeaders);
-      expensesOnPage = document.querySelectorAll(".budget-list");
-    } else if (e.target.textContent === "↑") {
-      e.target.innerHTML = "↑↓";
-      expensesOnPage.forEach((expense) =>
-        expense.parentNode.removeChild(expense)
-      );
-      displayExpenses(expenses, expenseHeaders);
-      expensesOnPage = document.querySelectorAll(".budget-list");
-    } else if (e.target.textContent === "↑↓") {
-      let desc;
-      e.target.innerHTML = "↓";
-
-      if (e.target.dataset.toSort === "cost") {
-        desc = expenses.slice().sort((a, b) => b.amount - a.amount);
-      }
-
-      if (e.target.dataset.toSort === "date") {
-        desc = expenses.sort(
-          (a, b) =>
-            parseInt(b.purchaseDate.split("-")[2]) -
-            parseInt(a.purchaseDate.split("-")[2])
-        );
-      }
-
-      expensesOnPage.forEach((expense) =>
-        expense.parentNode.removeChild(expense)
-      );
-      displayExpenses(desc, expenseHeaders);
-      expensesOnPage = document.querySelectorAll(".budget-list");
-    }
-  }
-
-  if (e.target.classList.contains("delete-expense-btn")) {
-    e.preventDefault();
+//For delete button
+$(document).on('click', '.delete-expense-btn', function(e){
+	e.preventDefault();
     const confirm = window.confirm(
       "Are you sure you want to delete this? This operation CANNOT be undone"
     );
-
     if (confirm) {
       sendDeleteRequest(e.target.closest("a").href);
       window.location.reload();
     }
-  }
+})
 
-  if (e.target.classList.contains("edit-expense-btn")) {
-    e.preventDefault();
-
-    const expenseToEdit = e.target.closest(".budget-list");
+$(document).on('click', '.edit-expense-btn', function(e){
+	const expenseToEdit = e.target.closest(".budget-list");
 
     if (expenseToEdit.dataset.editing) return;
 
@@ -361,5 +293,70 @@ document.addEventListener("click", (e) => {
 					<input class = "edit-expense-input" name="submit-login" type="submit" value="submit" />
 			 </form>`
     );
+})
+
+//We are listening on document because some elements do not exist at certain points
+//This means we need event delegation to listen for them
+document.addEventListener("click", (e) => {
+  displayCorrectExpensesForMonth(e);
+
+  if (e.target.classList.contains("sorting-arrows")) {
+
+    if (currentMonth.textContent === "ALL") {
+      filteredExpenses = expenses;
+    }
+
+    if (e.target.textContent === "↓") {
+      let asc;
+
+      e.target.innerHTML = "↑";
+
+      if (e.target.dataset.toSort === "cost") {
+        asc = expenses.slice().sort((a, b) => a.amount - b.amount);
+      }
+
+      if (e.target.dataset.toSort === "date") {
+        asc = expenses.sort(
+          (a, b) =>
+            parseInt(a.purchaseDate.split("-")[2]) -
+            parseInt(b.purchaseDate.split("-")[2])
+        );
+      }
+
+      expensesOnPage.forEach((expense) =>
+        expense.parentNode.removeChild(expense)
+      );
+      displayExpenses(asc, expenseHeaders);
+      expensesOnPage = $("*.budget-list");
+    } else if (e.target.textContent === "↑") {
+      e.target.innerHTML = "↑↓";
+      expensesOnPage.forEach((expense) =>
+        expense.parentNode.removeChild(expense)
+      );
+      displayExpenses(expenses, expenseHeaders);
+      expensesOnPage = $("*.budget-list");
+    } else if (e.target.textContent === "↑↓") {
+      let desc;
+      e.target.innerHTML = "↓";
+
+      if (e.target.dataset.toSort === "cost") {
+        desc = expenses.slice().sort((a, b) => b.amount - a.amount);
+      }
+
+      if (e.target.dataset.toSort === "date") {
+        desc = expenses.sort(
+          (a, b) =>
+            parseInt(b.purchaseDate.split("-")[2]) -
+            parseInt(a.purchaseDate.split("-")[2])
+        );
+      }
+
+      expensesOnPage.forEach((expense) =>
+        expense.parentNode.removeChild(expense)
+      );
+      displayExpenses(desc, expenseHeaders);
+      expensesOnPage = document.querySelectorAll(".budget-list");
+    }
   }
+
 });
