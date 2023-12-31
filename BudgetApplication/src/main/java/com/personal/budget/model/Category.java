@@ -7,6 +7,7 @@ public enum Category {
 	DATES,
 	OTHER,
 	DENTIST,
-	DIRECT_DEBITS
+	DIRECT_DEBITS,
+	MORTGAGE
 	
 }
