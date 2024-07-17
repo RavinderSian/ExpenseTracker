@@ -104,5 +104,15 @@ public class ExpenseJsonController {
 
 		return new ResponseEntity<>(expensesForRange, HttpStatus.OK);
 	}
+	
+	//@PreAuthorize("hasAuthority('USER')")
+	@GetMapping("/expenseformonth")
+	public ResponseEntity<?> getExpensesForMonth(BindingResult bindingResult,
+			HttpServletRequest request) {
+		
+		List<Expense> expensesForRange = service.findExpensesByMonthAndCurrentYearForUser(1, 1L);
+
+		return new ResponseEntity<>(expensesForRange, HttpStatus.OK);
+	}
 
 }

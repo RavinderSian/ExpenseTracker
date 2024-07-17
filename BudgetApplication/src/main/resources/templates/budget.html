@@ -66,14 +66,12 @@
           </div>
           <div>
             <p class="sorted-header">Category</p>
+            
             <select id="category-filter-input">
-              <option value="All">All</option>
-              <option value="DATES">Dates</option>
-              <option value="MISC">Misc</option>
-              <option value="FUEL">Fuel</option>
-              <option value="SHOPS">Shops</option>
-              <option value="MORTGAGE">Mortgage</option>
-              <option value="DIRECT_DEBITS">Direct Debits</option>
+            <option value="All">All</option>
+            
+            <option th:each="category : ${T(com.personal.budget.model.Category).values()}" 
+        th:value="${category}" th:text="${category}"></option>
             </select>
           </div>
           <div>
@@ -118,10 +116,8 @@
             name="categories"
             th:field="*{category}"
           >
-            <option value="DATES">Dates</option>
-            <option value="MISC">Misc</option>
-            <option value="FUEL">Fuel</option>
-            <option value="SHOPS">Shops</option>
+             <option th:each="category : ${T(com.personal.budget.model.Category).values()}" 
+        th:value="${category}" th:text="${category}"></option>
           </select>
           <input
             id="add-expense-description"

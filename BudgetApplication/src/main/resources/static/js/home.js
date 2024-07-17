@@ -348,6 +348,8 @@ document.addEventListener("click", (e) => {
 				        <option value="" disabled selected>Select something...</option>
 				        <option value="DATES">DATES</option>
 				        <option value="MISC">MISC</option>
+				        <option value="MORTGAGE">Mortgage</option>
+              			<option value="DIRECT_DEBITS">Direct Debits</option>
 				 		<option value="FUEL">FUEL</option>
 						<option value="SHOPS">SHOPS</option>
 			     	</select>

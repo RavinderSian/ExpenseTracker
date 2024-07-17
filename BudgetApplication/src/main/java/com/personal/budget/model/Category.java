@@ -2,10 +2,11 @@ package com.personal.budget.model;
 
 public enum Category {
 
-	FRIENDS,
 	FUEL,
 	DATES,
-	OTHER,
+	TRAVEL,
+	MISC,
+	SHOPS,
 	DENTIST,
 	DIRECT_DEBITS,
 	MORTGAGE
